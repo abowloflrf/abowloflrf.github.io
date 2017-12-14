@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="操作系统," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="进程的管理，控制，进程同步与互斥，进程间通信，线程">
+<meta name="keywords" content="操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统笔记1-进程管理">
+<meta property="og:url" content="https://abowloflrf.github.io/2017/12/14/os-notes-1/index.html">
+<meta property="og:site_name" content="笔记仓库">
+<meta property="og:description" content="进程的管理，控制，进程同步与互斥，进程间通信，线程">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/wiki/abowloflrf/os-note/images/Snipaste_2017-12-10_21-15-38.png">
+<meta property="og:updated_time" content="2017-12-14T13:17:49.147Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统笔记1-进程管理">
+<meta name="twitter:description" content="进程的管理，控制，进程同步与互斥，进程间通信，线程">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/wiki/abowloflrf/os-note/images/Snipaste_2017-12-10_21-15-38.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://abowloflrf.github.io/2017/12/14/os-notes-1/"/>
+
+
+
+
+
+  <title>操作系统笔记1-进程管理 | 笔记仓库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记仓库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2017/12/14/os-notes-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ruofeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记仓库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">操作系统笔记1-进程管理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-14T15:34:52+08:00">
+                2017-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/os-notes/" itemprop="url" rel="index">
+                    <span itemprop="name">os-notes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  进程的管理，控制，进程同步与互斥，进程间通信，线程
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>进程是程序执行的一个实例</p>
+<ul>
+<li>状态转换</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/wiki/abowloflrf/os-note/images/Snipaste_2017-12-10_21-15-38.png" alt=""></p>
+<h3 id="进程描述"><a href="#进程描述" class="headerlink" title="进程描述"></a>进程描述</h3><p><strong>PCB</strong>进程控制块，记录OS管理控制进程的数据结构，记录进程的描述信息，每个进程对应一个PCB</p>
+<p>PCB是进程的一部分[程序，数据，PCB]，PCB版所进程的整个生命周期</p>
+<p>PCB中的信息：进程本身标识信息[pid,uid,内存外存地址]，CPU现场，进程调度信息，进程占用资源信息</p>
+<p>一般系统把所有PCB组织在一起放到内存中固定的区域，构成PCB表，因此PCB表的大小决定了系统中最多可同时存在的进程个数</p>
+<h2 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h2><ul>
+<li>进程创建</li>
+</ul>
+<p>创建pcb-&gt;赋予pid-&gt;初始化pcb-&gt;设置相应的链接</p>
+<ul>
+<li>进程撤销</li>
+</ul>
+<p>收回进程所占用资源-&gt;赊销pcb</p>
+<ul>
+<li>进程阻塞(运行-&gt;阻塞)</li>
+</ul>
+<p>保护cpu现场到pcb-&gt;pcb插入到阻<br>塞队列</p>
+<ul>
+<li>进程唤醒(阻塞-&gt;就绪)</li>
+</ul>
+<h2 id="进程同步与互斥"><a href="#进程同步与互斥" class="headerlink" title="进程同步与互斥"></a>进程同步与互斥</h2><p>多个进程相互交替执行，达到并发执行的状态</p>
+<ul>
+<li>打印机案例</li>
+</ul>
+<p>当一个进程需要打印文件时，将文件放入一个特殊目录spooler等待队列中，另一个进程(打印机守护进程)周期性检查是否有文件需要打印，若有则打印指定的文件并将改文件名从队列中删除。</p>
+<p>脱机目录中有许多槽位，每个槽位存放一个文件名，假设有两个共享变量，in指向下一个空闲槽位，out指向下一个要打印的文件，两个共享变量保存在一个所有进程都能访问的文件中。<strong>在一个时刻A与B进程都决定要将一个文件加入打印队列</strong>假设此时槽位7为空闲，A读到in=7，7存放到了一个局部变量中，这时发生一个<strong>时钟中断</strong>切换到进程B，读取in同样得到了7，此时的错误为<em>进程A与B都认为下一个可用的槽位是7</em>，B将文件名存入到槽7后更新in为8，并离开，切换到进程A恢复中断后其终端前储存的局部变量任然认为下一个空闲的槽位是7，而事实上此时已经是8，于是A将文件存入到槽7覆盖掉了进程B要打印的文件，于是<em>进程B需要打印的文件永远不会得到打印</em></p>
+<ul>
+<li>同步</li>
+</ul>
+<p>进程之间需要一种严格的时序关系</p>
+<ul>
+<li><strong>互斥</strong></li>
+</ul>
+<p>以某种手段确保当一个进程在使用一个共享变量或文件时，其他进程不能做同样的操作</p>
+<ul>
+<li>临界</li>
+</ul>
+<p>临界资源：必须互斥访问的共享资源</p>
+<p>临界区：进程中访问临界资源的那段程序</p>
+<h3 id="实现互斥"><a href="#实现互斥" class="headerlink" title="实现互斥"></a>实现互斥</h3><p>对于一个好的实现互斥的解决方案应当满足这些条件：</p>
+<ol>
+<li>任何两个进程不能同时处于临界区</li>
+<li>临界区外进程不应阻止其他进程进入临界区</li>
+<li>不应是进程在临界区外无限等待进入</li>
+<li>不应对cpu的个数和进程之间的相对运行速度做任何假设</li>
+</ol>
+<h4 id="锁变量"><a href="#锁变量" class="headerlink" title="锁变量"></a>锁变量</h4><p>设置一个共享变量<code>lock</code>变量在临界区内有进程时为0，无进程时为1</p>
+<blockquote>
+<p><strong>该方案不可取</strong>，因为在程序使用这个共享锁变量时依然会出现冲突</p>
+</blockquote>
+<h4 id="严格轮转法"><a href="#严格轮转法" class="headerlink" title="严格轮转法"></a>严格轮转法</h4><p>设置一个共享变量<code>turn</code>记录轮到哪个进程进入临界区，初始值为0<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//进程0</span></span><br><span class="line"><span class="keyword">while</span>(turn!=<span class="number">0</span>);</span><br><span class="line">critical_region();</span><br><span class="line">turn=<span class="number">1</span>;</span><br><span class="line">noncritical_region();</span><br><span class="line"><span class="comment">//进程1</span></span><br><span class="line"><span class="keyword">while</span>(turn!=<span class="number">1</span>);</span><br><span class="line">critical_region();</span><br><span class="line">turn=<span class="number">0</span>;</span><br><span class="line">noncritical_region()</span><br></pre></td></tr></table></figure></p>
+<p>开始进程0检查turn为0，进入临界区，此时进程1发现turn为0，因此等待，并在循环测试turn有无变为1（<strong>忙等待</strong>），这种方式浪费cpu时间，通常要避免</p>
+<blockquote>
+<p>不是一个好办法</p>
+<p><strong>忙等待</strong>会造成的问题</p>
+<ol>
+<li>浪费cpu时间</li>
+<li>可能引起优先级反转，高优先级进程永远在就绪状态无法进入临界区</li>
+</ol>
+</blockquote>
+<h4 id="Peterson"><a href="#Peterson" class="headerlink" title="Peterson"></a>Peterson</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FALSE 0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TRUE 1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> turn;           <span class="comment">//轮到谁</span></span><br><span class="line"><span class="keyword">int</span> interested[N];  <span class="comment">//兴趣数组初始化均为false</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">enter_region</span><span class="params">(<span class="keyword">int</span> process)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> other;                  <span class="comment">//另一个进程</span></span><br><span class="line">    other=<span class="number">1</span>-process;            <span class="comment">//</span></span><br><span class="line">    interested[process]=TRUE;   <span class="comment">//表面本进程希望进入临界区（感兴趣）</span></span><br><span class="line">    turn=process;               <span class="comment">//设置标志位</span></span><br><span class="line">    <span class="keyword">while</span>(turn==process&amp;&amp;interested[other]==TRUE);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">leave_region</span><span class="params">(<span class="keyword">int</span> process)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    interested[process]=FALSE;  <span class="comment">//离开临界区</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一开始没有任何进程在临界区，现在进程0调用<code>enter_region()</code>通过设置数组元素和turn置0来标识它希望进入临界区，因进程1不像进入，因此<code>enter_region()</code>很快返回，若进程1要想进入临界区，则在此处挂起直到interested[0]变成false即，进程0调用了<code>leave_region()</code>离开了临界区</p>
+<h4 id="关中断"><a href="#关中断" class="headerlink" title="关中断"></a>关中断</h4><p>进程要进入临界区前先关中断，离开临界区前开中断，这样进程在临界区时中断是被屏蔽的不会切换到另外的进程</p>
+<p><strong>缺点</strong>1.对多处理器系统无效；2.将关中断的权力交给用户不合适，若进程不打开中断则整个系统都会停止</p>
+<h4 id="机器指令"><a href="#机器指令" class="headerlink" title="机器指令"></a>机器指令</h4><ol>
+<li>TSL指令（Test and Set Lock测试并加锁）<br>执行TSL指令的CPU将锁住总线，禁止其他CPU在本指令结束前访问内存，这样就解决了使用关中断方法在多个处理器上行不通的情况</li>
+<li>swap指令</li>
+</ol>
+<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>OS引入用于实现同步与互斥的机制</p>
+<p>两个访问信号量的原子操作：P（等待，当s&lt;=0时等待，直到s&gt;0，然后s–）/V（唤醒，s++）</p>
+<h4 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h4><p>信号量s标识可用资源数量，P意味着请求分配一个资源，s-1，s&lt;=时表示无可用资源，请求者必须等待别的进程释放了资源之后运行，V即释放一个资源</p>
+<h4 id="忙等待实现方式"><a href="#忙等待实现方式" class="headerlink" title="忙等待实现方式"></a>忙等待实现方式</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//信号量定义</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> value;<span class="comment">//信号量初值</span></span><br><span class="line">    <span class="keyword">int</span> lock;<span class="comment">//锁，初值为0</span></span><br><span class="line">&#125;Semophore_t;</span><br><span class="line"><span class="comment">//P</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">P</span><span class="params">(Semophore_t *ps)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">        <span class="comment">//对ps操作的互斥</span></span><br><span class="line">        <span class="keyword">while</span>(TSL(&amp;ps-&gt;lock));</span><br><span class="line">        <span class="keyword">if</span>(ps-&gt;value&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            ps-&gt;value--;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ps-&gt;lock=<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ps-&gt;lock=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//V</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">V</span><span class="params">(Semophore_t *ps)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//对ps操作的互斥</span></span><br><span class="line">    <span class="keyword">while</span>(TSL(&amp;ps-&gt;lock));</span><br><span class="line">    ps-&gt;value++;</span><br><span class="line">    ps-&gt;lock=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="阻塞实现方式"><a href="#阻塞实现方式" class="headerlink" title="阻塞实现方式"></a>阻塞实现方式</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> value;</span><br><span class="line">    SemaQueue *<span class="built_in">list</span>;<span class="comment">//等待信号量的进程队列</span></span><br><span class="line">    <span class="keyword">int</span> lock;</span><br><span class="line">&#125;Semaphore_t;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">P</span><span class="params">(Semaphore_t *ps)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(TSL(&amp;ps-&gt;lock));</span><br><span class="line">    <span class="keyword">if</span>(ps-&gt;value&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        ps-&gt;value--;</span><br><span class="line">        ps-&gt;lock=<span class="number">0</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        进程加入ps-&gt;<span class="built_in">list</span></span><br><span class="line">        阻塞该进程，ps-&gt;lock=<span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> V(Semaphore_t *ps)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span>(TSL(&amp;ps-&gt;lock));</span><br><span class="line">    <span class="keyword">if</span>(ps-&gt;<span class="built_in">list</span>==<span class="literal">NULL</span>)&#123;</span><br><span class="line">        ps-&gt;value++;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        ps-&gt;<span class="built_in">list</span>中移出一个进程P</span><br><span class="line">        进程P放入就绪队列</span><br><span class="line">    &#125;</span><br><span class="line">    ps-&gt;lock=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="信号量应用实例（生产者消费者）"><a href="#信号量应用实例（生产者消费者）" class="headerlink" title="信号量应用实例（生产者消费者）"></a>信号量应用实例（生产者消费者）</h4><p>两类进程共享一个公共的固定大小<strong>缓冲区</strong>，一类<strong>生产者进程</strong>将信息放入缓冲区，一类<strong>消费者进程</strong>从缓冲区中取信息<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 100 <span class="comment">//缓冲区槽数</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TRUE 1</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> semaphore;</span><br><span class="line">semaphore mutex=<span class="number">1</span>;  <span class="comment">//控制对临界区的访问，确保进程不会同时访问缓冲区，初始值1</span></span><br><span class="line">semaphore empty=N;  <span class="comment">//记录缓冲区中空的槽数</span></span><br><span class="line">semaphore full=<span class="number">0</span>;   <span class="comment">//记录缓冲区非空槽数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">producer</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(TRUE)&#123;</span><br><span class="line">        producer();     <span class="comment">//生产一项</span></span><br><span class="line">        P(&amp;empty);      <span class="comment">//申请一个空槽</span></span><br><span class="line">        P(&amp;mutex);      <span class="comment">//请求进入临界区</span></span><br><span class="line">        append();       <span class="comment">//新数加入缓冲区</span></span><br><span class="line">        V(&amp;mutex);      <span class="comment">//离开临界区</span></span><br><span class="line">        V(&amp;full);       <span class="comment">//递增非空槽数</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">consumer</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(TRUE)&#123;</span><br><span class="line">        P(&amp;full);       <span class="comment">//满槽数减一</span></span><br><span class="line">        P(&amp;mutex);      <span class="comment">//进入临界区</span></span><br><span class="line">        remove();       <span class="comment">//从缓冲区中取出一项数据</span></span><br><span class="line">        V(&amp;mutex);      <span class="comment">//离开临界区</span></span><br><span class="line">        V(&amp;empty);      <span class="comment">//空槽数加一</span></span><br><span class="line">        consume();      <span class="comment">//处理数据</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="经典进程同步问题"><a href="#经典进程同步问题" class="headerlink" title="经典进程同步问题"></a>经典进程同步问题</h3><ul>
+<li>哲学家进餐问题</li>
+<li>读者写者问题</li>
+<li>睡眠的理发师问题<h2 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h2></li>
+</ul>
+<ul>
+<li>共享存储区</li>
+</ul>
+<p>相互通信的进程之间与公共的内存区，每个进程都可向公共内存区中读写</p>
+<ul>
+<li>消息传递</li>
+</ul>
+<p>使用<strong>消息队列</strong>或者<strong>邮箱</strong></p>
+<ul>
+<li>管道</li>
+</ul>
+<p>用于连接一个读进程一个写进程</p>
+<h3 id="Send-Reecive-实现"><a href="#Send-Reecive-实现" class="headerlink" title="Send Reecive 实现"></a>Send Reecive 实现</h3><p>阻塞方式为消息队列满或者空时，等待，非阻塞时为直接返回，通常Send用非阻塞，Recieve可用两种方式<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//非阻塞的Send</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Send</span><span class="params">(QID qid,MSG &amp;pMsg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//阻塞的Receive</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Receive</span><span class="params">(QID qid,MSG &amp;pMsg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p><strong>线程是进程执行的一条执行路径</strong>，一个进程可以有多个线程，其中至少一个主线程；一个进程内的多个线程在同一个地址空间内；每个线程由自己的线程控制块TCB，包含自己的堆栈和状态信息，比PCB要小得多</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/14/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ruofeng" />
+            
+              <p class="site-author-name" itemprop="name">ruofeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://ruofeng.me" target="_blank" title="MainSite">
+                    
+                      <i class="fa fa-fw fa-user"></i>MainSite</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/abowloflrf" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:i@ruofeng.me" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程模型"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x8FDB;&#x7A0B;&#x6A21;&#x578B;" class="headerlink" title="&#x8FDB;&#x7A0B;&#x6A21;&#x578B;"></a>&#x8FDB;&#x7A0B;&#x6A21;&#x578B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程描述"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x8FDB;&#x7A0B;&#x63CF;&#x8FF0;" class="headerlink" title="&#x8FDB;&#x7A0B;&#x63CF;&#x8FF0;"></a>&#x8FDB;&#x7A0B;&#x63CF;&#x8FF0;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程控制"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x8FDB;&#x7A0B;&#x63A7;&#x5236;" class="headerlink" title="&#x8FDB;&#x7A0B;&#x63A7;&#x5236;"></a>&#x8FDB;&#x7A0B;&#x63A7;&#x5236;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程同步与互斥"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x8FDB;&#x7A0B;&#x540C;&#x6B65;&#x4E0E;&#x4E92;&#x65A5;" class="headerlink" title="&#x8FDB;&#x7A0B;&#x540C;&#x6B65;&#x4E0E;&#x4E92;&#x65A5;"></a>&#x8FDB;&#x7A0B;&#x540C;&#x6B65;&#x4E0E;&#x4E92;&#x65A5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现互斥"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x5B9E;&#x73B0;&#x4E92;&#x65A5;" class="headerlink" title="&#x5B9E;&#x73B0;&#x4E92;&#x65A5;"></a>&#x5B9E;&#x73B0;&#x4E92;&#x65A5;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#锁变量"><span class="nav-number">3.1.1.</span> <span class="nav-text"><a href="#&#x9501;&#x53D8;&#x91CF;" class="headerlink" title="&#x9501;&#x53D8;&#x91CF;"></a>&#x9501;&#x53D8;&#x91CF;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#严格轮转法"><span class="nav-number">3.1.2.</span> <span class="nav-text"><a href="#&#x4E25;&#x683C;&#x8F6E;&#x8F6C;&#x6CD5;" class="headerlink" title="&#x4E25;&#x683C;&#x8F6E;&#x8F6C;&#x6CD5;"></a>&#x4E25;&#x683C;&#x8F6E;&#x8F6C;&#x6CD5;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Peterson"><span class="nav-number">3.1.3.</span> <span class="nav-text"><a href="#Peterson" class="headerlink" title="Peterson"></a>Peterson</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关中断"><span class="nav-number">3.1.4.</span> <span class="nav-text"><a href="#&#x5173;&#x4E2D;&#x65AD;" class="headerlink" title="&#x5173;&#x4E2D;&#x65AD;"></a>&#x5173;&#x4E2D;&#x65AD;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#机器指令"><span class="nav-number">3.1.5.</span> <span class="nav-text"><a href="#&#x673A;&#x5668;&#x6307;&#x4EE4;" class="headerlink" title="&#x673A;&#x5668;&#x6307;&#x4EE4;"></a>&#x673A;&#x5668;&#x6307;&#x4EE4;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信号量"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x4FE1;&#x53F7;&#x91CF;" class="headerlink" title="&#x4FE1;&#x53F7;&#x91CF;"></a>&#x4FE1;&#x53F7;&#x91CF;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#含义"><span class="nav-number">3.2.1.</span> <span class="nav-text"><a href="#&#x542B;&#x4E49;" class="headerlink" title="&#x542B;&#x4E49;"></a>&#x542B;&#x4E49;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#忙等待实现方式"><span class="nav-number">3.2.2.</span> <span class="nav-text"><a href="#&#x5FD9;&#x7B49;&#x5F85;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;" class="headerlink" title="&#x5FD9;&#x7B49;&#x5F85;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;"></a>&#x5FD9;&#x7B49;&#x5F85;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞实现方式"><span class="nav-number">3.2.3.</span> <span class="nav-text"><a href="#&#x963B;&#x585E;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;" class="headerlink" title="&#x963B;&#x585E;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;"></a>&#x963B;&#x585E;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量应用实例（生产者消费者）"><span class="nav-number">3.2.4.</span> <span class="nav-text"><a href="#&#x4FE1;&#x53F7;&#x91CF;&#x5E94;&#x7528;&#x5B9E;&#x4F8B;&#xFF08;&#x751F;&#x4EA7;&#x8005;&#x6D88;&#x8D39;&#x8005;&#xFF09;" class="headerlink" title="&#x4FE1;&#x53F7;&#x91CF;&#x5E94;&#x7528;&#x5B9E;&#x4F8B;&#xFF08;&#x751F;&#x4EA7;&#x8005;&#x6D88;&#x8D39;&#x8005;&#xFF09;"></a>&#x4FE1;&#x53F7;&#x91CF;&#x5E94;&#x7528;&#x5B9E;&#x4F8B;&#xFF08;&#x751F;&#x4EA7;&#x8005;&#x6D88;&#x8D39;&#x8005;&#xFF09;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#经典进程同步问题"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x7ECF;&#x5178;&#x8FDB;&#x7A0B;&#x540C;&#x6B65;&#x95EE;&#x9898;" class="headerlink" title="&#x7ECF;&#x5178;&#x8FDB;&#x7A0B;&#x540C;&#x6B65;&#x95EE;&#x9898;"></a>&#x7ECF;&#x5178;&#x8FDB;&#x7A0B;&#x540C;&#x6B65;&#x95EE;&#x9898;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程间通信"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x8FDB;&#x7A0B;&#x95F4;&#x901A;&#x4FE1;" class="headerlink" title="&#x8FDB;&#x7A0B;&#x95F4;&#x901A;&#x4FE1;"></a>&#x8FDB;&#x7A0B;&#x95F4;&#x901A;&#x4FE1;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Send-Reecive-实现"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#Send-Reecive-&#x5B9E;&#x73B0;" class="headerlink" title="Send Reecive &#x5B9E;&#x73B0;"></a>Send Reecive &#x5B9E;&#x73B0;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x7EBF;&#x7A0B;" class="headerlink" title="&#x7EBF;&#x7A0B;"></a>&#x7EBF;&#x7A0B;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ruofeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine@1.1.4/dist/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        av: AV,
+        el: '#vcomments' ,
+        verify: true,
+        notify: false,
+        app_id: 'T17r65AxsFiWvd4DTL0GNKSO-gzGzoHsz',
+        app_key: 'LRMvtGr492OE47HIxsQqjBPW',
+        placeholder: '在此评论'
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
