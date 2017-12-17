@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="微机接口,专业课笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="微处理器的性能指标最主要为两项：  字长  CPU能同时处理的数据位数，也成为数据宽度  主频  CPU的时钟频率，主频越高运算速度越快 16位微处理器内部组成8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB 从功能上8086分为两部分，总线接口部件（BIU）和执行部件（EU） 总线接口部件负责与存储器，IO端口传输数据。即总线接口部件从内存取指">
+<meta name="keywords" content="微机接口,专业课笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微机接口笔记2-16位与32位微处理器">
+<meta property="og:url" content="https://abowloflrf.github.io/2017/12/17/microcomputer-interface-notes-2/index.html">
+<meta property="og:site_name" content="笔记仓库">
+<meta property="og:description" content="微处理器的性能指标最主要为两项：  字长  CPU能同时处理的数据位数，也成为数据宽度  主频  CPU的时钟频率，主频越高运算速度越快 16位微处理器内部组成8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB 从功能上8086分为两部分，总线接口部件（BIU）和执行部件（EU） 总线接口部件负责与存储器，IO端口传输数据。即总线接口部件从内存取指">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-reset.webp">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-rd.webp">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-wr.webp">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-rd.webp">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-wr.webp">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-inter.webp">
+<meta property="og:updated_time" content="2017-12-17T07:11:08.993Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微机接口笔记2-16位与32位微处理器">
+<meta name="twitter:description" content="微处理器的性能指标最主要为两项：  字长  CPU能同时处理的数据位数，也成为数据宽度  主频  CPU的时钟频率，主频越高运算速度越快 16位微处理器内部组成8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB 从功能上8086分为两部分，总线接口部件（BIU）和执行部件（EU） 总线接口部件负责与存储器，IO端口传输数据。即总线接口部件从内存取指">
+<meta name="twitter:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-reset.webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://abowloflrf.github.io/2017/12/17/microcomputer-interface-notes-2/"/>
+
+
+
+
+
+  <title>微机接口笔记2-16位与32位微处理器 | 笔记仓库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记仓库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2017/12/17/microcomputer-interface-notes-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ruofeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记仓库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">微机接口笔记2-16位与32位微处理器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T08:43:04+08:00">
+                2017-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/微机接口/" itemprop="url" rel="index">
+                    <span itemprop="name">微机接口</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>微处理器的性能指标最主要为两项：</p>
+<ul>
+<li>字长</li>
+</ul>
+<p>CPU能同时处理的数据位数，也成为数据宽度</p>
+<ul>
+<li>主频</li>
+</ul>
+<p>CPU的时钟频率，主频越高运算速度越快</p>
+<h2 id="16位微处理器"><a href="#16位微处理器" class="headerlink" title="16位微处理器"></a>16位微处理器</h2><h3 id="内部组成"><a href="#内部组成" class="headerlink" title="内部组成"></a>内部组成</h3><p>8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB</p>
+<p>从功能上8086分为两部分，<strong>总线接口部件（BIU）</strong>和<strong>执行部件（EU）</strong></p>
+<h4 id="总线接口部件"><a href="#总线接口部件" class="headerlink" title="总线接口部件"></a>总线接口部件</h4><p><em>负责与存储器，IO端口传输数据。</em>即总线接口部件从内存取指令送到指令队列。CPU执行指令时，总线接口要配合执行部件从指定的内存单元或外设接口中取数据，将数据传送给执行部件，或把执行部件的操作结果传送给指定的内存单元或外设中</p>
+<p><strong>组成</strong></p>
+<ol>
+<li>四个段地址寄存器（CS代码段，DS数据段，ES附加段，SS堆栈段）</li>
+<li>16位指令寄存器IP</li>
+<li>20位地址加法器（物理地址=CS段寄存器内容左移4位+IP指令指针寄存器内容）</li>
+<li>6字节指令队列缓冲器</li>
+</ol>
+<h4 id="执行部件"><a href="#执行部件" class="headerlink" title="执行部件"></a>执行部件</h4><p>负责指令的执行</p>
+<p><strong>组成</strong></p>
+<ol>
+<li>四个通用寄存器（AX，BX，CX，DX）</li>
+<li>四个专用寄存器（BP，SP，SI，DI）</li>
+<li>标志寄存器FR</li>
+<li>算术逻辑部件ALU</li>
+</ol>
+<h4 id="总线周期"><a href="#总线周期" class="headerlink" title="总线周期"></a>总线周期</h4><p>8086中一个最基本的<strong>总线周期</strong>由4个<strong>时钟周期</strong>组成</p>
+<ul>
+<li>时钟周期为CPU的基本时间计量单位，由主频决定，若主频f=5MHz，则时钟周期T=1/f=200ns</li>
+<li>总线周期为CPU从存储器或IO端口存取一个单位所需要的时间</li>
+</ul>
+<ol>
+<li>T1状态：CPU向总线发送地址信息指出要寻址的存储单元或外设端口地址</li>
+<li>T2状态：CPU总总线上撤销地址，总线低16位高阻态为接收数据做准备，高4位输出总线的周期状态信息</li>
+<li>T3状态：总线低16位出现cpu写入或从存储器/外设读入的数据</li>
+<li>Tw状态（可选）：数据若未准备好，CPU在T3状态之后插入一个或多个Tw等待状态，直到在READY信号线上接受到已准备好的信号</li>
+<li>T4状态：总线周期结束 </li>
+<li>Ti状态（可选）：一个周期结束后不立即执行下一个总线周期，则系统总线处于空闲状态Ti</li>
+</ol>
+<h3 id="引脚信号与工作模式"><a href="#引脚信号与工作模式" class="headerlink" title="引脚信号与工作模式"></a>引脚信号与工作模式</h3><p><strong>最小模式</strong>即在系统中只有8086一个处理器，所有总线控制信号都直接由8086产生，<strong>最大模式</strong>中包含有两个或多个微处理器，8086主处理器和其他协处理器（数值运算8087，输入输出8089），8086工作在哪个模式由硬件连线决定</p>
+<ul>
+<li>CLK时钟信号</li>
+<li>NMI非屏蔽中断请求信号</li>
+<li>INTR可屏蔽中断请求信号</li>
+<li>RD读信号，输出</li>
+<li>MN/MX最大最下工作模式控制信号，高最小，低最大</li>
+<li>READY准备好信号</li>
+<li>TEST测试信号，与WAIT结合使用，每五个时钟周期检测</li>
+<li>RESET复位信号</li>
+<li>BHE/S7高八位数据总线允许/状态复用引脚，T1时输出BHE表示AD15-8有效，T234w时输出状态信号S7</li>
+<li>INTA中断响应信号</li>
+<li>ALE地址锁存允许信号</li>
+<li>DEN数据允许信号</li>
+<li>DT/R数据收发输出方向控制信号，高为输出，低为输入</li>
+<li>M/IO存储器，IO控制信号，高为访问存储器，低为访问IO设备</li>
+<li>WR写信号</li>
+<li>HOLD总线保持请求信号</li>
+<li>HLDA总线保持响应信号</li>
+</ul>
+<hr>
+<p>下面八根信号线与工作模式相关，最大工作模式下，总线控制信号既可以由8086产生也可以协处理器产生</p>
+<ul>
+<li>S2/S1/S0总线周期状态信号</li>
+<li>RQ/GT0总线请求输入，总线请求<strong>允许</strong>信号输出</li>
+<li>RQ/GT1总线请求输入，总线请求<strong>允许</strong>信号输出，优先级低于上面</li>
+<li>LOCK总线封锁信号</li>
+<li>QS1/QS0指令队列状态信号</li>
+</ul>
+<h3 id="操作与时序"><a href="#操作与时序" class="headerlink" title="操作与时序"></a>操作与时序</h3><h4 id="系统的复位和启动"><a href="#系统的复位和启动" class="headerlink" title="系统的复位和启动"></a>系统的复位和启动</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-reset.webp" alt=""></p>
+<p>复位操作由RESET信号发出，RESET信号进入高电平，CPU停止现在的操作，将CS设置为初值<code>0FFFFH</code>，IP为<code>0000H</code>，其他内部寄存器设置为0，因此复位操作之后再重新启动时，从内存的<code>FFFF0H</code>处开始执行指令，因此一般在<code>FFFF0H</code>处放置一个无条件转移指令，转移到系统程序的入口处；此外，在复位时各种标志寄存器都被清零因此所有INTR进入的可屏蔽中断都不被允许，因此需要开放中断指令STI来设置中断允许标志</p>
+<h4 id="最小工作模式读周期"><a href="#最小工作模式读周期" class="headerlink" title="最小工作模式读周期"></a>最小工作模式读周期</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-rd.webp" alt=""></p>
+<p>T1：地址A0-19上线，ALE下降沿锁存地址，DT/R低电平持续到T4，低为输入，高为输出</p>
+<p>T2：A19-16变为S3-S7，DEN有效打开数据线，RD有效执行读操作，AD0-15为高阻态为输入数据做准备</p>
+<p>T3：D15-0到数据线，CPU得到数据，次状态若READY为低电平则插入Tw</p>
+<p>T4：数据消失，控制信号复位，为下一个总线周期做准备</p>
+<h4 id="最小工作模式写周期"><a href="#最小工作模式写周期" class="headerlink" title="最小工作模式写周期"></a>最小工作模式写周期</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-wr.webp" alt=""></p>
+<h4 id="最大工作模式读周期"><a href="#最大工作模式读周期" class="headerlink" title="最大工作模式读周期"></a>最大工作模式读周期</h4><p>最大工作模式与最小类似，区别在于在最大模式下，<strong>总线控制信号均由8288发出，且不是单纯的读写信号，而是根据指令发出的具体的读写存储器或I/O口的信号</strong>。</p>
+<p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-rd.webp" alt=""></p>
+<h4 id="最大工作模式写周期"><a href="#最大工作模式写周期" class="headerlink" title="最大工作模式写周期"></a>最大工作模式写周期</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-wr.webp" alt=""></p>
+<h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><ul>
+<li><strong>中断</strong>正常运行程序时，由于内部或外部某个紧急事件发生，使CPU暂停真噶子运行的程序，在执行完当前指令后，转去执行请求中断的外设或事件的中断处理程序，处理完后返回继续执行正常的程序</li>
+<li><strong>中断源</strong>引起中断的事件</li>
+<li><strong>断点</strong>主程序被打断的位置</li>
+<li><strong>中断服务程序</strong>对中断源的响应或处理程序</li>
+<li><strong>中断向量</strong>中断服务程序的入口地址包含基址与偏移地址两部分，占用四个字节</li>
+<li><strong>中断类型码</strong>8086最多可处理256种中断0-255，专用中断0-4，保留中断5-31，用户中断32-255</li>
+<li><strong>中断向量表</strong>从物理地址<code>00000H</code>开始，一次存放中断向量，形成专门储存中断服务入口地址的存储区域。256个不同类型中断占1kb区域，`00000H-003FFH</li>
+<li><strong>中断向量地址指针</strong>中断向量在中断向量表中存放的首地址，=中断类型码*4</li>
+</ul>
+<blockquote>
+<p>若中断类型码为42H的中断向量为5678H:1234H<br>则中断向量表的00108H-0010B中依次存放34H，12H，78H，56H</p>
+</blockquote>
+<h4 id="中断响应流程"><a href="#中断响应流程" class="headerlink" title="中断响应流程"></a>中断响应流程</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-inter.webp" alt=""></p>
+<h3 id="8086的存储器编址"><a href="#8086的存储器编址" class="headerlink" title="8086的存储器编址"></a>8086的存储器编址</h3><p>8086有20根地址线，具有1MB存储器地址空间，内存单元按照<code>00000</code>-<code>FFFFFH</code>来编址，由于指令指针，堆栈指针都是16位，要计算一个存储单元的物理地址，线将段寄存器左移4位，加上16位的偏移量（有效地址）得到物理地址</p>
+<h3 id="8086的IO编址"><a href="#8086的IO编址" class="headerlink" title="8086的IO编址"></a>8086的IO编址</h3><p>8086允许有65535个8位IO端口，两个相邻的8位端口可以组成一个16位端口</p>
+<ul>
+<li>独立编址方式访问IO端口</li>
+<li>cpu使用低16位地址线寻址IO端口</li>
+</ul>
+<h2 id="32位微处理器"><a href="#32位微处理器" class="headerlink" title="32位微处理器"></a>32位微处理器</h2><h3 id="指令流水线"><a href="#指令流水线" class="headerlink" title="指令流水线"></a>指令流水线</h3><p>Pentium指令流水线由<strong>总线接口部件</strong>、<strong>指令预取部件</strong>、<strong>指令译码部件</strong>和<strong>执行部件</strong>构成。</p>
+<p><strong>超标量</strong>：配置多个执行部件和指令译码电路，能<strong>同时执行多条指令</strong>。</p>
+<p>Pentium由<strong>三个执行单元</strong>组织而成，一个执行浮点指令，另两个执行整型指令（U流水线和V流水线），这意味着Pentium<strong>同时可以执行三条指令</strong></p>
+<h4 id="整数流水线"><a href="#整数流水线" class="headerlink" title="整数流水线"></a>整数流水线</h4><p>五个阶段</p>
+<ul>
+<li>PF 预取 处理器从代码cache中预取指令</li>
+<li>D1 译码阶段1 对指令译码确定操作吗与寻址信息</li>
+<li>D2 译码阶段2 产生访问存储器的地址</li>
+<li>EX 执行 处理器访问数据cache，或利用ALU等计算单元计算结果</li>
+<li>WB 写回 使用运行结果更新寄存器与标志寄存器</li>
+</ul>
+<p><strong>流水线</strong>：在CPU中把一条指令分解成多个可单独处理的操作，使每个操作在一个专门的硬件站（stage）上执行，这样一条指令需要顺序地经过流水线中多个站的处理才能完成，但是前后相连的几条指令可以依次流入流水线中，在多个站间重叠执行，因此可以实现指令的并行处理。</p>
+<h4 id="浮点流水线"><a href="#浮点流水线" class="headerlink" title="浮点流水线"></a>浮点流水线</h4><p>八个阶段</p>
+<ul>
+<li>PF 预取</li>
+<li>D1 译码阶段1</li>
+<li>D2 译码阶段2</li>
+<li>EX 取操作数</li>
+<li>X1 浮点执行步骤1</li>
+<li>X2 浮点执行步骤2</li>
+<li>WT 写浮点数</li>
+<li>ER 出错报告</li>
+</ul>
+<h3 id="寄存器功能"><a href="#寄存器功能" class="headerlink" title="寄存器功能"></a>寄存器功能</h3><h4 id="基本寄存器组"><a href="#基本寄存器组" class="headerlink" title="基本寄存器组"></a>基本寄存器组</h4><ul>
+<li>通用寄存器</li>
+<li>指令指针寄存器</li>
+<li>标志寄存器</li>
+<li>段寄存器<h4 id="系统寄存器组"><a href="#系统寄存器组" class="headerlink" title="系统寄存器组"></a>系统寄存器组</h4></li>
+<li>地址寄存器</li>
+<li>控制寄存器</li>
+<li>调试寄存器</li>
+<li>测试寄存器<h4 id="浮点寄存器组"><a href="#浮点寄存器组" class="headerlink" title="浮点寄存器组"></a>浮点寄存器组</h4></li>
+<li>数据寄存器</li>
+<li>标记字寄存器</li>
+<li>状态寄存器</li>
+<li>控制字寄存器</li>
+<li>指令指针寄存器</li>
+<li>数据指针寄存器</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/微机接口/" rel="tag"># 微机接口</a>
+          
+            <a href="/tags/专业课笔记/" rel="tag"># 专业课笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/16/microcomputer-interface-notes-1/" rel="next" title="微机接口笔记1-概念">
+                <i class="fa fa-chevron-left"></i> 微机接口笔记1-概念
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ruofeng" />
+            
+              <p class="site-author-name" itemprop="name">ruofeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://ruofeng.me" target="_blank" title="MainSite">
+                    
+                      <i class="fa fa-fw fa-user"></i>MainSite</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/abowloflrf" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:i@ruofeng.me" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#16位微处理器"><span class="nav-number">1.</span> <span class="nav-text"><a href="#16&#x4F4D;&#x5FAE;&#x5904;&#x7406;&#x5668;" class="headerlink" title="16&#x4F4D;&#x5FAE;&#x5904;&#x7406;&#x5668;"></a>16&#x4F4D;&#x5FAE;&#x5904;&#x7406;&#x5668;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内部组成"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x5185;&#x90E8;&#x7EC4;&#x6210;" class="headerlink" title="&#x5185;&#x90E8;&#x7EC4;&#x6210;"></a>&#x5185;&#x90E8;&#x7EC4;&#x6210;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#总线接口部件"><span class="nav-number">1.1.1.</span> <span class="nav-text"><a href="#&#x603B;&#x7EBF;&#x63A5;&#x53E3;&#x90E8;&#x4EF6;" class="headerlink" title="&#x603B;&#x7EBF;&#x63A5;&#x53E3;&#x90E8;&#x4EF6;"></a>&#x603B;&#x7EBF;&#x63A5;&#x53E3;&#x90E8;&#x4EF6;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行部件"><span class="nav-number">1.1.2.</span> <span class="nav-text"><a href="#&#x6267;&#x884C;&#x90E8;&#x4EF6;" class="headerlink" title="&#x6267;&#x884C;&#x90E8;&#x4EF6;"></a>&#x6267;&#x884C;&#x90E8;&#x4EF6;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总线周期"><span class="nav-number">1.1.3.</span> <span class="nav-text"><a href="#&#x603B;&#x7EBF;&#x5468;&#x671F;" class="headerlink" title="&#x603B;&#x7EBF;&#x5468;&#x671F;"></a>&#x603B;&#x7EBF;&#x5468;&#x671F;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引脚信号与工作模式"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x5F15;&#x811A;&#x4FE1;&#x53F7;&#x4E0E;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;" class="headerlink" title="&#x5F15;&#x811A;&#x4FE1;&#x53F7;&#x4E0E;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;"></a>&#x5F15;&#x811A;&#x4FE1;&#x53F7;&#x4E0E;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作与时序"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x64CD;&#x4F5C;&#x4E0E;&#x65F6;&#x5E8F;" class="headerlink" title="&#x64CD;&#x4F5C;&#x4E0E;&#x65F6;&#x5E8F;"></a>&#x64CD;&#x4F5C;&#x4E0E;&#x65F6;&#x5E8F;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#系统的复位和启动"><span class="nav-number">1.3.1.</span> <span class="nav-text"><a href="#&#x7CFB;&#x7EDF;&#x7684;&#x590D;&#x4F4D;&#x548C;&#x542F;&#x52A8;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x7684;&#x590D;&#x4F4D;&#x548C;&#x542F;&#x52A8;"></a>&#x7CFB;&#x7EDF;&#x7684;&#x590D;&#x4F4D;&#x548C;&#x542F;&#x52A8;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最小工作模式读周期"><span class="nav-number">1.3.2.</span> <span class="nav-text"><a href="#&#x6700;&#x5C0F;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x8BFB;&#x5468;&#x671F;" class="headerlink" title="&#x6700;&#x5C0F;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x8BFB;&#x5468;&#x671F;"></a>&#x6700;&#x5C0F;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x8BFB;&#x5468;&#x671F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最小工作模式写周期"><span class="nav-number">1.3.3.</span> <span class="nav-text"><a href="#&#x6700;&#x5C0F;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x5199;&#x5468;&#x671F;" class="headerlink" title="&#x6700;&#x5C0F;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x5199;&#x5468;&#x671F;"></a>&#x6700;&#x5C0F;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x5199;&#x5468;&#x671F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最大工作模式读周期"><span class="nav-number">1.3.4.</span> <span class="nav-text"><a href="#&#x6700;&#x5927;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x8BFB;&#x5468;&#x671F;" class="headerlink" title="&#x6700;&#x5927;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x8BFB;&#x5468;&#x671F;"></a>&#x6700;&#x5927;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x8BFB;&#x5468;&#x671F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最大工作模式写周期"><span class="nav-number">1.3.5.</span> <span class="nav-text"><a href="#&#x6700;&#x5927;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x5199;&#x5468;&#x671F;" class="headerlink" title="&#x6700;&#x5927;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x5199;&#x5468;&#x671F;"></a>&#x6700;&#x5927;&#x5DE5;&#x4F5C;&#x6A21;&#x5F0F;&#x5199;&#x5468;&#x671F;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中断"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x4E2D;&#x65AD;" class="headerlink" title="&#x4E2D;&#x65AD;"></a>&#x4E2D;&#x65AD;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#中断响应流程"><span class="nav-number">1.4.1.</span> <span class="nav-text"><a href="#&#x4E2D;&#x65AD;&#x54CD;&#x5E94;&#x6D41;&#x7A0B;" class="headerlink" title="&#x4E2D;&#x65AD;&#x54CD;&#x5E94;&#x6D41;&#x7A0B;"></a>&#x4E2D;&#x65AD;&#x54CD;&#x5E94;&#x6D41;&#x7A0B;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8086的存储器编址"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#8086&#x7684;&#x5B58;&#x50A8;&#x5668;&#x7F16;&#x5740;" class="headerlink" title="8086&#x7684;&#x5B58;&#x50A8;&#x5668;&#x7F16;&#x5740;"></a>8086&#x7684;&#x5B58;&#x50A8;&#x5668;&#x7F16;&#x5740;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8086的IO编址"><span class="nav-number">1.6.</span> <span class="nav-text"><a href="#8086&#x7684;IO&#x7F16;&#x5740;" class="headerlink" title="8086&#x7684;IO&#x7F16;&#x5740;"></a>8086&#x7684;IO&#x7F16;&#x5740;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#32位微处理器"><span class="nav-number">2.</span> <span class="nav-text"><a href="#32&#x4F4D;&#x5FAE;&#x5904;&#x7406;&#x5668;" class="headerlink" title="32&#x4F4D;&#x5FAE;&#x5904;&#x7406;&#x5668;"></a>32&#x4F4D;&#x5FAE;&#x5904;&#x7406;&#x5668;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#指令流水线"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x6307;&#x4EE4;&#x6D41;&#x6C34;&#x7EBF;" class="headerlink" title="&#x6307;&#x4EE4;&#x6D41;&#x6C34;&#x7EBF;"></a>&#x6307;&#x4EE4;&#x6D41;&#x6C34;&#x7EBF;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#整数流水线"><span class="nav-number">2.1.1.</span> <span class="nav-text"><a href="#&#x6574;&#x6570;&#x6D41;&#x6C34;&#x7EBF;" class="headerlink" title="&#x6574;&#x6570;&#x6D41;&#x6C34;&#x7EBF;"></a>&#x6574;&#x6570;&#x6D41;&#x6C34;&#x7EBF;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浮点流水线"><span class="nav-number">2.1.2.</span> <span class="nav-text"><a href="#&#x6D6E;&#x70B9;&#x6D41;&#x6C34;&#x7EBF;" class="headerlink" title="&#x6D6E;&#x70B9;&#x6D41;&#x6C34;&#x7EBF;"></a>&#x6D6E;&#x70B9;&#x6D41;&#x6C34;&#x7EBF;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#寄存器功能"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x5BC4;&#x5B58;&#x5668;&#x529F;&#x80FD;" class="headerlink" title="&#x5BC4;&#x5B58;&#x5668;&#x529F;&#x80FD;"></a>&#x5BC4;&#x5B58;&#x5668;&#x529F;&#x80FD;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本寄存器组"><span class="nav-number">2.2.1.</span> <span class="nav-text"><a href="#&#x57FA;&#x672C;&#x5BC4;&#x5B58;&#x5668;&#x7EC4;" class="headerlink" title="&#x57FA;&#x672C;&#x5BC4;&#x5B58;&#x5668;&#x7EC4;"></a>&#x57FA;&#x672C;&#x5BC4;&#x5B58;&#x5668;&#x7EC4;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统寄存器组"><span class="nav-number">2.2.2.</span> <span class="nav-text"><a href="#&#x7CFB;&#x7EDF;&#x5BC4;&#x5B58;&#x5668;&#x7EC4;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x5BC4;&#x5B58;&#x5668;&#x7EC4;"></a>&#x7CFB;&#x7EDF;&#x5BC4;&#x5B58;&#x5668;&#x7EC4;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浮点寄存器组"><span class="nav-number">2.2.3.</span> <span class="nav-text"><a href="#&#x6D6E;&#x70B9;&#x5BC4;&#x5B58;&#x5668;&#x7EC4;" class="headerlink" title="&#x6D6E;&#x70B9;&#x5BC4;&#x5B58;&#x5668;&#x7EC4;"></a>&#x6D6E;&#x70B9;&#x5BC4;&#x5B58;&#x5668;&#x7EC4;</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ruofeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.coding.me" style="font-weight:bold">Coding Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine@1.1.4/dist/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        av: AV,
+        el: '#vcomments' ,
+        verify: true,
+        notify: false,
+        app_id: 'T17r65AxsFiWvd4DTL0GNKSO-gzGzoHsz',
+        app_key: 'LRMvtGr492OE47HIxsQqjBPW',
+        placeholder: '在此评论(你的邮箱不会被展示，仅我可见）'
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
