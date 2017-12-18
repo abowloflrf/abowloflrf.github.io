@@ -79,25 +79,25 @@
 
 
 
-<meta name="description" content="微处理器的性能指标最主要为两项：  字长  CPU能同时处理的数据位数，也成为数据宽度  主频  CPU的时钟频率，主频越高运算速度越快 16位微处理器内部组成8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB 从功能上8086分为两部分，总线接口部件（BIU）和执行部件（EU） 总线接口部件负责与存储器，IO端口传输数据。即总线接口部件从内存取指">
+<meta name="description" content="微处理器的性能指标最主要为两项：  字长:CPU能同时处理的数据位数，也成为数据宽度 主频:CPU的时钟频率，主频越高运算速度越快  16位微处理器内部组成8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB 从功能上8086分为两部分，总线接口部件（BIU）和执行部件（EU） 总线接口部件负责与存储器，IO端口传输数据。即总线接口部件从内存取指令送">
 <meta name="keywords" content="微机接口,专业课笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微机接口笔记2-16位与32位微处理器">
 <meta property="og:url" content="https://abowloflrf.github.io/2017/12/17/microcomputer-interface-notes-2/index.html">
 <meta property="og:site_name" content="笔记仓库">
-<meta property="og:description" content="微处理器的性能指标最主要为两项：  字长  CPU能同时处理的数据位数，也成为数据宽度  主频  CPU的时钟频率，主频越高运算速度越快 16位微处理器内部组成8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB 从功能上8086分为两部分，总线接口部件（BIU）和执行部件（EU） 总线接口部件负责与存储器，IO端口传输数据。即总线接口部件从内存取指">
+<meta property="og:description" content="微处理器的性能指标最主要为两项：  字长:CPU能同时处理的数据位数，也成为数据宽度 主频:CPU的时钟频率，主频越高运算速度越快  16位微处理器内部组成8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB 从功能上8086分为两部分，总线接口部件（BIU）和执行部件（EU） 总线接口部件负责与存储器，IO端口传输数据。即总线接口部件从内存取指令送">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-reset.webp">
-<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-rd.webp">
-<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-wr.webp">
-<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-rd.webp">
-<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-wr.webp">
-<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-inter.webp">
-<meta property="og:updated_time" content="2017-12-17T07:11:08.993Z">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-reset.jpg">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-rd.jpg">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-wr.jpg">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-rd.jpg">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-wr.jpg">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-inter.jpg">
+<meta property="og:updated_time" content="2017-12-18T04:19:22.500Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微机接口笔记2-16位与32位微处理器">
-<meta name="twitter:description" content="微处理器的性能指标最主要为两项：  字长  CPU能同时处理的数据位数，也成为数据宽度  主频  CPU的时钟频率，主频越高运算速度越快 16位微处理器内部组成8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB 从功能上8086分为两部分，总线接口部件（BIU）和执行部件（EU） 总线接口部件负责与存储器，IO端口传输数据。即总线接口部件从内存取指">
-<meta name="twitter:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-reset.webp">
+<meta name="twitter:description" content="微处理器的性能指标最主要为两项：  字长:CPU能同时处理的数据位数，也成为数据宽度 主频:CPU的时钟频率，主频越高运算速度越快  16位微处理器内部组成8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB 从功能上8086分为两部分，总线接口部件（BIU）和执行部件（EU） 总线接口部件负责与存储器，IO端口传输数据。即总线接口部件从内存取指令送">
+<meta name="twitter:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-reset.jpg">
 
 
 
@@ -361,13 +361,9 @@
       
         <p>微处理器的性能指标最主要为两项：</p>
 <ul>
-<li>字长</li>
+<li><strong>字长</strong>:CPU能同时处理的数据位数，也成为数据宽度</li>
+<li><strong>主频</strong>:CPU的时钟频率，主频越高运算速度越快</li>
 </ul>
-<p>CPU能同时处理的数据位数，也成为数据宽度</p>
-<ul>
-<li>主频</li>
-</ul>
-<p>CPU的时钟频率，主频越高运算速度越快</p>
 <h2 id="16位微处理器"><a href="#16位微处理器" class="headerlink" title="16位微处理器"></a>16位微处理器</h2><h3 id="内部组成"><a href="#内部组成" class="headerlink" title="内部组成"></a>内部组成</h3><p>8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB</p>
 <p>从功能上8086分为两部分，<strong>总线接口部件（BIU）</strong>和<strong>执行部件（EU）</strong></p>
 <h4 id="总线接口部件"><a href="#总线接口部件" class="headerlink" title="总线接口部件"></a>总线接口部件</h4><p><em>负责与存储器，IO端口传输数据。</em>即总线接口部件从内存取指令送到指令队列。CPU执行指令时，总线接口要配合执行部件从指定的内存单元或外设接口中取数据，将数据传送给执行部件，或把执行部件的操作结果传送给指定的内存单元或外设中</p>
@@ -428,17 +424,17 @@
 <li>LOCK总线封锁信号</li>
 <li>QS1/QS0指令队列状态信号</li>
 </ul>
-<h3 id="操作与时序"><a href="#操作与时序" class="headerlink" title="操作与时序"></a>操作与时序</h3><h4 id="系统的复位和启动"><a href="#系统的复位和启动" class="headerlink" title="系统的复位和启动"></a>系统的复位和启动</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-reset.webp" alt=""></p>
+<h3 id="操作与时序"><a href="#操作与时序" class="headerlink" title="操作与时序"></a>操作与时序</h3><h4 id="系统的复位和启动"><a href="#系统的复位和启动" class="headerlink" title="系统的复位和启动"></a>系统的复位和启动</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-reset.jpg" alt=""></p>
 <p>复位操作由RESET信号发出，RESET信号进入高电平，CPU停止现在的操作，将CS设置为初值<code>0FFFFH</code>，IP为<code>0000H</code>，其他内部寄存器设置为0，因此复位操作之后再重新启动时，从内存的<code>FFFF0H</code>处开始执行指令，因此一般在<code>FFFF0H</code>处放置一个无条件转移指令，转移到系统程序的入口处；此外，在复位时各种标志寄存器都被清零因此所有INTR进入的可屏蔽中断都不被允许，因此需要开放中断指令STI来设置中断允许标志</p>
-<h4 id="最小工作模式读周期"><a href="#最小工作模式读周期" class="headerlink" title="最小工作模式读周期"></a>最小工作模式读周期</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-rd.webp" alt=""></p>
+<h4 id="最小工作模式读周期"><a href="#最小工作模式读周期" class="headerlink" title="最小工作模式读周期"></a>最小工作模式读周期</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-rd.jpg" alt=""></p>
 <p>T1：地址A0-19上线，ALE下降沿锁存地址，DT/R低电平持续到T4，低为输入，高为输出</p>
 <p>T2：A19-16变为S3-S7，DEN有效打开数据线，RD有效执行读操作，AD0-15为高阻态为输入数据做准备</p>
 <p>T3：D15-0到数据线，CPU得到数据，次状态若READY为低电平则插入Tw</p>
 <p>T4：数据消失，控制信号复位，为下一个总线周期做准备</p>
-<h4 id="最小工作模式写周期"><a href="#最小工作模式写周期" class="headerlink" title="最小工作模式写周期"></a>最小工作模式写周期</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-wr.webp" alt=""></p>
+<h4 id="最小工作模式写周期"><a href="#最小工作模式写周期" class="headerlink" title="最小工作模式写周期"></a>最小工作模式写周期</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-min-wr.jpg" alt=""></p>
 <h4 id="最大工作模式读周期"><a href="#最大工作模式读周期" class="headerlink" title="最大工作模式读周期"></a>最大工作模式读周期</h4><p>最大工作模式与最小类似，区别在于在最大模式下，<strong>总线控制信号均由8288发出，且不是单纯的读写信号，而是根据指令发出的具体的读写存储器或I/O口的信号</strong>。</p>
-<p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-rd.webp" alt=""></p>
-<h4 id="最大工作模式写周期"><a href="#最大工作模式写周期" class="headerlink" title="最大工作模式写周期"></a>最大工作模式写周期</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-wr.webp" alt=""></p>
+<p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-rd.jpg" alt=""></p>
+<h4 id="最大工作模式写周期"><a href="#最大工作模式写周期" class="headerlink" title="最大工作模式写周期"></a>最大工作模式写周期</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-wr.jpg" alt=""></p>
 <h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><ul>
 <li><strong>中断</strong>正常运行程序时，由于内部或外部某个紧急事件发生，使CPU暂停真噶子运行的程序，在执行完当前指令后，转去执行请求中断的外设或事件的中断处理程序，处理完后返回继续执行正常的程序</li>
 <li><strong>中断源</strong>引起中断的事件</li>
@@ -452,7 +448,7 @@
 <blockquote>
 <p>若中断类型码为42H的中断向量为5678H:1234H<br>则中断向量表的00108H-0010B中依次存放34H，12H，78H，56H</p>
 </blockquote>
-<h4 id="中断响应流程"><a href="#中断响应流程" class="headerlink" title="中断响应流程"></a>中断响应流程</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-inter.webp" alt=""></p>
+<h4 id="中断响应流程"><a href="#中断响应流程" class="headerlink" title="中断响应流程"></a>中断响应流程</h4><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-inter.jpg" alt=""></p>
 <h3 id="8086的存储器编址"><a href="#8086的存储器编址" class="headerlink" title="8086的存储器编址"></a>8086的存储器编址</h3><p>8086有20根地址线，具有1MB存储器地址空间，内存单元按照<code>00000</code>-<code>FFFFFH</code>来编址，由于指令指针，堆栈指针都是16位，要计算一个存储单元的物理地址，线将段寄存器左移4位，加上16位的偏移量（有效地址）得到物理地址</p>
 <h3 id="8086的IO编址"><a href="#8086的IO编址" class="headerlink" title="8086的IO编址"></a>8086的IO编址</h3><p>8086允许有65535个8位IO端口，两个相邻的8位端口可以组成一个16位端口</p>
 <ul>
@@ -483,14 +479,43 @@
 <li>ER 出错报告</li>
 </ul>
 <h3 id="寄存器功能"><a href="#寄存器功能" class="headerlink" title="寄存器功能"></a>寄存器功能</h3><h4 id="基本寄存器组"><a href="#基本寄存器组" class="headerlink" title="基本寄存器组"></a>基本寄存器组</h4><ul>
-<li>通用寄存器</li>
-<li>指令指针寄存器</li>
-<li>标志寄存器</li>
-<li>段寄存器<h4 id="系统寄存器组"><a href="#系统寄存器组" class="headerlink" title="系统寄存器组"></a>系统寄存器组</h4></li>
+<li>通用寄存器<ul>
+<li>AX 累加器</li>
+<li>BX 基址寄存器</li>
+<li>CX 计数寄存器</li>
+<li>DX 数据寄存器</li>
+</ul>
+</li>
+<li>指令指针寄存器<ul>
+<li>SP 堆栈指针寄存器，指示堆栈在内存中的位置</li>
+<li>BP 基数指针寄存器，存放数据在内存中的基地址</li>
+<li>SI 源操作数变址寄存器，存放源数据的地址</li>
+<li>DI 目的操作数变址寄存器，存放目的数据的地址</li>
+<li>IP 存放指令代码在内存中的相对地址</li>
+</ul>
+</li>
+<li>标志寄存器<ul>
+<li>FR 存放CPU当前状态</li>
+<li>CF 进位标志</li>
+<li>PF 奇偶标志</li>
+<li>AF 半进位标志</li>
+<li>ZF 零标志</li>
+<li>SF 符号位标志</li>
+<li>TF 单步标志</li>
+<li>IF 中断标志</li>
+<li>DF 方向标志，为1时，从高地址向低地址处理字符串</li>
+<li>OF 溢出标志</li>
+</ul>
+</li>
+<li>段寄存器</li>
+</ul>
+<h4 id="系统寄存器组"><a href="#系统寄存器组" class="headerlink" title="系统寄存器组"></a>系统寄存器组</h4><ul>
 <li>地址寄存器</li>
 <li>控制寄存器</li>
 <li>调试寄存器</li>
-<li>测试寄存器<h4 id="浮点寄存器组"><a href="#浮点寄存器组" class="headerlink" title="浮点寄存器组"></a>浮点寄存器组</h4></li>
+<li>测试寄存器</li>
+</ul>
+<h4 id="浮点寄存器组"><a href="#浮点寄存器组" class="headerlink" title="浮点寄存器组"></a>浮点寄存器组</h4><ul>
 <li>数据寄存器</li>
 <li>标记字寄存器</li>
 <li>状态寄存器</li>
@@ -539,6 +564,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/17/microcomputer-interface-notes-3/" rel="prev" title="微机接口笔记3-指令系统与汇编语言">
+                微机接口笔记3-指令系统与汇编语言 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -621,7 +650,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
