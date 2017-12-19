@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="微机接口,专业课笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="为何所有存储器用来保存信息，功能单一，速度基本与CPU速度匹配，决定了存储器能够通过总线与CPU直接相连 但是外设功能多样，有些外设既能作为输入又能作为输出设备，多种作用，多种工作原理，信息可能是数字可能是模拟，串行并行也不一定，速度一般比CPU要低很多。使用接口是为了解决计算机和外设之间信息转换的问题。  速度差异 数据表示差异 电平差异 电量与非电量之间差异  CPU与IO设备之间的信号数据信">
+<meta name="keywords" content="微机接口,专业课笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微机接口笔记5-主机与外设的数据传送">
+<meta property="og:url" content="https://abowloflrf.github.io/2017/12/19/microcomputer-interface-notes-5/index.html">
+<meta property="og:site_name" content="笔记仓库">
+<meta property="og:description" content="为何所有存储器用来保存信息，功能单一，速度基本与CPU速度匹配，决定了存储器能够通过总线与CPU直接相连 但是外设功能多样，有些外设既能作为输入又能作为输出设备，多种作用，多种工作原理，信息可能是数字可能是模拟，串行并行也不一定，速度一般比CPU要低很多。使用接口是为了解决计算机和外设之间信息转换的问题。  速度差异 数据表示差异 电平差异 电量与非电量之间差异  CPU与IO设备之间的信号数据信">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-19T13:08:16.515Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微机接口笔记5-主机与外设的数据传送">
+<meta name="twitter:description" content="为何所有存储器用来保存信息，功能单一，速度基本与CPU速度匹配，决定了存储器能够通过总线与CPU直接相连 但是外设功能多样，有些外设既能作为输入又能作为输出设备，多种作用，多种工作原理，信息可能是数字可能是模拟，串行并行也不一定，速度一般比CPU要低很多。使用接口是为了解决计算机和外设之间信息转换的问题。  速度差异 数据表示差异 电平差异 电量与非电量之间差异  CPU与IO设备之间的信号数据信">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://abowloflrf.github.io/2017/12/19/microcomputer-interface-notes-5/"/>
+
+
+
+
+
+  <title>微机接口笔记5-主机与外设的数据传送 | 笔记仓库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记仓库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2017/12/19/microcomputer-interface-notes-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ruofeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记仓库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">微机接口笔记5-主机与外设的数据传送</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T17:27:01+08:00">
+                2017-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/微机接口/" itemprop="url" rel="index">
+                    <span itemprop="name">微机接口</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="为何"><a href="#为何" class="headerlink" title="为何"></a>为何</h2><p>所有存储器用来保存信息，功能单一，速度基本与CPU速度匹配，决定了存储器能够通过总线与CPU直接相连</p>
+<p>但是外设功能多样，有些外设既能作为输入又能作为输出设备，多种作用，多种工作原理，信息可能是数字可能是模拟，串行并行也不一定，速度一般比CPU要低很多。使用接口是为了解决计算机和外设之间信息转换的问题。</p>
+<ol>
+<li>速度差异</li>
+<li>数据表示差异</li>
+<li>电平差异</li>
+<li>电量与非电量之间差异</li>
+</ol>
+<h2 id="CPU与IO设备之间的信号"><a href="#CPU与IO设备之间的信号" class="headerlink" title="CPU与IO设备之间的信号"></a>CPU与IO设备之间的信号</h2><h3 id="数据信息"><a href="#数据信息" class="headerlink" title="数据信息"></a>数据信息</h3><ol>
+<li><strong>数字量</strong>：二进制表示的数据</li>
+<li><strong>模拟量</strong>：随时间连续变化的数据</li>
+<li><strong>开关量</strong>：两种状态变化的量</li>
+</ol>
+<h3 id="状态信息"><a href="#状态信息" class="headerlink" title="状态信息"></a>状态信息</h3><p>反应外设当前所处的状态，如打印机是否有纸，打印机是否在打印</p>
+<h3 id="控制信息"><a href="#控制信息" class="headerlink" title="控制信息"></a>控制信息</h3><p>用于控制外设工作</p>
+<h2 id="IO端口与寻址方式"><a href="#IO端口与寻址方式" class="headerlink" title="IO端口与寻址方式"></a>IO端口与寻址方式</h2><h3 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h3><p>每个接口部件都包含一组寄存器这些寄存器称为端口，每个端口都有相应的地址</p>
+<ol>
+<li><strong>数据端口</strong>：存放接口部件的数据信息</li>
+<li><strong>状态端口</strong>：存放反应接口部件的状态信息</li>
+<li><strong>数据端口</strong>：存放CPU送给接口部件的命令信息</li>
+</ol>
+<h3 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h3><h4 id="存储器对应的输入输出方式"><a href="#存储器对应的输入输出方式" class="headerlink" title="存储器对应的输入输出方式"></a>存储器对应的输入输出方式</h4><p>将一个外设当作存储器的一个单元来对待，故每个外设中的寄存器都占用一个存储器的地址。CPU对IO操作可以使用全部的存储器操作指令，内存和外设的分布图是同一个，不需要专门的IO地址，外设占用内存地址，使得内存容量减少，指令长度加长从增长了指令的执行时间</p>
+<h4 id="端口寻址的输入输出方式"><a href="#端口寻址的输入输出方式" class="headerlink" title="端口寻址的输入输出方式"></a>端口寻址的输入输出方式</h4><p>CPU有专门的IO操作指令；内存与外设分别有自己的地址分布；指令长度短，执行时间快</p>
+<h2 id="CPU与IO设备之间的传输方式"><a href="#CPU与IO设备之间的传输方式" class="headerlink" title="CPU与IO设备之间的传输方式"></a>CPU与IO设备之间的传输方式</h2><h3 id="程序方式"><a href="#程序方式" class="headerlink" title="程序方式"></a>程序方式</h3><h4 id="无条件传送方式"><a href="#无条件传送方式" class="headerlink" title="无条件传送方式"></a>无条件传送方式</h4><p>特点：不需要查询，发送端只送，接收端只收，要求发送端与接收端严格同步</p>
+<h4 id="条件传送方式"><a href="#条件传送方式" class="headerlink" title="条件传送方式"></a>条件传送方式</h4><p>特点：每次接受或发送一个数据前都要进行一次状态查询只有在条件满足时才能进行数据传输</p>
+<ul>
+<li>查询式输入</li>
+<li>查询式输出</li>
+</ul>
+<h3 id="中断方式"><a href="#中断方式" class="headerlink" title="中断方式"></a>中断方式</h3><p>查询方式尽管比无条件方式传送可靠，但是在查询方式下，CPU不断读取状态字检测状态字，过程占用了太多CPU时间，而真正用于CPU传送回数据的时间却很少</p>
+<p>中断方式下，外设具有主动申请CPU服务的主动权，向CPU发送中断请求，使CPU暂停目前的工作和外设进行数据传输，等完成后回到原来的工作</p>
+<h4 id="8086的中断方式"><a href="#8086的中断方式" class="headerlink" title="8086的中断方式"></a>8086的中断方式</h4><ol>
+<li>NMI 非屏蔽中断，硬件中断外部中断，上升沿触发，类型码=2</li>
+<li>INTR 可屏蔽中断，硬件中断外部中断，高电平有效，IF=1响应，类型码由申请中断的外设给出</li>
+<li>软件中断内部中断，以INT指令或CPU的运算错误产生，中断类型码由INT给出，或事先设定</li>
+</ol>
+<h3 id="DMA方式"><a href="#DMA方式" class="headerlink" title="DMA方式"></a>DMA方式</h3><p>直接存储器存取方式，即外设不通过CPU直接与存储器进行操作，CPU释放总线，IO操作完全由<strong>DMA控制器</strong>管理</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/微机接口/" rel="tag"># 微机接口</a>
+          
+            <a href="/tags/专业课笔记/" rel="tag"># 专业课笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/19/microcomputer-interface-notes-4/" rel="next" title="微机接口笔记4-存储器">
+                <i class="fa fa-chevron-left"></i> 微机接口笔记4-存储器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ruofeng" />
+            
+              <p class="site-author-name" itemprop="name">ruofeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://ruofeng.me" target="_blank" title="MainSite">
+                    
+                      <i class="fa fa-fw fa-user"></i>MainSite</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/abowloflrf" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:i@ruofeng.me" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为何"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E3A;&#x4F55;" class="headerlink" title="&#x4E3A;&#x4F55;"></a>&#x4E3A;&#x4F55;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU与IO设备之间的信号"><span class="nav-number">2.</span> <span class="nav-text"><a href="#CPU&#x4E0E;IO&#x8BBE;&#x5907;&#x4E4B;&#x95F4;&#x7684;&#x4FE1;&#x53F7;" class="headerlink" title="CPU&#x4E0E;IO&#x8BBE;&#x5907;&#x4E4B;&#x95F4;&#x7684;&#x4FE1;&#x53F7;"></a>CPU&#x4E0E;IO&#x8BBE;&#x5907;&#x4E4B;&#x95F4;&#x7684;&#x4FE1;&#x53F7;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据信息"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x6570;&#x636E;&#x4FE1;&#x606F;" class="headerlink" title="&#x6570;&#x636E;&#x4FE1;&#x606F;"></a>&#x6570;&#x636E;&#x4FE1;&#x606F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态信息"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x72B6;&#x6001;&#x4FE1;&#x606F;" class="headerlink" title="&#x72B6;&#x6001;&#x4FE1;&#x606F;"></a>&#x72B6;&#x6001;&#x4FE1;&#x606F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制信息"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x63A7;&#x5236;&#x4FE1;&#x606F;" class="headerlink" title="&#x63A7;&#x5236;&#x4FE1;&#x606F;"></a>&#x63A7;&#x5236;&#x4FE1;&#x606F;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO端口与寻址方式"><span class="nav-number">3.</span> <span class="nav-text"><a href="#IO&#x7AEF;&#x53E3;&#x4E0E;&#x5BFB;&#x5740;&#x65B9;&#x5F0F;" class="headerlink" title="IO&#x7AEF;&#x53E3;&#x4E0E;&#x5BFB;&#x5740;&#x65B9;&#x5F0F;"></a>IO&#x7AEF;&#x53E3;&#x4E0E;&#x5BFB;&#x5740;&#x65B9;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#端口"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x7AEF;&#x53E3;" class="headerlink" title="&#x7AEF;&#x53E3;"></a>&#x7AEF;&#x53E3;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#寻址方式"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x5BFB;&#x5740;&#x65B9;&#x5F0F;" class="headerlink" title="&#x5BFB;&#x5740;&#x65B9;&#x5F0F;"></a>&#x5BFB;&#x5740;&#x65B9;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#存储器对应的输入输出方式"><span class="nav-number">3.2.1.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x5668;&#x5BF9;&#x5E94;&#x7684;&#x8F93;&#x5165;&#x8F93;&#x51FA;&#x65B9;&#x5F0F;" class="headerlink" title="&#x5B58;&#x50A8;&#x5668;&#x5BF9;&#x5E94;&#x7684;&#x8F93;&#x5165;&#x8F93;&#x51FA;&#x65B9;&#x5F0F;"></a>&#x5B58;&#x50A8;&#x5668;&#x5BF9;&#x5E94;&#x7684;&#x8F93;&#x5165;&#x8F93;&#x51FA;&#x65B9;&#x5F0F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#端口寻址的输入输出方式"><span class="nav-number">3.2.2.</span> <span class="nav-text"><a href="#&#x7AEF;&#x53E3;&#x5BFB;&#x5740;&#x7684;&#x8F93;&#x5165;&#x8F93;&#x51FA;&#x65B9;&#x5F0F;" class="headerlink" title="&#x7AEF;&#x53E3;&#x5BFB;&#x5740;&#x7684;&#x8F93;&#x5165;&#x8F93;&#x51FA;&#x65B9;&#x5F0F;"></a>&#x7AEF;&#x53E3;&#x5BFB;&#x5740;&#x7684;&#x8F93;&#x5165;&#x8F93;&#x51FA;&#x65B9;&#x5F0F;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU与IO设备之间的传输方式"><span class="nav-number">4.</span> <span class="nav-text"><a href="#CPU&#x4E0E;IO&#x8BBE;&#x5907;&#x4E4B;&#x95F4;&#x7684;&#x4F20;&#x8F93;&#x65B9;&#x5F0F;" class="headerlink" title="CPU&#x4E0E;IO&#x8BBE;&#x5907;&#x4E4B;&#x95F4;&#x7684;&#x4F20;&#x8F93;&#x65B9;&#x5F0F;"></a>CPU&#x4E0E;IO&#x8BBE;&#x5907;&#x4E4B;&#x95F4;&#x7684;&#x4F20;&#x8F93;&#x65B9;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序方式"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x7A0B;&#x5E8F;&#x65B9;&#x5F0F;" class="headerlink" title="&#x7A0B;&#x5E8F;&#x65B9;&#x5F0F;"></a>&#x7A0B;&#x5E8F;&#x65B9;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#无条件传送方式"><span class="nav-number">4.1.1.</span> <span class="nav-text"><a href="#&#x65E0;&#x6761;&#x4EF6;&#x4F20;&#x9001;&#x65B9;&#x5F0F;" class="headerlink" title="&#x65E0;&#x6761;&#x4EF6;&#x4F20;&#x9001;&#x65B9;&#x5F0F;"></a>&#x65E0;&#x6761;&#x4EF6;&#x4F20;&#x9001;&#x65B9;&#x5F0F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#条件传送方式"><span class="nav-number">4.1.2.</span> <span class="nav-text"><a href="#&#x6761;&#x4EF6;&#x4F20;&#x9001;&#x65B9;&#x5F0F;" class="headerlink" title="&#x6761;&#x4EF6;&#x4F20;&#x9001;&#x65B9;&#x5F0F;"></a>&#x6761;&#x4EF6;&#x4F20;&#x9001;&#x65B9;&#x5F0F;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中断方式"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x4E2D;&#x65AD;&#x65B9;&#x5F0F;" class="headerlink" title="&#x4E2D;&#x65AD;&#x65B9;&#x5F0F;"></a>&#x4E2D;&#x65AD;&#x65B9;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8086的中断方式"><span class="nav-number">4.2.1.</span> <span class="nav-text"><a href="#8086&#x7684;&#x4E2D;&#x65AD;&#x65B9;&#x5F0F;" class="headerlink" title="8086&#x7684;&#x4E2D;&#x65AD;&#x65B9;&#x5F0F;"></a>8086&#x7684;&#x4E2D;&#x65AD;&#x65B9;&#x5F0F;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DMA方式"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#DMA&#x65B9;&#x5F0F;" class="headerlink" title="DMA&#x65B9;&#x5F0F;"></a>DMA&#x65B9;&#x5F0F;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ruofeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.coding.me" style="font-weight:bold">Coding Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
