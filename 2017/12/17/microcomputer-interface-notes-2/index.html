@@ -91,7 +91,7 @@
 <meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-rd.jpg">
 <meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-max-wr.jpg">
 <meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8086-inter.jpg">
-<meta property="og:updated_time" content="2017-12-18T04:19:22.500Z">
+<meta property="og:updated_time" content="2017-12-20T00:46:22.895Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微机接口笔记2-16位与32位微处理器">
 <meta name="twitter:description" content="微处理器的性能指标最主要为两项：  字长:CPU能同时处理的数据位数，也成为数据宽度 主频:CPU的时钟频率，主频越高运算速度越快  16位微处理器内部组成8086为16位微处理器，有16根内部总线和20根地址总线，因此可寻址空间大导2^20字节，即1MB 从功能上8086分为两部分，总线接口部件（BIU）和执行部件（EU） 总线接口部件负责与存储器，IO端口传输数据。即总线接口部件从内存取指令送">
@@ -440,7 +440,7 @@
 <li><strong>中断服务程序</strong>对中断源的响应或处理程序</li>
 <li><strong>中断向量</strong>中断服务程序的入口地址包含基址与偏移地址两部分，占用四个字节</li>
 <li><strong>中断类型码</strong>8086最多可处理256种中断0-255，专用中断0-4，保留中断5-31，用户中断32-255</li>
-<li><strong>中断向量表</strong>从物理地址<code>00000H</code>开始，一次存放中断向量，形成专门储存中断服务入口地址的存储区域。256个不同类型中断占1kb区域，`00000H-003FFH</li>
+<li><strong>中断向量表</strong>从物理地址<code>00000H</code>开始，一次存放中断向量，形成专门储存中断服务入口地址的存储区域。256个不同类型中断占1kb区域，<code>00000H-003FFH</code></li>
 <li><strong>中断向量地址指针</strong>中断向量在中断向量表中存放的首地址，=中断类型码*4</li>
 </ul>
 <blockquote>
@@ -494,14 +494,14 @@
 </li>
 <li>标志寄存器<ul>
 <li>FR 存放CPU当前状态</li>
-<li>CF 进位标志</li>
+<li><strong>CF</strong> 进位标志</li>
 <li>PF 奇偶标志</li>
 <li>AF 半进位标志</li>
-<li>ZF 零标志</li>
+<li><strong>ZF</strong> 零标志</li>
 <li>SF 符号位标志</li>
 <li>TF 单步标志</li>
-<li>IF 中断标志</li>
-<li>DF 方向标志，为1时，从高地址向低地址处理字符串</li>
+<li><strong>IF</strong> 中断标志</li>
+<li><strong>DF</strong> 方向标志，为1时，从高地址向低地址处理字符串</li>
 <li>OF 溢出标志</li>
 </ul>
 </li>
@@ -648,7 +648,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

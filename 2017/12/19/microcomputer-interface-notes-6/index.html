@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="微机接口,专业课笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="并行通信每个字符的同一位都是同时传送的，即每个字符的每一位都有一个单独的通道 串行通信每个字符的所有位都是按位传送 全双工半双工与单工方式 全双工：数据两个传输方向采用了不同的通道，可以同时进行发送与接受 半双工：输入与输出采用的是同一个通道，两者不同时进行 单工：系统只能向一个方向传输信息，即只能发送或者接受  异步传送与同步传送同步传送收发双方采用同一个时钟信号来定时，每组信息开始需要有同步字">
+<meta name="keywords" content="微机接口,专业课笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微机接口笔记6-串并行通信8251与8255">
+<meta property="og:url" content="https://abowloflrf.github.io/2017/12/19/microcomputer-interface-notes-6/index.html">
+<meta property="og:site_name" content="笔记仓库">
+<meta property="og:description" content="并行通信每个字符的同一位都是同时传送的，即每个字符的每一位都有一个单独的通道 串行通信每个字符的所有位都是按位传送 全双工半双工与单工方式 全双工：数据两个传输方向采用了不同的通道，可以同时进行发送与接受 半双工：输入与输出采用的是同一个通道，两者不同时进行 单工：系统只能向一个方向传输信息，即只能发送或者接受  异步传送与同步传送同步传送收发双方采用同一个时钟信号来定时，每组信息开始需要有同步字">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8251-mode.png">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8251-control.png">
+<meta property="og:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8251-state.png">
+<meta property="og:updated_time" content="2017-12-19T17:16:46.409Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微机接口笔记6-串并行通信8251与8255">
+<meta name="twitter:description" content="并行通信每个字符的同一位都是同时传送的，即每个字符的每一位都有一个单独的通道 串行通信每个字符的所有位都是按位传送 全双工半双工与单工方式 全双工：数据两个传输方向采用了不同的通道，可以同时进行发送与接受 半双工：输入与输出采用的是同一个通道，两者不同时进行 单工：系统只能向一个方向传输信息，即只能发送或者接受  异步传送与同步传送同步传送收发双方采用同一个时钟信号来定时，每组信息开始需要有同步字">
+<meta name="twitter:image" content="https://res.cloudinary.com/ruofeng/image/upload/hexo/8251-mode.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://abowloflrf.github.io/2017/12/19/microcomputer-interface-notes-6/"/>
+
+
+
+
+
+  <title>微机接口笔记6-串并行通信8251与8255 | 笔记仓库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记仓库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2017/12/19/microcomputer-interface-notes-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ruofeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记仓库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">微机接口笔记6-串并行通信8251与8255</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T21:19:51+08:00">
+                2017-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/微机接口/" itemprop="url" rel="index">
+                    <span itemprop="name">微机接口</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="并行通信"><a href="#并行通信" class="headerlink" title="并行通信"></a>并行通信</h2><p>每个字符的同一位都是同时传送的，即每个字符的每一位都有一个单独的通道</p>
+<h2 id="串行通信"><a href="#串行通信" class="headerlink" title="串行通信"></a>串行通信</h2><p>每个字符的所有位都是按位传送</p>
+<h3 id="全双工半双工与单工方式"><a href="#全双工半双工与单工方式" class="headerlink" title="全双工半双工与单工方式"></a>全双工半双工与单工方式</h3><ul>
+<li><strong>全双工</strong>：数据两个传输方向采用了不同的通道，可以同时进行发送与接受</li>
+<li><strong>半双工</strong>：输入与输出采用的是同一个通道，两者不同时进行</li>
+<li><strong>单工</strong>：系统只能向一个方向传输信息，即只能发送或者接受</li>
+</ul>
+<h3 id="异步传送与同步传送"><a href="#异步传送与同步传送" class="headerlink" title="异步传送与同步传送"></a>异步传送与同步传送</h3><h4 id="同步传送"><a href="#同步传送" class="headerlink" title="同步传送"></a>同步传送</h4><p>收发双方采用同一个时钟信号来定时，每组信息开始需要有<strong>同步字符</strong>，未开始传送时必须填上空字符，因为同步传输不允许有间隙，同步通信依靠同步字符来识别<strong>信息帧</strong></p>
+<h4 id="异步传输"><a href="#异步传输" class="headerlink" title="异步传输"></a>异步传输</h4><p>收发双方不需要同一时钟进行定时，两个字符之间传输间隔是任意的，所以每个字符的前后要用若干位作为<strong>分隔符</strong>进行识别，依靠<strong>起始位</strong>和<strong>停止位</strong>来识别信息帧</p>
+<h3 id="传输率"><a href="#传输率" class="headerlink" title="传输率"></a>传输率</h3><p>也成为波特率，每秒传输的二进制位数；300 600 1200 1800 2400 4800 9600 19200</p>
+<h4 id="一个异步传输例子"><a href="#一个异步传输例子" class="headerlink" title="一个异步传输例子"></a>一个异步传输例子</h4><p>每个字符对应1个起始位，7个信息位，1个奇偶校验位和1个停止位，波特率1200bps，则每秒能传输的最大字符数为1200/（1+7+1+1）=120</p>
+<h4 id="一个同步传输的例子"><a href="#一个同步传输的例子" class="headerlink" title="一个同步传输的例子"></a>一个同步传输的例子</h4><p>1200bps波特率，4个同步字符作为信息帧头部，不用奇偶校验，则传输100个字符所需要的时间为7*(100+4)/1200=0.6067s，每秒能传输100/0.6067=165个字符</p>
+<h2 id="8251"><a href="#8251" class="headerlink" title="8251"></a>8251</h2><p>可编程串行通信接口，可工作在全双工方式，可同步与异步</p>
+<h3 id="模式字"><a href="#模式字" class="headerlink" title="模式字"></a>模式字</h3><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8251-mode.png" alt=""></p>
+<h3 id="控制字"><a href="#控制字" class="headerlink" title="控制字"></a>控制字</h3><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8251-control.png" alt=""></p>
+<h3 id="状态字"><a href="#状态字" class="headerlink" title="状态字"></a>状态字</h3><p><img src="https://res.cloudinary.com/ruofeng/image/upload/hexo/8251-state.png" alt=""></p>
+<h3 id="同步初始化"><a href="#同步初始化" class="headerlink" title="同步初始化"></a>同步初始化</h3><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">MOV</span>  <span class="built_in">AL</span>, <span class="number">38H</span>  <span class="comment">;设置模式字，同步模式，2个同步字符，7个数据位，偶校验，0011 1000</span></span><br><span class="line"><span class="keyword">OUT</span>  <span class="number">42H</span>, <span class="built_in">AL</span>  <span class="comment">;</span></span><br><span class="line"><span class="keyword">MOV</span>  <span class="built_in">AL</span>, <span class="number">16H</span>  <span class="comment">;送同步字符16H  </span></span><br><span class="line"><span class="keyword">OUT</span>  <span class="number">42H</span>, <span class="built_in">AL</span></span><br><span class="line"><span class="keyword">OUT</span>  <span class="number">42H</span>, <span class="built_in">AL</span></span><br><span class="line"><span class="keyword">MOV</span>  <span class="built_in">AL</span>, <span class="number">97H</span>  <span class="comment">;设置控制字，是接收器启动，1001 0111</span></span><br><span class="line"><span class="keyword">OUT</span>  <span class="number">42H</span>, <span class="built_in">AL</span></span><br></pre></td></tr></table></figure>
+<h3 id="异步初始化"><a href="#异步初始化" class="headerlink" title="异步初始化"></a>异步初始化</h3><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">MOV</span>   <span class="built_in">AL</span>, <span class="number">0FAH</span>  <span class="comment">;设置模式字，异步模式，波特率因子16，7个数据位，偶校验，2个停止位，1111 1010</span></span><br><span class="line"><span class="keyword">OUT</span>   <span class="number">42H</span>, <span class="built_in">AL</span></span><br><span class="line"><span class="keyword">MOV</span>   <span class="built_in">AL</span>, <span class="number">37H</span>   <span class="comment">;设置控制字，使发送接收允许，清除错误标志，0011 0111</span></span><br><span class="line"><span class="keyword">OUT</span>   <span class="number">42H</span>, <span class="built_in">AL</span></span><br></pre></td></tr></table></figure>
+<h2 id="8255"><a href="#8255" class="headerlink" title="8255"></a>8255</h2><h3 id="工作方式"><a href="#工作方式" class="headerlink" title="工作方式"></a>工作方式</h3><h4 id="方式0：基本输入输出"><a href="#方式0：基本输入输出" class="headerlink" title="方式0：基本输入输出"></a>方式0：基本输入输出</h4><p>端口A，B可以通过选择字规定输入端口或输出端口，C分为两个4位端口，这两个4位端口也可以由方式选择字规定为输入或输出端口</p>
+<h4 id="方式1：选通输入输出"><a href="#方式1：选通输入输出" class="headerlink" title="方式1：选通输入输出"></a>方式1：选通输入输出</h4><p>相比方式0，AB用方式1进行输入输出时，C自动提供选通信号和应答信号</p>
+<h4 id="方式2：双向输入输出"><a href="#方式2：双向输入输出" class="headerlink" title="方式2：双向输入输出"></a>方式2：双向输入输出</h4><p>只用于8位双向总线端口端口A和一个5位控制端口C</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/微机接口/" rel="tag"># 微机接口</a>
+          
+            <a href="/tags/专业课笔记/" rel="tag"># 专业课笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/19/microcomputer-interface-notes-5/" rel="next" title="微机接口笔记5-主机与外设的数据传送">
+                <i class="fa fa-chevron-left"></i> 微机接口笔记5-主机与外设的数据传送
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/19/microcomputer-interface-notes-7/" rel="prev" title="微机接口笔记7-中断控制器8259">
+                微机接口笔记7-中断控制器8259 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ruofeng" />
+            
+              <p class="site-author-name" itemprop="name">ruofeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://ruofeng.me" target="_blank" title="MainSite">
+                    
+                      <i class="fa fa-fw fa-user"></i>MainSite</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/abowloflrf" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:i@ruofeng.me" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并行通信"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5E76;&#x884C;&#x901A;&#x4FE1;" class="headerlink" title="&#x5E76;&#x884C;&#x901A;&#x4FE1;"></a>&#x5E76;&#x884C;&#x901A;&#x4FE1;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#串行通信"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E32;&#x884C;&#x901A;&#x4FE1;" class="headerlink" title="&#x4E32;&#x884C;&#x901A;&#x4FE1;"></a>&#x4E32;&#x884C;&#x901A;&#x4FE1;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全双工半双工与单工方式"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x5168;&#x53CC;&#x5DE5;&#x534A;&#x53CC;&#x5DE5;&#x4E0E;&#x5355;&#x5DE5;&#x65B9;&#x5F0F;" class="headerlink" title="&#x5168;&#x53CC;&#x5DE5;&#x534A;&#x53CC;&#x5DE5;&#x4E0E;&#x5355;&#x5DE5;&#x65B9;&#x5F0F;"></a>&#x5168;&#x53CC;&#x5DE5;&#x534A;&#x53CC;&#x5DE5;&#x4E0E;&#x5355;&#x5DE5;&#x65B9;&#x5F0F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步传送与同步传送"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x5F02;&#x6B65;&#x4F20;&#x9001;&#x4E0E;&#x540C;&#x6B65;&#x4F20;&#x9001;" class="headerlink" title="&#x5F02;&#x6B65;&#x4F20;&#x9001;&#x4E0E;&#x540C;&#x6B65;&#x4F20;&#x9001;"></a>&#x5F02;&#x6B65;&#x4F20;&#x9001;&#x4E0E;&#x540C;&#x6B65;&#x4F20;&#x9001;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#同步传送"><span class="nav-number">2.2.1.</span> <span class="nav-text"><a href="#&#x540C;&#x6B65;&#x4F20;&#x9001;" class="headerlink" title="&#x540C;&#x6B65;&#x4F20;&#x9001;"></a>&#x540C;&#x6B65;&#x4F20;&#x9001;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步传输"><span class="nav-number">2.2.2.</span> <span class="nav-text"><a href="#&#x5F02;&#x6B65;&#x4F20;&#x8F93;" class="headerlink" title="&#x5F02;&#x6B65;&#x4F20;&#x8F93;"></a>&#x5F02;&#x6B65;&#x4F20;&#x8F93;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传输率"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x4F20;&#x8F93;&#x7387;" class="headerlink" title="&#x4F20;&#x8F93;&#x7387;"></a>&#x4F20;&#x8F93;&#x7387;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一个异步传输例子"><span class="nav-number">2.3.1.</span> <span class="nav-text"><a href="#&#x4E00;&#x4E2A;&#x5F02;&#x6B65;&#x4F20;&#x8F93;&#x4F8B;&#x5B50;" class="headerlink" title="&#x4E00;&#x4E2A;&#x5F02;&#x6B65;&#x4F20;&#x8F93;&#x4F8B;&#x5B50;"></a>&#x4E00;&#x4E2A;&#x5F02;&#x6B65;&#x4F20;&#x8F93;&#x4F8B;&#x5B50;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个同步传输的例子"><span class="nav-number">2.3.2.</span> <span class="nav-text"><a href="#&#x4E00;&#x4E2A;&#x540C;&#x6B65;&#x4F20;&#x8F93;&#x7684;&#x4F8B;&#x5B50;" class="headerlink" title="&#x4E00;&#x4E2A;&#x540C;&#x6B65;&#x4F20;&#x8F93;&#x7684;&#x4F8B;&#x5B50;"></a>&#x4E00;&#x4E2A;&#x540C;&#x6B65;&#x4F20;&#x8F93;&#x7684;&#x4F8B;&#x5B50;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8251"><span class="nav-number">3.</span> <span class="nav-text"><a href="#8251" class="headerlink" title="8251"></a>8251</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模式字"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x6A21;&#x5F0F;&#x5B57;" class="headerlink" title="&#x6A21;&#x5F0F;&#x5B57;"></a>&#x6A21;&#x5F0F;&#x5B57;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制字"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x63A7;&#x5236;&#x5B57;" class="headerlink" title="&#x63A7;&#x5236;&#x5B57;"></a>&#x63A7;&#x5236;&#x5B57;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态字"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x72B6;&#x6001;&#x5B57;" class="headerlink" title="&#x72B6;&#x6001;&#x5B57;"></a>&#x72B6;&#x6001;&#x5B57;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步初始化"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#&#x540C;&#x6B65;&#x521D;&#x59CB;&#x5316;" class="headerlink" title="&#x540C;&#x6B65;&#x521D;&#x59CB;&#x5316;"></a>&#x540C;&#x6B65;&#x521D;&#x59CB;&#x5316;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步初始化"><span class="nav-number">3.5.</span> <span class="nav-text"><a href="#&#x5F02;&#x6B65;&#x521D;&#x59CB;&#x5316;" class="headerlink" title="&#x5F02;&#x6B65;&#x521D;&#x59CB;&#x5316;"></a>&#x5F02;&#x6B65;&#x521D;&#x59CB;&#x5316;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8255"><span class="nav-number">4.</span> <span class="nav-text"><a href="#8255" class="headerlink" title="8255"></a>8255</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#工作方式"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x5DE5;&#x4F5C;&#x65B9;&#x5F0F;" class="headerlink" title="&#x5DE5;&#x4F5C;&#x65B9;&#x5F0F;"></a>&#x5DE5;&#x4F5C;&#x65B9;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方式0：基本输入输出"><span class="nav-number">4.1.1.</span> <span class="nav-text"><a href="#&#x65B9;&#x5F0F;0&#xFF1A;&#x57FA;&#x672C;&#x8F93;&#x5165;&#x8F93;&#x51FA;" class="headerlink" title="&#x65B9;&#x5F0F;0&#xFF1A;&#x57FA;&#x672C;&#x8F93;&#x5165;&#x8F93;&#x51FA;"></a>&#x65B9;&#x5F0F;0&#xFF1A;&#x57FA;&#x672C;&#x8F93;&#x5165;&#x8F93;&#x51FA;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方式1：选通输入输出"><span class="nav-number">4.1.2.</span> <span class="nav-text"><a href="#&#x65B9;&#x5F0F;1&#xFF1A;&#x9009;&#x901A;&#x8F93;&#x5165;&#x8F93;&#x51FA;" class="headerlink" title="&#x65B9;&#x5F0F;1&#xFF1A;&#x9009;&#x901A;&#x8F93;&#x5165;&#x8F93;&#x51FA;"></a>&#x65B9;&#x5F0F;1&#xFF1A;&#x9009;&#x901A;&#x8F93;&#x5165;&#x8F93;&#x51FA;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方式2：双向输入输出"><span class="nav-number">4.1.3.</span> <span class="nav-text"><a href="#&#x65B9;&#x5F0F;2&#xFF1A;&#x53CC;&#x5411;&#x8F93;&#x5165;&#x8F93;&#x51FA;" class="headerlink" title="&#x65B9;&#x5F0F;2&#xFF1A;&#x53CC;&#x5411;&#x8F93;&#x5165;&#x8F93;&#x51FA;"></a>&#x65B9;&#x5F0F;2&#xFF1A;&#x53CC;&#x5411;&#x8F93;&#x5165;&#x8F93;&#x51FA;</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ruofeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.coding.me" style="font-weight:bold">Coding Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

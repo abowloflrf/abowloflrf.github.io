@@ -77,18 +77,18 @@
 
 
 
-<meta name="description" content="微型计算机分类按规模分类 单片机 个人计算机 笔记本电脑 掌上电脑  按微处理器字长分类 4位微处理器 8位微处理器 16位微处理器 32位微处理器  微机系统概念微处理器即CPU，是微机的核心。其共同特点为：  可以进行算术和逻辑运算 可保存少量数据 能对指令进行译码并执行规定的动作 能和储存器外设交换数据 提供整个系统所需要的定时和控制 可影响其他部件发来的中断请求  同时CPU内部包含如下三">
+<meta name="description" content="初始化设置ICW1-&amp;gt;设置ICW2-&amp;gt;若级联则设置ICW3-&amp;gt;若需要则设置ICW4-&amp;gt;等待中断结束 ICW1初始化命令字，写到偶地址    D7 D6 D5 D4 D3 D2 D1 D0         0/1 边沿/电平触发  单片 是否设置ICW4    ICW2设置中断类型号的初始化命令字，写到奇地址；高五位影响中断类型号，低三位决定引脚 ICW3标志主从片的初始化命">
 <meta name="keywords" content="微机接口,专业课笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="微机接口笔记1-概念">
-<meta property="og:url" content="https://abowloflrf.github.io/2017/12/16/microcomputer-interface-notes-1/index.html">
+<meta property="og:title" content="微机接口笔记7-中断控制器8259">
+<meta property="og:url" content="https://abowloflrf.github.io/2017/12/19/microcomputer-interface-notes-7/index.html">
 <meta property="og:site_name" content="笔记仓库">
-<meta property="og:description" content="微型计算机分类按规模分类 单片机 个人计算机 笔记本电脑 掌上电脑  按微处理器字长分类 4位微处理器 8位微处理器 16位微处理器 32位微处理器  微机系统概念微处理器即CPU，是微机的核心。其共同特点为：  可以进行算术和逻辑运算 可保存少量数据 能对指令进行译码并执行规定的动作 能和储存器外设交换数据 提供整个系统所需要的定时和控制 可影响其他部件发来的中断请求  同时CPU内部包含如下三">
+<meta property="og:description" content="初始化设置ICW1-&amp;gt;设置ICW2-&amp;gt;若级联则设置ICW3-&amp;gt;若需要则设置ICW4-&amp;gt;等待中断结束 ICW1初始化命令字，写到偶地址    D7 D6 D5 D4 D3 D2 D1 D0         0/1 边沿/电平触发  单片 是否设置ICW4    ICW2设置中断类型号的初始化命令字，写到奇地址；高五位影响中断类型号，低三位决定引脚 ICW3标志主从片的初始化命">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-16T16:03:11.597Z">
+<meta property="og:updated_time" content="2017-12-19T16:49:07.222Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="微机接口笔记1-概念">
-<meta name="twitter:description" content="微型计算机分类按规模分类 单片机 个人计算机 笔记本电脑 掌上电脑  按微处理器字长分类 4位微处理器 8位微处理器 16位微处理器 32位微处理器  微机系统概念微处理器即CPU，是微机的核心。其共同特点为：  可以进行算术和逻辑运算 可保存少量数据 能对指令进行译码并执行规定的动作 能和储存器外设交换数据 提供整个系统所需要的定时和控制 可影响其他部件发来的中断请求  同时CPU内部包含如下三">
+<meta name="twitter:title" content="微机接口笔记7-中断控制器8259">
+<meta name="twitter:description" content="初始化设置ICW1-&amp;gt;设置ICW2-&amp;gt;若级联则设置ICW3-&amp;gt;若需要则设置ICW4-&amp;gt;等待中断结束 ICW1初始化命令字，写到偶地址    D7 D6 D5 D4 D3 D2 D1 D0         0/1 边沿/电平触发  单片 是否设置ICW4    ICW2设置中断类型号的初始化命令字，写到奇地址；高五位影响中断类型号，低三位决定引脚 ICW3标志主从片的初始化命">
 
 
 
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="https://abowloflrf.github.io/2017/12/16/microcomputer-interface-notes-1/"/>
+  <link rel="canonical" href="https://abowloflrf.github.io/2017/12/19/microcomputer-interface-notes-7/"/>
 
 
 
 
 
-  <title>微机接口笔记1-概念 | 笔记仓库</title>
+  <title>微机接口笔记7-中断控制器8259 | 笔记仓库</title>
   
 
 
@@ -261,7 +261,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2017/12/16/microcomputer-interface-notes-1/">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2017/12/19/microcomputer-interface-notes-7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ruofeng">
@@ -278,7 +278,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">微机接口笔记1-概念</h1>
+          <h1 class="post-title" itemprop="name headline">微机接口笔记7-中断控制器8259</h1>
         
 
         <div class="post-meta">
@@ -290,8 +290,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-16T16:29:24+08:00">
-                2017-12-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T23:12:47+08:00">
+                2017-12-19
               </time>
             
 
@@ -350,65 +350,73 @@
       
 
       
-        <h2 id="微型计算机分类"><a href="#微型计算机分类" class="headerlink" title="微型计算机分类"></a>微型计算机分类</h2><h3 id="按规模分类"><a href="#按规模分类" class="headerlink" title="按规模分类"></a>按规模分类</h3><ul>
-<li>单片机</li>
-<li>个人计算机</li>
-<li>笔记本电脑</li>
-<li>掌上电脑</li>
-</ul>
-<h3 id="按微处理器字长分类"><a href="#按微处理器字长分类" class="headerlink" title="按微处理器字长分类"></a>按微处理器字长分类</h3><ul>
-<li>4位微处理器</li>
-<li>8位微处理器</li>
-<li>16位微处理器</li>
-<li>32位微处理器</li>
-</ul>
-<h2 id="微机系统概念"><a href="#微机系统概念" class="headerlink" title="微机系统概念"></a>微机系统概念</h2><h3 id="微处理器"><a href="#微处理器" class="headerlink" title="微处理器"></a>微处理器</h3><p>即CPU，是微机的核心。其共同特点为：</p>
-<ol>
-<li>可以进行算术和逻辑运算</li>
-<li>可保存少量数据</li>
-<li>能对指令进行译码并执行规定的动作</li>
-<li>能和储存器外设交换数据</li>
-<li>提供整个系统所需要的定时和控制</li>
-<li>可影响其他部件发来的中断请求</li>
+        <h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>设置ICW1<strong>-&gt;</strong>设置ICW2<strong>-&gt;</strong>若级联则设置ICW3<strong>-&gt;</strong>若需要则设置ICW4<strong>-&gt;</strong>等待中断结束</p>
+<h3 id="ICW1"><a href="#ICW1" class="headerlink" title="ICW1"></a>ICW1</h3><p>初始化命令字，写到偶地址</p>
+<table>
+<thead>
+<tr>
+<th>D7</th>
+<th>D6</th>
+<th>D5</th>
+<th>D4</th>
+<th>D3</th>
+<th>D2</th>
+<th>D1</th>
+<th>D0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>0/1 边沿/电平触发</td>
+<td></td>
+<td>单片</td>
+<td>是否设置ICW4</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ICW2"><a href="#ICW2" class="headerlink" title="ICW2"></a>ICW2</h3><p>设置中断类型号的初始化命令字，写到奇地址；高五位影响中断类型号，低三位决定引脚</p>
+<h3 id="ICW3"><a href="#ICW3" class="headerlink" title="ICW3"></a>ICW3</h3><p>标志主从片的初始化命令字，若只有一片则无需初始化</p>
+<p>若本片为主片，则D7-0对应IR7-0引脚的连接。若为从片，则D7-3不可用，D2-0与从片的输出端INT连在主片的哪条中断请求引脚有关</p>
+<h3 id="ICW4"><a href="#ICW4" class="headerlink" title="ICW4"></a>ICW4</h3><p>方式控制初始化命令字，写入奇地址</p>
+<table>
+<thead>
+<tr>
+<th>D7</th>
+<th>D6</th>
+<th>D5</th>
+<th>D4</th>
+<th>D3</th>
+<th>D2</th>
+<th>D1</th>
+<th>D0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>特殊全嵌套</td>
+<td>缓冲方式，用于多片系统</td>
+<td>0为从片</td>
+<td>自动中断结束</td>
+<td>1为8086</td>
+</tr>
+</tbody>
+</table>
+<h3 id="初始化例程"><a href="#初始化例程" class="headerlink" title="初始化例程"></a>初始化例程</h3><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">MOV</span>   <span class="built_in">AL</span>，<span class="number">13H</span>  <span class="comment">;ICW1</span></span><br><span class="line"><span class="keyword">OUT</span>   <span class="number">80H</span>，<span class="built_in">AL</span></span><br><span class="line"><span class="keyword">MOV</span>   <span class="built_in">AL</span>，<span class="number">18H</span>  <span class="comment">;ICW2</span></span><br><span class="line"><span class="keyword">OUT</span>   <span class="number">81H</span>，<span class="built_in">AL</span></span><br><span class="line"><span class="keyword">MOV</span>   <span class="built_in">AL</span>，<span class="number">0DH</span>  <span class="comment">;ICW4</span></span><br><span class="line"><span class="keyword">OUT</span>   <span class="number">81H</span>，<span class="built_in">AL</span></span><br></pre></td></tr></table></figure>
+<h2 id="操作命令字"><a href="#操作命令字" class="headerlink" title="操作命令字"></a>操作命令字</h2><h3 id="OCW1"><a href="#OCW1" class="headerlink" title="OCW1"></a>OCW1</h3><p>中断屏蔽操作命令字，写入奇地址，某位为1时表示此位中断请求收到屏蔽</p>
+<h3 id="OCW2"><a href="#OCW2" class="headerlink" title="OCW2"></a>OCW2</h3><p>设置优先级循环方式和中断结束方式的操作命令字，写入偶地址</p>
+<h3 id="OCW3"><a href="#OCW3" class="headerlink" title="OCW3"></a>OCW3</h3><p>设置与撤销特殊屏蔽方式，设置中断查询方式，设置对8259内部寄存器的读出命令。写入偶地址</p>
+<h2 id="中断嵌套方式"><a href="#中断嵌套方式" class="headerlink" title="中断嵌套方式"></a>中断嵌套方式</h2><ol>
+<li>全嵌套方式，顺序排列IR0优先级最高，同级或低级被屏蔽</li>
+<li>特殊全嵌套方式，用于多片，响应多级请求</li>
 </ol>
-<p>同时CPU内部包含如下三个部分</p>
-<ol>
-<li>算数逻辑部件</li>
-</ol>
-<p>CPU内部的算术逻辑部件也叫做运算器，专门用来储存各种数据信息，可以进行<strong>加减乘除</strong>算术运算和<strong>与或非异或等</strong>逻辑运算</p>
-<ol>
-<li>累加器与寄存器组</li>
-</ol>
-<p>寄存器组包括通用寄存器和专用寄存器两部分，累加器和通用寄存器用于保存参加运算的数据以及中间运算结果也用于存放地址。专用寄存器一般为指令的执行而设置的，它记录程序运行中的状态信息和控制信息</p>
-<ol>
-<li>控制器</li>
-</ol>
-<p>CPU的控制中心在指令执行过程中控制器按照指令的功能发出控制命令。</p>
-<p>控制器由<strong>指令寄存器</strong>，<strong>指令译码器</strong>，<strong>时序和控制电路</strong>，以及<strong>中断机构</strong>组成</p>
-<p>指令寄存器存放当前正在执行的指令，指令译码器对指令进行译码，此时产生的控制信号送到时序电路与控制电路，从而组合成CPU外部其他部件所需要的时序和控制信号，这些信号送到微机的其他部件控制这些部件协调工作，中断机构用来处理计算机运行过程中出现的异常事件以及外部对计算机发出的请求</p>
-<h3 id="微机"><a href="#微机" class="headerlink" title="微机"></a>微机</h3><p>微机由CPU，存储器，输入输出接口和系统总线组成，这就是通常所说的主机</p>
-<p>CPU为微机的心脏，其性能决定了整个微机各项关键指标</p>
-<p>存储器用来存放程序与数据，分为外部存储器和内部存储器两大类</p>
-<p>输入输出接口用来连接外部设备和微型机，从而完成信息的输入输出</p>
-<p>系统总线为CPU和其他部件之间提供数据地址和控制信息的传输通道</p>
-<h3 id="微机系统"><a href="#微机系统" class="headerlink" title="微机系统"></a>微机系统</h3><p>以微型计算机为主题，配上系统软件，应用软件，和外设之后构成了微机系统</p>
-<ol>
-<li>系统软件</li>
-</ol>
-<p>包括操作系统，一系列语言处理程序和数据库</p>
-<p>操作系统具有以下功能</p>
-<ul>
-<li>CPU运行管理</li>
-<li>文件管理</li>
-<li>存储器管理</li>
-<li>设备管理</li>
-<li>人机界面</li>
-<li>程序员界面</li>
-</ul>
-<ol>
-<li>应用软件</li>
-<li>外部设备</li>
-</ol>
+<h2 id="引入中断请求方式"><a href="#引入中断请求方式" class="headerlink" title="引入中断请求方式"></a>引入中断请求方式</h2><h3 id="查询方式"><a href="#查询方式" class="headerlink" title="查询方式"></a>查询方式</h3><p>CPU将中断允许触发器设置为0，不允许外部中断，由CPU定时发出查询命令OCW3，然后从8259读出中断服务中优先级最高的序号</p>
 
       
     </div>
@@ -441,8 +449,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/14/os-notes-1/" rel="next" title="操作系统笔记1-进程管理">
-                <i class="fa fa-chevron-left"></i> 操作系统笔记1-进程管理
+              <a href="/2017/12/19/microcomputer-interface-notes-6/" rel="next" title="微机接口笔记6-串并行通信8251与8255">
+                <i class="fa fa-chevron-left"></i> 微机接口笔记6-串并行通信8251与8255
               </a>
             
           </div>
@@ -451,8 +459,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/17/microcomputer-interface-notes-2/" rel="prev" title="微机接口笔记2-16位与32位微处理器">
-                微机接口笔记2-16位与32位微处理器 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/19/microcomputer-interface-notes-8/" rel="prev" title="微机接口笔记8-计数定时器8253/8254">
+                微机接口笔记8-计数定时器8253/8254 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -613,7 +621,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#微型计算机分类"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5FAE;&#x578B;&#x8BA1;&#x7B97;&#x673A;&#x5206;&#x7C7B;" class="headerlink" title="&#x5FAE;&#x578B;&#x8BA1;&#x7B97;&#x673A;&#x5206;&#x7C7B;"></a>&#x5FAE;&#x578B;&#x8BA1;&#x7B97;&#x673A;&#x5206;&#x7C7B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#按规模分类"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x6309;&#x89C4;&#x6A21;&#x5206;&#x7C7B;" class="headerlink" title="&#x6309;&#x89C4;&#x6A21;&#x5206;&#x7C7B;"></a>&#x6309;&#x89C4;&#x6A21;&#x5206;&#x7C7B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#按微处理器字长分类"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x6309;&#x5FAE;&#x5904;&#x7406;&#x5668;&#x5B57;&#x957F;&#x5206;&#x7C7B;" class="headerlink" title="&#x6309;&#x5FAE;&#x5904;&#x7406;&#x5668;&#x5B57;&#x957F;&#x5206;&#x7C7B;"></a>&#x6309;&#x5FAE;&#x5904;&#x7406;&#x5668;&#x5B57;&#x957F;&#x5206;&#x7C7B;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微机系统概念"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5FAE;&#x673A;&#x7CFB;&#x7EDF;&#x6982;&#x5FF5;" class="headerlink" title="&#x5FAE;&#x673A;&#x7CFB;&#x7EDF;&#x6982;&#x5FF5;"></a>&#x5FAE;&#x673A;&#x7CFB;&#x7EDF;&#x6982;&#x5FF5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#微处理器"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x5FAE;&#x5904;&#x7406;&#x5668;" class="headerlink" title="&#x5FAE;&#x5904;&#x7406;&#x5668;"></a>&#x5FAE;&#x5904;&#x7406;&#x5668;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微机"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x5FAE;&#x673A;" class="headerlink" title="&#x5FAE;&#x673A;"></a>&#x5FAE;&#x673A;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微机系统"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x5FAE;&#x673A;&#x7CFB;&#x7EDF;" class="headerlink" title="&#x5FAE;&#x673A;&#x7CFB;&#x7EDF;"></a>&#x5FAE;&#x673A;&#x7CFB;&#x7EDF;</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x521D;&#x59CB;&#x5316;" class="headerlink" title="&#x521D;&#x59CB;&#x5316;"></a>&#x521D;&#x59CB;&#x5316;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ICW1"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#ICW1" class="headerlink" title="ICW1"></a>ICW1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ICW2"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#ICW2" class="headerlink" title="ICW2"></a>ICW2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ICW3"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#ICW3" class="headerlink" title="ICW3"></a>ICW3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ICW4"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#ICW4" class="headerlink" title="ICW4"></a>ICW4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化例程"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#&#x521D;&#x59CB;&#x5316;&#x4F8B;&#x7A0B;" class="headerlink" title="&#x521D;&#x59CB;&#x5316;&#x4F8B;&#x7A0B;"></a>&#x521D;&#x59CB;&#x5316;&#x4F8B;&#x7A0B;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作命令字"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x64CD;&#x4F5C;&#x547D;&#x4EE4;&#x5B57;" class="headerlink" title="&#x64CD;&#x4F5C;&#x547D;&#x4EE4;&#x5B57;"></a>&#x64CD;&#x4F5C;&#x547D;&#x4EE4;&#x5B57;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OCW1"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#OCW1" class="headerlink" title="OCW1"></a>OCW1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OCW2"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#OCW2" class="headerlink" title="OCW2"></a>OCW2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OCW3"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#OCW3" class="headerlink" title="OCW3"></a>OCW3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断嵌套方式"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x4E2D;&#x65AD;&#x5D4C;&#x5957;&#x65B9;&#x5F0F;" class="headerlink" title="&#x4E2D;&#x65AD;&#x5D4C;&#x5957;&#x65B9;&#x5F0F;"></a>&#x4E2D;&#x65AD;&#x5D4C;&#x5957;&#x65B9;&#x5F0F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引入中断请求方式"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x5F15;&#x5165;&#x4E2D;&#x65AD;&#x8BF7;&#x6C42;&#x65B9;&#x5F0F;" class="headerlink" title="&#x5F15;&#x5165;&#x4E2D;&#x65AD;&#x8BF7;&#x6C42;&#x65B9;&#x5F0F;"></a>&#x5F15;&#x5165;&#x4E2D;&#x65AD;&#x8BF7;&#x6C42;&#x65B9;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询方式"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x67E5;&#x8BE2;&#x65B9;&#x5F0F;" class="headerlink" title="&#x67E5;&#x8BE2;&#x65B9;&#x5F0F;"></a>&#x67E5;&#x8BE2;&#x65B9;&#x5F0F;</span></a></li></ol></li></ol></div>
             
 
           </div>
