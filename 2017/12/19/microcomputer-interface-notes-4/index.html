@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="微机接口,专业课笔记," />
+  <meta name="keywords" content="专业课笔记,微机接口," />
 
 
 
@@ -78,14 +78,14 @@
 
 
 <meta name="description" content="存储器分类 内存储器  存取速度和CPU处理速度相当 存储器容量受到地址总线的限制 CPU可通过三总线（地址、数据、控制）直接对它进行访问 主要采用半导体存储器    外存储器  存取速度比CPU处理速度慢 存储器容量不受地址总线的限制 CPU必须通过专用的I/O接口进行访问 主要采用光、磁介质存储器    选择存储器的考虑因素 易失性    电源断开后，存储器的内容是否丢失 只读性    数据写">
-<meta name="keywords" content="微机接口,专业课笔记">
+<meta name="keywords" content="专业课笔记,微机接口">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微机接口笔记4-存储器">
 <meta property="og:url" content="https://abowloflrf.github.io/2017/12/19/microcomputer-interface-notes-4/index.html">
 <meta property="og:site_name" content="笔记仓库">
 <meta property="og:description" content="存储器分类 内存储器  存取速度和CPU处理速度相当 存储器容量受到地址总线的限制 CPU可通过三总线（地址、数据、控制）直接对它进行访问 主要采用半导体存储器    外存储器  存取速度比CPU处理速度慢 存储器容量不受地址总线的限制 CPU必须通过专用的I/O接口进行访问 主要采用光、磁介质存储器    选择存储器的考虑因素 易失性    电源断开后，存储器的内容是否丢失 只读性    数据写">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-19T09:07:36.522Z">
+<meta property="og:updated_time" content="2017-12-20T00:59:32.815Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微机接口笔记4-存储器">
 <meta name="twitter:description" content="存储器分类 内存储器  存取速度和CPU处理速度相当 存储器容量受到地址总线的限制 CPU可通过三总线（地址、数据、控制）直接对它进行访问 主要采用半导体存储器    外存储器  存取速度比CPU处理速度慢 存储器容量不受地址总线的限制 CPU必须通过专用的I/O接口进行访问 主要采用光、磁介质存储器    选择存储器的考虑因素 易失性    电源断开后，存储器的内容是否丢失 只读性    数据写">
@@ -428,6 +428,11 @@
 <li>Pentium Pro最大内存容量64GB，地址总线36，2^36</li>
 <li>现代64位处理器 最大内存容量17179869184GB，2^64</li>
 </ol>
+<h2 id="Cache"><a href="#Cache" class="headerlink" title="Cache"></a>Cache</h2><h3 id="Cache与主存映射方式"><a href="#Cache与主存映射方式" class="headerlink" title="Cache与主存映射方式"></a>Cache与主存映射方式</h3><ul>
+<li>命中 CPU要访问的数据在缓存中则直接访问Cache</li>
+<li>不命中 不在Cache中，需要将该数所在主存整个字块一次调用Cache</li>
+<li>命中率 CPU要访问的信息已在Cache中的概率</li>
+</ul>
 
       
     </div>
@@ -445,9 +450,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/微机接口/" rel="tag"># 微机接口</a>
-          
             <a href="/tags/专业课笔记/" rel="tag"># 专业课笔记</a>
+          
+            <a href="/tags/微机接口/" rel="tag"># 微机接口</a>
           
         </div>
       
@@ -555,7 +560,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -566,7 +571,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -577,7 +582,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -632,7 +637,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#存储器"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x5668;" class="headerlink" title="&#x5B58;&#x50A8;&#x5668;"></a>&#x5B58;&#x50A8;&#x5668;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分类"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x5206;&#x7C7B;" class="headerlink" title="&#x5206;&#x7C7B;"></a>&#x5206;&#x7C7B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择存储器的考虑因素"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x9009;&#x62E9;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x8003;&#x8651;&#x56E0;&#x7D20;" class="headerlink" title="&#x9009;&#x62E9;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x8003;&#x8651;&#x56E0;&#x7D20;"></a>&#x9009;&#x62E9;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x8003;&#x8651;&#x56E0;&#x7D20;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#半导体存储器分类"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x5206;&#x7C7B;" class="headerlink" title="&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x5206;&#x7C7B;"></a>&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x5206;&#x7C7B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#半导体存储器的组成"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x7EC4;&#x6210;" class="headerlink" title="&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x7EC4;&#x6210;"></a>&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x7EC4;&#x6210;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态RAM（SRAM）"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#&#x9759;&#x6001;RAM&#xFF08;SRAM&#xFF09;" class="headerlink" title="&#x9759;&#x6001;RAM&#xFF08;SRAM&#xFF09;"></a>&#x9759;&#x6001;RAM&#xFF08;SRAM&#xFF09;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#特点"><span class="nav-number">1.5.1.</span> <span class="nav-text"><a href="#&#x7279;&#x70B9;" class="headerlink" title="&#x7279;&#x70B9;"></a>&#x7279;&#x70B9;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态RAM（DRAM）"><span class="nav-number">1.6.</span> <span class="nav-text"><a href="#&#x52A8;&#x6001;RAM&#xFF08;DRAM&#xFF09;" class="headerlink" title="&#x52A8;&#x6001;RAM&#xFF08;DRAM&#xFF09;"></a>&#x52A8;&#x6001;RAM&#xFF08;DRAM&#xFF09;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#特点-1"><span class="nav-number">1.6.1.</span> <span class="nav-text"><a href="#&#x7279;&#x70B9;-1" class="headerlink" title="&#x7279;&#x70B9;"></a>&#x7279;&#x70B9;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DRAM控制器"><span class="nav-number">1.6.2.</span> <span class="nav-text"><a href="#DRAM&#x63A7;&#x5236;&#x5668;" class="headerlink" title="DRAM&#x63A7;&#x5236;&#x5668;"></a>DRAM&#x63A7;&#x5236;&#x5668;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROM"><span class="nav-number">1.7.</span> <span class="nav-text"><a href="#ROM" class="headerlink" title="ROM"></a>ROM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储器容量扩充"><span class="nav-number">1.8.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x5668;&#x5BB9;&#x91CF;&#x6269;&#x5145;" class="headerlink" title="&#x5B58;&#x50A8;&#x5668;&#x5BB9;&#x91CF;&#x6269;&#x5145;"></a>&#x5B58;&#x50A8;&#x5668;&#x5BB9;&#x91CF;&#x6269;&#x5145;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储器与CPU连接"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x5668;&#x4E0E;CPU&#x8FDE;&#x63A5;" class="headerlink" title="&#x5B58;&#x50A8;&#x5668;&#x4E0E;CPU&#x8FDE;&#x63A5;"></a>&#x5B58;&#x50A8;&#x5668;&#x4E0E;CPU&#x8FDE;&#x63A5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#连接时要考虑"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x8FDE;&#x63A5;&#x65F6;&#x8981;&#x8003;&#x8651;" class="headerlink" title="&#x8FDE;&#x63A5;&#x65F6;&#x8981;&#x8003;&#x8651;"></a>&#x8FDE;&#x63A5;&#x65F6;&#x8981;&#x8003;&#x8651;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储器地址的分配"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x5668;&#x5730;&#x5740;&#x7684;&#x5206;&#x914D;" class="headerlink" title="&#x5B58;&#x50A8;&#x5668;&#x5730;&#x5740;&#x7684;&#x5206;&#x914D;"></a>&#x5B58;&#x50A8;&#x5668;&#x5730;&#x5740;&#x7684;&#x5206;&#x914D;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微机中存储器体系"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5FAE;&#x673A;&#x4E2D;&#x5B58;&#x50A8;&#x5668;&#x4F53;&#x7CFB;" class="headerlink" title="&#x5FAE;&#x673A;&#x4E2D;&#x5B58;&#x50A8;&#x5668;&#x4F53;&#x7CFB;"></a>&#x5FAE;&#x673A;&#x4E2D;&#x5B58;&#x50A8;&#x5668;&#x4F53;&#x7CFB;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#层次化体系结构"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x5C42;&#x6B21;&#x5316;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;" class="headerlink" title="&#x5C42;&#x6B21;&#x5316;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;"></a>&#x5C42;&#x6B21;&#x5316;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内部分区结构"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x5185;&#x90E8;&#x5206;&#x533A;&#x7ED3;&#x6784;" class="headerlink" title="&#x5185;&#x90E8;&#x5206;&#x533A;&#x7ED3;&#x6784;"></a>&#x5185;&#x90E8;&#x5206;&#x533A;&#x7ED3;&#x6784;</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#存储器"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x5668;" class="headerlink" title="&#x5B58;&#x50A8;&#x5668;"></a>&#x5B58;&#x50A8;&#x5668;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分类"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x5206;&#x7C7B;" class="headerlink" title="&#x5206;&#x7C7B;"></a>&#x5206;&#x7C7B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择存储器的考虑因素"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x9009;&#x62E9;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x8003;&#x8651;&#x56E0;&#x7D20;" class="headerlink" title="&#x9009;&#x62E9;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x8003;&#x8651;&#x56E0;&#x7D20;"></a>&#x9009;&#x62E9;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x8003;&#x8651;&#x56E0;&#x7D20;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#半导体存储器分类"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x5206;&#x7C7B;" class="headerlink" title="&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x5206;&#x7C7B;"></a>&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x5206;&#x7C7B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#半导体存储器的组成"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x7EC4;&#x6210;" class="headerlink" title="&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x7EC4;&#x6210;"></a>&#x534A;&#x5BFC;&#x4F53;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x7EC4;&#x6210;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态RAM（SRAM）"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#&#x9759;&#x6001;RAM&#xFF08;SRAM&#xFF09;" class="headerlink" title="&#x9759;&#x6001;RAM&#xFF08;SRAM&#xFF09;"></a>&#x9759;&#x6001;RAM&#xFF08;SRAM&#xFF09;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#特点"><span class="nav-number">1.5.1.</span> <span class="nav-text"><a href="#&#x7279;&#x70B9;" class="headerlink" title="&#x7279;&#x70B9;"></a>&#x7279;&#x70B9;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态RAM（DRAM）"><span class="nav-number">1.6.</span> <span class="nav-text"><a href="#&#x52A8;&#x6001;RAM&#xFF08;DRAM&#xFF09;" class="headerlink" title="&#x52A8;&#x6001;RAM&#xFF08;DRAM&#xFF09;"></a>&#x52A8;&#x6001;RAM&#xFF08;DRAM&#xFF09;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#特点-1"><span class="nav-number">1.6.1.</span> <span class="nav-text"><a href="#&#x7279;&#x70B9;-1" class="headerlink" title="&#x7279;&#x70B9;"></a>&#x7279;&#x70B9;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DRAM控制器"><span class="nav-number">1.6.2.</span> <span class="nav-text"><a href="#DRAM&#x63A7;&#x5236;&#x5668;" class="headerlink" title="DRAM&#x63A7;&#x5236;&#x5668;"></a>DRAM&#x63A7;&#x5236;&#x5668;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROM"><span class="nav-number">1.7.</span> <span class="nav-text"><a href="#ROM" class="headerlink" title="ROM"></a>ROM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储器容量扩充"><span class="nav-number">1.8.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x5668;&#x5BB9;&#x91CF;&#x6269;&#x5145;" class="headerlink" title="&#x5B58;&#x50A8;&#x5668;&#x5BB9;&#x91CF;&#x6269;&#x5145;"></a>&#x5B58;&#x50A8;&#x5668;&#x5BB9;&#x91CF;&#x6269;&#x5145;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储器与CPU连接"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x5668;&#x4E0E;CPU&#x8FDE;&#x63A5;" class="headerlink" title="&#x5B58;&#x50A8;&#x5668;&#x4E0E;CPU&#x8FDE;&#x63A5;"></a>&#x5B58;&#x50A8;&#x5668;&#x4E0E;CPU&#x8FDE;&#x63A5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#连接时要考虑"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x8FDE;&#x63A5;&#x65F6;&#x8981;&#x8003;&#x8651;" class="headerlink" title="&#x8FDE;&#x63A5;&#x65F6;&#x8981;&#x8003;&#x8651;"></a>&#x8FDE;&#x63A5;&#x65F6;&#x8981;&#x8003;&#x8651;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储器地址的分配"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x5B58;&#x50A8;&#x5668;&#x5730;&#x5740;&#x7684;&#x5206;&#x914D;" class="headerlink" title="&#x5B58;&#x50A8;&#x5668;&#x5730;&#x5740;&#x7684;&#x5206;&#x914D;"></a>&#x5B58;&#x50A8;&#x5668;&#x5730;&#x5740;&#x7684;&#x5206;&#x914D;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微机中存储器体系"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5FAE;&#x673A;&#x4E2D;&#x5B58;&#x50A8;&#x5668;&#x4F53;&#x7CFB;" class="headerlink" title="&#x5FAE;&#x673A;&#x4E2D;&#x5B58;&#x50A8;&#x5668;&#x4F53;&#x7CFB;"></a>&#x5FAE;&#x673A;&#x4E2D;&#x5B58;&#x50A8;&#x5668;&#x4F53;&#x7CFB;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#层次化体系结构"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x5C42;&#x6B21;&#x5316;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;" class="headerlink" title="&#x5C42;&#x6B21;&#x5316;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;"></a>&#x5C42;&#x6B21;&#x5316;&#x4F53;&#x7CFB;&#x7ED3;&#x6784;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内部分区结构"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x5185;&#x90E8;&#x5206;&#x533A;&#x7ED3;&#x6784;" class="headerlink" title="&#x5185;&#x90E8;&#x5206;&#x533A;&#x7ED3;&#x6784;"></a>&#x5185;&#x90E8;&#x5206;&#x533A;&#x7ED3;&#x6784;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cache"><span class="nav-number">4.</span> <span class="nav-text"><a href="#Cache" class="headerlink" title="Cache"></a>Cache</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cache与主存映射方式"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#Cache&#x4E0E;&#x4E3B;&#x5B58;&#x6620;&#x5C04;&#x65B9;&#x5F0F;" class="headerlink" title="Cache&#x4E0E;&#x4E3B;&#x5B58;&#x6620;&#x5C04;&#x65B9;&#x5F0F;"></a>Cache&#x4E0E;&#x4E3B;&#x5B58;&#x6620;&#x5C04;&#x65B9;&#x5F0F;</span></a></li></ol></li></ol></div>
             
 
           </div>
