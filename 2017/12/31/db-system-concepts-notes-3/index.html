@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据库系统,专业课笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="基本关系代数运算关系代数是过程化语言，有以下六个基本操作  Select 选择：σ Project 投影：Π Union 并：∪ Set Difference 差：- Cartesian Product 笛卡儿积：× Rename 重命名：ρ  选择运算$\sigma_{p}(r)$其中p为选择断言 Selection Predicate 意义为：$\sigma_{p}={t \mid t\in">
+<meta name="keywords" content="数据库系统,专业课笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库系统笔记3-Relational Algebra 关系代数">
+<meta property="og:url" content="https://abowloflrf.github.io/2017/12/31/db-system-concepts-notes-3/index.html">
+<meta property="og:site_name" content="笔记仓库">
+<meta property="og:description" content="基本关系代数运算关系代数是过程化语言，有以下六个基本操作  Select 选择：σ Project 投影：Π Union 并：∪ Set Difference 差：- Cartesian Product 笛卡儿积：× Rename 重命名：ρ  选择运算$\sigma_{p}(r)$其中p为选择断言 Selection Predicate 意义为：$\sigma_{p}={t \mid t\in">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-01T14:08:55.253Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库系统笔记3-Relational Algebra 关系代数">
+<meta name="twitter:description" content="基本关系代数运算关系代数是过程化语言，有以下六个基本操作  Select 选择：σ Project 投影：Π Union 并：∪ Set Difference 差：- Cartesian Product 笛卡儿积：× Rename 重命名：ρ  选择运算$\sigma_{p}(r)$其中p为选择断言 Selection Predicate 意义为：$\sigma_{p}={t \mid t\in">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://abowloflrf.github.io/2017/12/31/db-system-concepts-notes-3/"/>
+
+
+
+
+
+  <title>数据库系统笔记3-Relational Algebra 关系代数 | 笔记仓库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记仓库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2017/12/31/db-system-concepts-notes-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ruofeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记仓库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据库系统笔记3-Relational Algebra 关系代数</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-31T15:11:07+08:00">
+                2017-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库系统/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基本关系代数运算"><a href="#基本关系代数运算" class="headerlink" title="基本关系代数运算"></a>基本关系代数运算</h2><p>关系代数是<strong>过程化语言</strong>，有以下六个基本操作</p>
+<ol>
+<li>Select 选择：σ</li>
+<li>Project 投影：Π</li>
+<li>Union 并：∪</li>
+<li>Set Difference 差：-</li>
+<li>Cartesian Product 笛卡儿积：×</li>
+<li>Rename 重命名：ρ</li>
+</ol>
+<h3 id="选择运算"><a href="#选择运算" class="headerlink" title="选择运算"></a>选择运算</h3><p>$\sigma_{p}(r)$<br>其中p为<strong>选择断言 Selection Predicate</strong></p>
+<p>意义为：<br>$\sigma_{p}={t \mid t\in r\ and\ p(t)}$<br>其中p是一个由$\wedge$、$\vee$、$\neg$连接而成的命题逻辑公式</p>
+<p><strong>例：</strong><br>$\sigma_{branch_name=”Perryridge”}(Account)$<br>在关系Account中选择branch_name为Perrtridge的元组</p>
+<h3 id="投影运算"><a href="#投影运算" class="headerlink" title="投影运算"></a>投影运算</h3><p>$\Pi_{A1,A2,A3…Ak}(r)$<br>其中A1A2…Ak为属性名，r为关系名</p>
+<p>返回的数据将未指定的属性排除在外，且所有重复的行都被去除</p>
+<h3 id="并集运算"><a href="#并集运算" class="headerlink" title="并集运算"></a>并集运算</h3><p>$r \cup s$</p>
+<p>意义为：<br>$r \cup s={t \mid t \in r\ or\ t \in s}$<br>其中r和s必须有相同的属性数，所有属性都必须兼容</p>
+<p><strong>例：</strong><br>$\Pi{customerName}(Depositor)\cup\Pi{customerName}(Borrower)$<br>选择出存款和贷款的所有账户</p>
+<h3 id="集合差运算"><a href="#集合差运算" class="headerlink" title="集合差运算"></a>集合差运算</h3><p>$r-s$</p>
+<p>意义为：<br>$r-s={t \mid t \in r\ and\ t \notin s}$</p>
+<p>r和s必须有相同的属性数且属性兼容</p>
+<h3 id="笛卡儿积运算"><a href="#笛卡儿积运算" class="headerlink" title="笛卡儿积运算"></a>笛卡儿积运算</h3><p>将两个任意关系的信息组合在一起<br>$r \times s$</p>
+<p>意义为：<br>$r \times s={tq \mid t \in r\ and\ q \in s}$</p>
+<p>必须满足$R \cap S = \emptyset$，否则必须使用重命名操作</p>
+<h3 id="重命名运算"><a href="#重命名运算" class="headerlink" title="重命名运算"></a>重命名运算</h3><p>允许我们重新命名关系代数运算的结果因此可以去应用它们</p>
+<p>$\rho_{x(a1,a2…an)}(E)$<br>关系代数表达式E的运算结果有n个属性，那么在进行重命名运算x的结果中n个属性都被命名为a1,a2…an</p>
+<h2 id="关系代数表达式"><a href="#关系代数表达式" class="headerlink" title="关系代数表达式"></a>关系代数表达式</h2><p>在关系代数中一个基本的表达式必由下面二者之一</p>
+<ul>
+<li>数据库中的一个关系 A relation in the database</li>
+<li>一个常数关系 A constant relation</li>
+</ul>
+<p>若E1，E2为关系代数表达式，则以下都是关系代数表达式</p>
+<ul>
+<li>$E_1 \cup E_2$</li>
+<li>$E_1 - E_2$</li>
+<li>$E_1 \times E_2$</li>
+<li>$\sigma_p(E_1)$ p为E1属性上的谓词</li>
+<li>$\Pi_s(E_1)$ S是E1中某些属性列表</li>
+<li>$\rho_x(E_1)$ x是E1结果的新名字</li>
+</ul>
+<h2 id="附加关系代数运算"><a href="#附加关系代数运算" class="headerlink" title="附加关系代数运算"></a>附加关系代数运算</h2><h3 id="集合交集运算-Set-Intersection"><a href="#集合交集运算-Set-Intersection" class="headerlink" title="集合交集运算 Set Intersection"></a>集合交集运算 Set Intersection</h3><p>$r \cap s$<br>即关系r与s的交集，r与s有相同的属性个数且属性兼容<br>有$r \cap s=r-(r-s)$</p>
+<blockquote>
+<p>交集运算不是基本运算</p>
+</blockquote>
+<h3 id="自然连接运算-Natrual-Join"><a href="#自然连接运算-Natrual-Join" class="headerlink" title="自然连接运算 Natrual Join"></a>自然连接运算 Natrual Join</h3><p>$r \bowtie s$<br>相当于在笛卡儿积运算之后去除了重复的属性值</p>
+<h3 id="除法运算-Division"><a href="#除法运算-Division" class="headerlink" title="除法运算 Division"></a>除法运算 Division</h3><p>$r \div s$</p>
+<h3 id="赋值运算-Assignment"><a href="#赋值运算-Assignment" class="headerlink" title="赋值运算 Assignment"></a>赋值运算 Assignment</h3><p>赋值运算符$\leftarrow$提供了一个用来表达复杂查询的简单方法，使用了一个临时的变量来表达</p>
+<p><strong>例如：</strong><br>$r \div s$可以写作</p>
+<p>$temp1 \leftarrow \Pi_{R-S}(r)$</p>
+<p>$temp2 \leftarrow \Pi_{R-S}((temp1 \times s)-r)$</p>
+<p>$result=temp1-temp2$</p>
+<h2 id="扩展关系代数操作"><a href="#扩展关系代数操作" class="headerlink" title="扩展关系代数操作"></a>扩展关系代数操作</h2><h3 id="广义投影-Generalized-Projection"><a href="#广义投影-Generalized-Projection" class="headerlink" title="广义投影 Generalized Projection"></a>广义投影 Generalized Projection</h3><p>$\Pi_{F1,F2…Fn}(E)$</p>
+<p>E是任意的关系代数表达式，其中F1,F2…Fn每一个都是涉及常量以及E中属性计算的算术表达式，例如：<br>$\Pi_{ID,name,dept_name,salary/12}(Instructor)$<br>则得到的是每个教师的ID姓名部门以及<strong>月工资</strong></p>
+<h3 id="聚集-Aggregate-Function"><a href="#聚集-Aggregate-Function" class="headerlink" title="聚集 Aggregate Function"></a>聚集 Aggregate Function</h3><p>聚集运算$\mathcal{G}$可以对值的集合使用<strong>聚集函数</strong>，<strong>聚集函数</strong>输入值的一个汇聚，将单一的值最为返回，例如使用sum,max,min,count,avg来计算数值集合的和，最大值，最小值，数量，平均值</p>
+<p>在操作中，汇集里一个值可以出现多次，顺序也无关紧要，这样的汇集称为<strong>多重集multiset</strong>。<strong>集合set</strong>是多重集的特例，其中每个值只出现一次。</p>
+<p>$\mathcal{G}_{\textbf{sum}(salary)}(instructor)$<br>得到的是所有教师的工资总和</p>
+<p>此外，还可以在聚集操作的前面限制一个属性，用于对一组元素集合而不是单个元组集合执行聚集函数，例如需要求出<em>每个系的平均工资</em></p>
+<p>$_{dept<em>name} \mathcal{G} </em>{average(salary)}(instructor)$</p>
+<p>这个查询将对每个组进行指定的聚集并分别执行聚集函数，得到结果</p>
+<h3 id="外连接-Outer-Join"><a href="#外连接-Outer-Join" class="headerlink" title="外连接 Outer Join"></a>外连接 Outer Join</h3><p>外连接为自然连接的扩展，为了<strong>避免信息的丢失avoids loss of information</strong>，会在结果中创建带空值null的元组 </p>
+<h4 id="右外连接-Right-outer-join-⟖"><a href="#右外连接-Right-outer-join-⟖" class="headerlink" title="右外连接 Right outer join (⟖)"></a>右外连接 Right outer join (⟖)</h4><p>$R⟖S$<br>右外连接结果中包含S中的所有元素，对每个元组，若R在公共属性名字上相等的元组，则正常连接，若R没有在功能属性名字上相等的元组，则保留此组，并将其他列设置为<strong>NULL</strong></p>
+<h4 id="左外连接-Left-outer-join-⟕"><a href="#左外连接-Left-outer-join-⟕" class="headerlink" title="左外连接 Left outer join (⟕)"></a>左外连接 Left outer join (⟕)</h4><p>$R⟕S$<br>同右外连接，结果包含R中的所有元组</p>
+<h4 id="全外连接-Full-outer-join-⟗"><a href="#全外连接-Full-outer-join-⟗" class="headerlink" title="全外连接 Full outer join (⟗)"></a>全外连接 Full outer join (⟗)</h4><p>$R⟗S$<br>同右外连接，结果包含R和S中所有的元组</p>
+<h2 id="空值-Null-Value"><a href="#空值-Null-Value" class="headerlink" title="空值 Null Value"></a>空值 Null Value</h2><ul>
+<li><em>null</em>表示未知<em>unknown</em>的值或不存在<em>does not exist</em>的值</li>
+<li>代数表达式<em>arithmetic expression</em>结果中包含有null的值</li>
+<li>聚集函数<em>aggregate function</em>忽略null值</li>
+<li>对于重复删除<em>duplicate eliminate</em>和分组<em>grouping</em>，null被当作其他的任意值，两个null值被当作是一样的</li>
+</ul>
+<h3 id="对两个null值的比较返回一个特殊的真值：unknown"><a href="#对两个null值的比较返回一个特殊的真值：unknown" class="headerlink" title="对两个null值的比较返回一个特殊的真值：unknown"></a>对两个null值的比较返回一个特殊的真值：<strong>unknown</strong></h3><h3 id="使用unknown的逻辑运算"><a href="#使用unknown的逻辑运算" class="headerlink" title="使用unknown的逻辑运算"></a>使用unknown的逻辑运算</h3><ul>
+<li>unknown OR true = true</li>
+<li>unknown OR false = unknown</li>
+<li>unknown OR unknown = unknown</li>
+<li>unknown AND true = unknown</li>
+<li>unknown AND false = false</li>
+<li>unknown AND unknown = unknown</li>
+<li>NOT unknown =unknown</li>
+</ul>
+<h2 id="对数据库的修改-Modification-of-Database"><a href="#对数据库的修改-Modification-of-Database" class="headerlink" title="对数据库的修改 Modification of Database"></a>对数据库的修改 Modification of Database</h2><p>对数据库的修改有三种操作，增，删，改，这些操作都是使用赋值运算来表示的</p>
+<h3 id="Insert"><a href="#Insert" class="headerlink" title="Insert"></a>Insert</h3><p>$r \leftarrow r \cup E$</p>
+<h3 id="Deletion"><a href="#Deletion" class="headerlink" title="Deletion"></a>Deletion</h3><p>删除操作与查询操作类似，只是它不是显示出得到的元组而是从数据库中删除这些元组<br>$r \leftarrow r-E$</p>
+<h3 id="Updating"><a href="#Updating" class="headerlink" title="Updating"></a>Updating</h3><p>使用广义投影来表示更新数据的操作<br>$r \leftarrow \Pi(r)$</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库系统/" rel="tag"># 数据库系统</a>
+          
+            <a href="/tags/专业课笔记/" rel="tag"># 专业课笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/31/db-system-concepts-notes-2/" rel="next" title="数据库系统笔记2-Relational Modal关系模型">
+                <i class="fa fa-chevron-left"></i> 数据库系统笔记2-Relational Modal关系模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ruofeng" />
+            
+              <p class="site-author-name" itemprop="name">ruofeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://ruofeng.me" target="_blank" title="MainSite">
+                    
+                      <i class="fa fa-fw fa-user"></i>MainSite</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/abowloflrf" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:i@ruofeng.me" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本关系代数运算"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x57FA;&#x672C;&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x8FD0;&#x7B97;" class="headerlink" title="&#x57FA;&#x672C;&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x8FD0;&#x7B97;"></a>&#x57FA;&#x672C;&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x8FD0;&#x7B97;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#选择运算"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x9009;&#x62E9;&#x8FD0;&#x7B97;" class="headerlink" title="&#x9009;&#x62E9;&#x8FD0;&#x7B97;"></a>&#x9009;&#x62E9;&#x8FD0;&#x7B97;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投影运算"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x6295;&#x5F71;&#x8FD0;&#x7B97;" class="headerlink" title="&#x6295;&#x5F71;&#x8FD0;&#x7B97;"></a>&#x6295;&#x5F71;&#x8FD0;&#x7B97;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并集运算"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x5E76;&#x96C6;&#x8FD0;&#x7B97;" class="headerlink" title="&#x5E76;&#x96C6;&#x8FD0;&#x7B97;"></a>&#x5E76;&#x96C6;&#x8FD0;&#x7B97;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合差运算"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x96C6;&#x5408;&#x5DEE;&#x8FD0;&#x7B97;" class="headerlink" title="&#x96C6;&#x5408;&#x5DEE;&#x8FD0;&#x7B97;"></a>&#x96C6;&#x5408;&#x5DEE;&#x8FD0;&#x7B97;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#笛卡儿积运算"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#&#x7B1B;&#x5361;&#x513F;&#x79EF;&#x8FD0;&#x7B97;" class="headerlink" title="&#x7B1B;&#x5361;&#x513F;&#x79EF;&#x8FD0;&#x7B97;"></a>&#x7B1B;&#x5361;&#x513F;&#x79EF;&#x8FD0;&#x7B97;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重命名运算"><span class="nav-number">1.6.</span> <span class="nav-text"><a href="#&#x91CD;&#x547D;&#x540D;&#x8FD0;&#x7B97;" class="headerlink" title="&#x91CD;&#x547D;&#x540D;&#x8FD0;&#x7B97;"></a>&#x91CD;&#x547D;&#x540D;&#x8FD0;&#x7B97;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关系代数表达式"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x8868;&#x8FBE;&#x5F0F;" class="headerlink" title="&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x8868;&#x8FBE;&#x5F0F;"></a>&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x8868;&#x8FBE;&#x5F0F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附加关系代数运算"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x9644;&#x52A0;&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x8FD0;&#x7B97;" class="headerlink" title="&#x9644;&#x52A0;&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x8FD0;&#x7B97;"></a>&#x9644;&#x52A0;&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x8FD0;&#x7B97;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集合交集运算-Set-Intersection"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x96C6;&#x5408;&#x4EA4;&#x96C6;&#x8FD0;&#x7B97;-Set-Intersection" class="headerlink" title="&#x96C6;&#x5408;&#x4EA4;&#x96C6;&#x8FD0;&#x7B97; Set Intersection"></a>&#x96C6;&#x5408;&#x4EA4;&#x96C6;&#x8FD0;&#x7B97; Set Intersection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自然连接运算-Natrual-Join"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x81EA;&#x7136;&#x8FDE;&#x63A5;&#x8FD0;&#x7B97;-Natrual-Join" class="headerlink" title="&#x81EA;&#x7136;&#x8FDE;&#x63A5;&#x8FD0;&#x7B97; Natrual Join"></a>&#x81EA;&#x7136;&#x8FDE;&#x63A5;&#x8FD0;&#x7B97; Natrual Join</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#除法运算-Division"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x9664;&#x6CD5;&#x8FD0;&#x7B97;-Division" class="headerlink" title="&#x9664;&#x6CD5;&#x8FD0;&#x7B97; Division"></a>&#x9664;&#x6CD5;&#x8FD0;&#x7B97; Division</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#赋值运算-Assignment"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#&#x8D4B;&#x503C;&#x8FD0;&#x7B97;-Assignment" class="headerlink" title="&#x8D4B;&#x503C;&#x8FD0;&#x7B97; Assignment"></a>&#x8D4B;&#x503C;&#x8FD0;&#x7B97; Assignment</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展关系代数操作"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x6269;&#x5C55;&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x64CD;&#x4F5C;" class="headerlink" title="&#x6269;&#x5C55;&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x64CD;&#x4F5C;"></a>&#x6269;&#x5C55;&#x5173;&#x7CFB;&#x4EE3;&#x6570;&#x64CD;&#x4F5C;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#广义投影-Generalized-Projection"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x5E7F;&#x4E49;&#x6295;&#x5F71;-Generalized-Projection" class="headerlink" title="&#x5E7F;&#x4E49;&#x6295;&#x5F71; Generalized Projection"></a>&#x5E7F;&#x4E49;&#x6295;&#x5F71; Generalized Projection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚集-Aggregate-Function"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x805A;&#x96C6;-Aggregate-Function" class="headerlink" title="&#x805A;&#x96C6; Aggregate Function"></a>&#x805A;&#x96C6; Aggregate Function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外连接-Outer-Join"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#&#x5916;&#x8FDE;&#x63A5;-Outer-Join" class="headerlink" title="&#x5916;&#x8FDE;&#x63A5; Outer Join"></a>&#x5916;&#x8FDE;&#x63A5; Outer Join</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#右外连接-Right-outer-join-⟖"><span class="nav-number">4.3.1.</span> <span class="nav-text"><a href="#&#x53F3;&#x5916;&#x8FDE;&#x63A5;-Right-outer-join-&#x27D6;" class="headerlink" title="&#x53F3;&#x5916;&#x8FDE;&#x63A5; Right outer join (&#x27D6;)"></a>&#x53F3;&#x5916;&#x8FDE;&#x63A5; Right outer join (&#x27D6;)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#左外连接-Left-outer-join-⟕"><span class="nav-number">4.3.2.</span> <span class="nav-text"><a href="#&#x5DE6;&#x5916;&#x8FDE;&#x63A5;-Left-outer-join-&#x27D5;" class="headerlink" title="&#x5DE6;&#x5916;&#x8FDE;&#x63A5; Left outer join (&#x27D5;)"></a>&#x5DE6;&#x5916;&#x8FDE;&#x63A5; Left outer join (&#x27D5;)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全外连接-Full-outer-join-⟗"><span class="nav-number">4.3.3.</span> <span class="nav-text"><a href="#&#x5168;&#x5916;&#x8FDE;&#x63A5;-Full-outer-join-&#x27D7;" class="headerlink" title="&#x5168;&#x5916;&#x8FDE;&#x63A5; Full outer join (&#x27D7;)"></a>&#x5168;&#x5916;&#x8FDE;&#x63A5; Full outer join (&#x27D7;)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空值-Null-Value"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x7A7A;&#x503C;-Null-Value" class="headerlink" title="&#x7A7A;&#x503C; Null Value"></a>&#x7A7A;&#x503C; Null Value</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对两个null值的比较返回一个特殊的真值：unknown"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#&#x5BF9;&#x4E24;&#x4E2A;null&#x503C;&#x7684;&#x6BD4;&#x8F83;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x7279;&#x6B8A;&#x7684;&#x771F;&#x503C;&#xFF1A;unknown" class="headerlink" title="&#x5BF9;&#x4E24;&#x4E2A;null&#x503C;&#x7684;&#x6BD4;&#x8F83;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x7279;&#x6B8A;&#x7684;&#x771F;&#x503C;&#xFF1A;unknown"></a>&#x5BF9;&#x4E24;&#x4E2A;null&#x503C;&#x7684;&#x6BD4;&#x8F83;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x7279;&#x6B8A;&#x7684;&#x771F;&#x503C;&#xFF1A;<strong>unknown</strong></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用unknown的逻辑运算"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;unknown&#x7684;&#x903B;&#x8F91;&#x8FD0;&#x7B97;" class="headerlink" title="&#x4F7F;&#x7528;unknown&#x7684;&#x903B;&#x8F91;&#x8FD0;&#x7B97;"></a>&#x4F7F;&#x7528;unknown&#x7684;&#x903B;&#x8F91;&#x8FD0;&#x7B97;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对数据库的修改-Modification-of-Database"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x5BF9;&#x6570;&#x636E;&#x5E93;&#x7684;&#x4FEE;&#x6539;-Modification-of-Database" class="headerlink" title="&#x5BF9;&#x6570;&#x636E;&#x5E93;&#x7684;&#x4FEE;&#x6539; Modification of Database"></a>&#x5BF9;&#x6570;&#x636E;&#x5E93;&#x7684;&#x4FEE;&#x6539; Modification of Database</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Insert"><span class="nav-number">6.1.</span> <span class="nav-text"><a href="#Insert" class="headerlink" title="Insert"></a>Insert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deletion"><span class="nav-number">6.2.</span> <span class="nav-text"><a href="#Deletion" class="headerlink" title="Deletion"></a>Deletion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Updating"><span class="nav-number">6.3.</span> <span class="nav-text"><a href="#Updating" class="headerlink" title="Updating"></a>Updating</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ruofeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.coding.me" style="font-weight:bold">Coding Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
