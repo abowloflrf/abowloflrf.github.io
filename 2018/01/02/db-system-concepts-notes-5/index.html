@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据库系统,专业课笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="函数依赖 Functional Dependencies给定一个关系模式r(R)的实例，那么这个实例满足函数依赖α→β的条件是： 对实例中的所有元组对，若t1[α]=t2[α]，则t1[β]=t2[β] 如果r(R)在每个合法实例legal instance上都满足函数依赖α→β，则称函数依赖在模式r(R)上成立Hold 例如一个关系r(A,B)的一个实例如下    A B      1 4">
+<meta name="keywords" content="数据库系统,专业课笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库系统笔记5-Relational Database Design 关系型数据库的设计">
+<meta property="og:url" content="https://abowloflrf.github.io/2018/01/02/db-system-concepts-notes-5/index.html">
+<meta property="og:site_name" content="笔记仓库">
+<meta property="og:description" content="函数依赖 Functional Dependencies给定一个关系模式r(R)的实例，那么这个实例满足函数依赖α→β的条件是： 对实例中的所有元组对，若t1[α]=t2[α]，则t1[β]=t2[β] 如果r(R)在每个合法实例legal instance上都满足函数依赖α→β，则称函数依赖在模式r(R)上成立Hold 例如一个关系r(A,B)的一个实例如下    A B      1 4">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-02T05:59:36.464Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库系统笔记5-Relational Database Design 关系型数据库的设计">
+<meta name="twitter:description" content="函数依赖 Functional Dependencies给定一个关系模式r(R)的实例，那么这个实例满足函数依赖α→β的条件是： 对实例中的所有元组对，若t1[α]=t2[α]，则t1[β]=t2[β] 如果r(R)在每个合法实例legal instance上都满足函数依赖α→β，则称函数依赖在模式r(R)上成立Hold 例如一个关系r(A,B)的一个实例如下    A B      1 4">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://abowloflrf.github.io/2018/01/02/db-system-concepts-notes-5/"/>
+
+
+
+
+
+  <title>数据库系统笔记5-Relational Database Design 关系型数据库的设计 | 笔记仓库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记仓库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2018/01/02/db-system-concepts-notes-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ruofeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记仓库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据库系统笔记5-Relational Database Design 关系型数据库的设计</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T08:12:35+08:00">
+                2018-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库系统/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="函数依赖-Functional-Dependencies"><a href="#函数依赖-Functional-Dependencies" class="headerlink" title="函数依赖 Functional Dependencies"></a>函数依赖 Functional Dependencies</h2><p>给定一个关系模式r(R)的实例，那么这个实例满足函数依赖α→β的条件是：</p>
+<p><strong>对实例中的所有元组对，若t1[α]=t2[α]，则t1[β]=t2[β]</strong></p>
+<p>如果r(R)在每个<strong>合法实例legal instance</strong>上都满足函数依赖α→β，则称函数依赖在模式r(R)上<strong>成立Hold</strong></p>
+<p>例如一个关系r(A,B)的一个实例如下</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> 1</td>
+<td>4 </td>
+</tr>
+<tr>
+<td> 1</td>
+<td>5 </td>
+</tr>
+<tr>
+<td> 3</td>
+<td>7 </td>
+</tr>
+</tbody>
+</table>
+<p>那么在这个实例上，函数依赖A→B不成立，但是B→A成立</p>
+<ul>
+<li><strong>当且仅当if and only if</strong>K→R时，K是关系模式R的一个超键</li>
+<li>若所有关系都满足一个函数依赖，则称这么函数依赖是<strong>平凡的Trivial</strong>，一般上，β⊆α则α→β这个函数依赖是平凡的</li>
+</ul>
+<h3 id="函数依赖的使用"><a href="#函数依赖的使用" class="headerlink" title="函数依赖的使用"></a>函数依赖的使用</h3><ul>
+<li>检验关系在指定的函数依赖F下是否合法</li>
+<li>在合法的关系中确定约束</li>
+</ul>
+<blockquote>
+<p>即便一个函数依赖在一个关系的所有合法实例上<strong>不</strong>都成立，这个关系的一个<strong>具体实例</strong>也可能满足这个函数依赖</p>
+</blockquote>
+<h2 id="闭包-Closure"><a href="#闭包-Closure" class="headerlink" title="闭包 Closure"></a>闭包 Closure</h2><p>给定一组函数依赖F，其他的函数依赖是由这一组函数依赖的<strong>逻辑蕴含logical imply</strong>，那么所有由F实现的函数依赖称为F的<strong>闭包Closure</strong></p>
+<p>将F的闭包标识为F+，F+是F的超集</p>
+<h2 id="Boyce-Coddy-范式-BCNF"><a href="#Boyce-Coddy-范式-BCNF" class="headerlink" title="Boyce-Coddy 范式 BCNF"></a>Boyce-Coddy 范式 BCNF</h2><p>具有函数依赖集F的关系模式R是BCNF的条件是：</p>
+<p><strong>对F+中所有形如α→β的函数依赖，至少有一项成立：</strong></p>
+<ol>
+<li>α→β是平凡的函数依赖（β⊆α）</li>
+<li>α是模式R的一个超码</li>
+</ol>
+<h3 id="函数依赖的闭包"><a href="#函数依赖的闭包" class="headerlink" title="函数依赖的闭包"></a>函数依赖的闭包</h3><p>关系模式r(R)的每一个满足F的实例也满足f，则R上的函数依赖f被r上的函数依赖集F<strong>逻辑蕴含logical imply</strong>，所有被函数依赖集F逻辑蕴含的函数依赖称为F的<strong>闭包Closure</strong>，表示为F+</p>
+<p>例如给定关系模式r(A,B,C,G,H,I)以及函数依赖A-&gt;B,A-&gt;C,CG-&gt;H,CG-&gt;I,B-&gt;H；则函数依赖A-&gt;H被逻辑蕴含。</p>
+<p>寻找F的所有F+的三条规则<strong>（Armstrong公理 Armstrong’s Axioms）</strong></p>
+<ul>
+<li><strong>自反律 reflexivity</strong> 若β⊆α，则α→β成立</li>
+<li><strong>增补律 augmentation</strong> 若α→β，则γα→γβ成立</li>
+<li><strong>传递律 transitivity</strong> 若α→β，β→γ，则α→γ成立</li>
+</ul>
+<p>这三条规则都是：</p>
+<ul>
+<li><strong>可靠的 Sound</strong></li>
+<li><strong>完备的 Complete</strong> </li>
+</ul>
+<p>另外还有额外三条规则：</p>
+<ul>
+<li><strong>合并律 union</strong> 若α→β，α→γ，则α→βγ成立</li>
+<li><strong>分解率 decomposition</strong> 若α→βγ，则α→β，α→γ成立</li>
+<li><strong>伪传递律 pseudotransitivity</strong> 若α→β，βγ→σ，则αγ→σ成立</li>
+</ul>
+<h4 id="计算F-的步骤"><a href="#计算F-的步骤" class="headerlink" title="计算F+的步骤"></a>计算F+的步骤</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">F+=F</span><br><span class="line">  do</span><br><span class="line">    for each f in F+:</span><br><span class="line">      f上应用自反率并将结果加入到F+</span><br><span class="line">    for each (f1,f2) in F+:</span><br><span class="line">      if (f1,f2)可以使用传递率结合，则将结果加入到F+</span><br><span class="line">  while(F+结果变化)</span><br></pre></td></tr></table></figure>
+<h3 id="属性集的闭包"><a href="#属性集的闭包" class="headerlink" title="属性集的闭包"></a>属性集的闭包</h3><p>给定一个属性α集，则函数依赖集F下属性α所确定的的所有属性的集合称为F下α的<strong>闭包</strong>：</p>
+<h4 id="计算α-的步骤"><a href="#计算α-的步骤" class="headerlink" title="计算α+的步骤"></a>计算α+的步骤</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">result=α</span><br><span class="line">do</span><br><span class="line">  for each β→γ in F</span><br><span class="line">    若 β⊆result 则 result=result∪γ</span><br><span class="line">while(result有变化)</span><br></pre></td></tr></table></figure>
+<h4 id="属性闭包的使用"><a href="#属性闭包的使用" class="headerlink" title="属性闭包的使用"></a>属性闭包的使用</h4><ul>
+<li>检验超键</li>
+<li>检验函数依赖</li>
+<li>计算F的闭包</li>
+</ul>
+<h3 id="检验BCNF"><a href="#检验BCNF" class="headerlink" title="检验BCNF"></a>检验BCNF</h3><p>简单的检验方法：</p>
+<ul>
+<li>检验平凡的函数依赖α→β是否违反BCNF，计算α+并验证它是否包含R中的所有属性，即验证它是否是R的<strong>超码</strong></li>
+<li>检验关系模式R是否属于BCNF，仅需要检验函数依赖集F是否违反了BCNF，而不需要检验F+</li>
+</ul>
+<p>关系分解时，只使用F来判断就不再适用，判断R分解后的Ri是否满足BCNF：</p>
+<p>对与Ri中属性的每一个子集α，确保α+要么不包含Ri-α，要么包含Ri的全部属性，即Ri没有违反BCNF</p>
+<h4 id="无损分解-Lossless-Decomposition"><a href="#无损分解-Lossless-Decomposition" class="headerlink" title="无损分解 Lossless Decomposition"></a>无损分解 Lossless Decomposition</h4><p>r(R)是一个关系模式，F是r(R)上的函数依赖集，令R1，R2是关系模式R的分解，若用两个关系模式r1(R1),r2(R2)来替代r(R)时没有信息损失，则称之为<strong>无损分解Lossless Decomposition</strong></p>
+<h4 id="BCNF的分解算法"><a href="#BCNF的分解算法" class="headerlink" title="BCNF的分解算法"></a>BCNF的分解算法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">result=&#123;R&#125;</span><br><span class="line">done=false</span><br><span class="line">计算F+</span><br><span class="line"></span><br><span class="line">while(not done) do</span><br><span class="line">  if result 中存在模式不满足BCNF</span><br><span class="line">    then</span><br><span class="line">      令 α→β是一个在Ri上成立的非平凡函数依赖，满足α→Ri不属于F+，且α∩β=Ø</span><br><span class="line">      result=(result-Ri)∪(Ri-β)∪(α,β)</span><br><span class="line">    end</span><br><span class="line">  else done=true</span><br></pre></td></tr></table></figure>
+<h3 id="保持依赖-Dependency-Preservation"><a href="#保持依赖-Dependency-Preservation" class="headerlink" title="保持依赖 Dependency Preservation"></a>保持依赖 Dependency Preservation</h3><p>对关系R进行分解时，R的函数依赖集也进行相应的分解，若分解后的总函数依赖集与原来的函数依赖集保持一致，则称为<strong>依赖保持</strong></p>
+<h4 id="保持依赖的验证"><a href="#保持依赖的验证" class="headerlink" title="保持依赖的验证"></a>保持依赖的验证</h4><p>对每一个函数依赖α→β：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">result=α</span><br><span class="line">do </span><br><span class="line">  for each Ri in decomposition</span><br><span class="line">    t=(result∩Ri)+∩Ri</span><br><span class="line">    result=result∪t</span><br><span class="line">while(result有变化)</span><br></pre></td></tr></table></figure></p>
+<p>若result包含β的中的所有属性，则函数依赖α→β保持，当且仅当上述过程中F的所有依赖都被保持时分解是<strong>保持依赖</strong>的</p>
+<h4 id="BCNF的保持依赖"><a href="#BCNF的保持依赖" class="headerlink" title="BCNF的保持依赖"></a>BCNF的保持依赖</h4><h2 id="第三范式-3NF"><a href="#第三范式-3NF" class="headerlink" title="第三范式 3NF"></a>第三范式 3NF</h2><p>对于F+所有的函数依赖α→β至少有一项成立：</p>
+<ul>
+<li>α→β是一个平凡函数依赖</li>
+<li>α是R的一个超码</li>
+<li>β-α中的每一个属性A都包含在R的一个候选码中</li>
+</ul>
+<p>若关系满足BCNF则一定也满足3NF，BCNF成立两个条件之一为上面的前两条</p>
+<h3 id="检验3NF"><a href="#检验3NF" class="headerlink" title="检验3NF"></a>检验3NF</h3><p>…</p>
+<h3 id="正则覆盖-Canonical-Cover"><a href="#正则覆盖-Canonical-Cover" class="headerlink" title="正则覆盖 Canonical Cover"></a>正则覆盖 Canonical Cover</h3><p>没有<strong>多余依赖redundant dependencies</strong>的函数依赖集例如在{A-&gt;B,B-&gt;C}这一依赖集中，若出现了A-&gt;C则这个函数依赖是多余的依赖</p>
+<h3 id="无关属性-Extraneous-Attributes"><a href="#无关属性-Extraneous-Attributes" class="headerlink" title="无关属性 Extraneous Attributes"></a>无关属性 Extraneous Attributes</h3><p>若去除函数依赖集中的一个属性不改变该函数依赖集的闭包，则这个属性是<strong>无关属性</strong></p>
+<ul>
+<li><strong>例题</strong>计算正则覆盖：R = (A, B, C),F = {A → BC,B → C,A → B,AB → C}</li>
+</ul>
+<ol>
+<li>合并{A→BC,A→B}为A→BC则得到{A→BC,B→C,AB→C}</li>
+<li>A在AB→C中是无关属性，得到{A→BC,B→C}</li>
+<li>C在A→BC中数无关的，得到{A→B,B→C}</li>
+</ol>
+<h3 id="3NF的分解算法"><a href="#3NF的分解算法" class="headerlink" title="3NF的分解算法"></a>3NF的分解算法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">令Fc为F的正则覆盖</span><br><span class="line">i=0</span><br><span class="line">for each α→β in Fc</span><br><span class="line">  if 模式Rj,j=1,2...i 都不包含α，β</span><br><span class="line">    i=i+1</span><br><span class="line">    Ri=αβ</span><br><span class="line">  if 模式Rj,j=1,2...i 都不包含R的候选码</span><br><span class="line">    i=i+1</span><br><span class="line">    Ri=R的任意候选码</span><br><span class="line">return (R1...Ri)</span><br></pre></td></tr></table></figure>
+<h2 id="BCNF和3NF的比较"><a href="#BCNF和3NF的比较" class="headerlink" title="BCNF和3NF的比较"></a>BCNF和3NF的比较</h2><p>…</p>
+<h2 id="数据库设计目标"><a href="#数据库设计目标" class="headerlink" title="数据库设计目标"></a>数据库设计目标</h2><ul>
+<li>BCNF </li>
+<li>Lossless Join</li>
+<li>Dependency Preservation</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库系统/" rel="tag"># 数据库系统</a>
+          
+            <a href="/tags/专业课笔记/" rel="tag"># 专业课笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/01/db-system-concepts-notes-4/" rel="next" title="数据库系统笔记4-Entity-Relationship Model E-R模型">
+                <i class="fa fa-chevron-left"></i> 数据库系统笔记4-Entity-Relationship Model E-R模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/02/db-system-concepts-notes-6/" rel="prev" title="数据库系统笔记6-SQL语句基础">
+                数据库系统笔记6-SQL语句基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ruofeng" />
+            
+              <p class="site-author-name" itemprop="name">ruofeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://ruofeng.me" target="_blank" title="MainSite">
+                    
+                      <i class="fa fa-fw fa-user"></i>MainSite</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/abowloflrf" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:i@ruofeng.me" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数依赖-Functional-Dependencies"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x51FD;&#x6570;&#x4F9D;&#x8D56;-Functional-Dependencies" class="headerlink" title="&#x51FD;&#x6570;&#x4F9D;&#x8D56; Functional Dependencies"></a>&#x51FD;&#x6570;&#x4F9D;&#x8D56; Functional Dependencies</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数依赖的使用"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x51FD;&#x6570;&#x4F9D;&#x8D56;&#x7684;&#x4F7F;&#x7528;" class="headerlink" title="&#x51FD;&#x6570;&#x4F9D;&#x8D56;&#x7684;&#x4F7F;&#x7528;"></a>&#x51FD;&#x6570;&#x4F9D;&#x8D56;&#x7684;&#x4F7F;&#x7528;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包-Closure"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x95ED;&#x5305;-Closure" class="headerlink" title="&#x95ED;&#x5305; Closure"></a>&#x95ED;&#x5305; Closure</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Boyce-Coddy-范式-BCNF"><span class="nav-number">3.</span> <span class="nav-text"><a href="#Boyce-Coddy-&#x8303;&#x5F0F;-BCNF" class="headerlink" title="Boyce-Coddy &#x8303;&#x5F0F; BCNF"></a>Boyce-Coddy &#x8303;&#x5F0F; BCNF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数依赖的闭包"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x51FD;&#x6570;&#x4F9D;&#x8D56;&#x7684;&#x95ED;&#x5305;" class="headerlink" title="&#x51FD;&#x6570;&#x4F9D;&#x8D56;&#x7684;&#x95ED;&#x5305;"></a>&#x51FD;&#x6570;&#x4F9D;&#x8D56;&#x7684;&#x95ED;&#x5305;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计算F-的步骤"><span class="nav-number">3.1.1.</span> <span class="nav-text"><a href="#&#x8BA1;&#x7B97;F-&#x7684;&#x6B65;&#x9AA4;" class="headerlink" title="&#x8BA1;&#x7B97;F+&#x7684;&#x6B65;&#x9AA4;"></a>&#x8BA1;&#x7B97;F+&#x7684;&#x6B65;&#x9AA4;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性集的闭包"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x5C5E;&#x6027;&#x96C6;&#x7684;&#x95ED;&#x5305;" class="headerlink" title="&#x5C5E;&#x6027;&#x96C6;&#x7684;&#x95ED;&#x5305;"></a>&#x5C5E;&#x6027;&#x96C6;&#x7684;&#x95ED;&#x5305;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计算α-的步骤"><span class="nav-number">3.2.1.</span> <span class="nav-text"><a href="#&#x8BA1;&#x7B97;&#x3B1;-&#x7684;&#x6B65;&#x9AA4;" class="headerlink" title="&#x8BA1;&#x7B97;&#x3B1;+&#x7684;&#x6B65;&#x9AA4;"></a>&#x8BA1;&#x7B97;&#x3B1;+&#x7684;&#x6B65;&#x9AA4;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性闭包的使用"><span class="nav-number">3.2.2.</span> <span class="nav-text"><a href="#&#x5C5E;&#x6027;&#x95ED;&#x5305;&#x7684;&#x4F7F;&#x7528;" class="headerlink" title="&#x5C5E;&#x6027;&#x95ED;&#x5305;&#x7684;&#x4F7F;&#x7528;"></a>&#x5C5E;&#x6027;&#x95ED;&#x5305;&#x7684;&#x4F7F;&#x7528;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检验BCNF"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x68C0;&#x9A8C;BCNF" class="headerlink" title="&#x68C0;&#x9A8C;BCNF"></a>&#x68C0;&#x9A8C;BCNF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#无损分解-Lossless-Decomposition"><span class="nav-number">3.3.1.</span> <span class="nav-text"><a href="#&#x65E0;&#x635F;&#x5206;&#x89E3;-Lossless-Decomposition" class="headerlink" title="&#x65E0;&#x635F;&#x5206;&#x89E3; Lossless Decomposition"></a>&#x65E0;&#x635F;&#x5206;&#x89E3; Lossless Decomposition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BCNF的分解算法"><span class="nav-number">3.3.2.</span> <span class="nav-text"><a href="#BCNF&#x7684;&#x5206;&#x89E3;&#x7B97;&#x6CD5;" class="headerlink" title="BCNF&#x7684;&#x5206;&#x89E3;&#x7B97;&#x6CD5;"></a>BCNF&#x7684;&#x5206;&#x89E3;&#x7B97;&#x6CD5;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保持依赖-Dependency-Preservation"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#&#x4FDD;&#x6301;&#x4F9D;&#x8D56;-Dependency-Preservation" class="headerlink" title="&#x4FDD;&#x6301;&#x4F9D;&#x8D56; Dependency Preservation"></a>&#x4FDD;&#x6301;&#x4F9D;&#x8D56; Dependency Preservation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#保持依赖的验证"><span class="nav-number">3.4.1.</span> <span class="nav-text"><a href="#&#x4FDD;&#x6301;&#x4F9D;&#x8D56;&#x7684;&#x9A8C;&#x8BC1;" class="headerlink" title="&#x4FDD;&#x6301;&#x4F9D;&#x8D56;&#x7684;&#x9A8C;&#x8BC1;"></a>&#x4FDD;&#x6301;&#x4F9D;&#x8D56;&#x7684;&#x9A8C;&#x8BC1;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BCNF的保持依赖"><span class="nav-number">3.4.2.</span> <span class="nav-text"><a href="#BCNF&#x7684;&#x4FDD;&#x6301;&#x4F9D;&#x8D56;" class="headerlink" title="BCNF&#x7684;&#x4FDD;&#x6301;&#x4F9D;&#x8D56;"></a>BCNF&#x7684;&#x4FDD;&#x6301;&#x4F9D;&#x8D56;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三范式-3NF"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x7B2C;&#x4E09;&#x8303;&#x5F0F;-3NF" class="headerlink" title="&#x7B2C;&#x4E09;&#x8303;&#x5F0F; 3NF"></a>&#x7B2C;&#x4E09;&#x8303;&#x5F0F; 3NF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#检验3NF"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x68C0;&#x9A8C;3NF" class="headerlink" title="&#x68C0;&#x9A8C;3NF"></a>&#x68C0;&#x9A8C;3NF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则覆盖-Canonical-Cover"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x6B63;&#x5219;&#x8986;&#x76D6;-Canonical-Cover" class="headerlink" title="&#x6B63;&#x5219;&#x8986;&#x76D6; Canonical Cover"></a>&#x6B63;&#x5219;&#x8986;&#x76D6; Canonical Cover</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无关属性-Extraneous-Attributes"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#&#x65E0;&#x5173;&#x5C5E;&#x6027;-Extraneous-Attributes" class="headerlink" title="&#x65E0;&#x5173;&#x5C5E;&#x6027; Extraneous Attributes"></a>&#x65E0;&#x5173;&#x5C5E;&#x6027; Extraneous Attributes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3NF的分解算法"><span class="nav-number">4.4.</span> <span class="nav-text"><a href="#3NF&#x7684;&#x5206;&#x89E3;&#x7B97;&#x6CD5;" class="headerlink" title="3NF&#x7684;&#x5206;&#x89E3;&#x7B97;&#x6CD5;"></a>3NF&#x7684;&#x5206;&#x89E3;&#x7B97;&#x6CD5;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BCNF和3NF的比较"><span class="nav-number">5.</span> <span class="nav-text"><a href="#BCNF&#x548C;3NF&#x7684;&#x6BD4;&#x8F83;" class="headerlink" title="BCNF&#x548C;3NF&#x7684;&#x6BD4;&#x8F83;"></a>BCNF&#x548C;3NF&#x7684;&#x6BD4;&#x8F83;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库设计目标"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x6570;&#x636E;&#x5E93;&#x8BBE;&#x8BA1;&#x76EE;&#x6807;" class="headerlink" title="&#x6570;&#x636E;&#x5E93;&#x8BBE;&#x8BA1;&#x76EE;&#x6807;"></a>&#x6570;&#x636E;&#x5E93;&#x8BBE;&#x8BA1;&#x76EE;&#x6807;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ruofeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.coding.me" style="font-weight:bold">Coding Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

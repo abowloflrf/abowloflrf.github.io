@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据库系统,专业课笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="E-R图  矩形表示为实体集Entity Sets 菱形表示为关系集Relationship Sets 连接线将实体集连接到关系集 椭圆Ellipse表示属性Attributes  关系集成员基数约束 Cardinality Constraints使用有指向的箭头表示“一”，使用无指向的线表示“多”，则关系和实体集之间可以有这些： 一对一关系一个顾客通过借贷关系最多与一个贷款相关联，同时一个贷款也">
+<meta name="keywords" content="数据库系统,专业课笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库系统笔记4-Entity-Relationship Model E-R模型">
+<meta property="og:url" content="https://abowloflrf.github.io/2018/01/01/db-system-concepts-notes-4/index.html">
+<meta property="og:site_name" content="笔记仓库">
+<meta property="og:description" content="E-R图  矩形表示为实体集Entity Sets 菱形表示为关系集Relationship Sets 连接线将实体集连接到关系集 椭圆Ellipse表示属性Attributes  关系集成员基数约束 Cardinality Constraints使用有指向的箭头表示“一”，使用无指向的线表示“多”，则关系和实体集之间可以有这些： 一对一关系一个顾客通过借贷关系最多与一个贷款相关联，同时一个贷款也">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://abowloflrf.github.io/images/E-R-diagram.png">
+<meta property="og:image" content="https://abowloflrf.github.io/images/ER-one-to-one.png">
+<meta property="og:image" content="https://abowloflrf.github.io/images/ER-one-to-many.png">
+<meta property="og:image" content="https://abowloflrf.github.io/images/ER-many-to-many.png">
+<meta property="og:image" content="https://abowloflrf.github.io/images/ER-participation.png">
+<meta property="og:image" content="https://abowloflrf.github.io/images/ER-degree-3.png">
+<meta property="og:image" content="https://abowloflrf.github.io/images/ER-convert-to-binary.png">
+<meta property="og:updated_time" content="2018-01-01T16:41:52.405Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库系统笔记4-Entity-Relationship Model E-R模型">
+<meta name="twitter:description" content="E-R图  矩形表示为实体集Entity Sets 菱形表示为关系集Relationship Sets 连接线将实体集连接到关系集 椭圆Ellipse表示属性Attributes  关系集成员基数约束 Cardinality Constraints使用有指向的箭头表示“一”，使用无指向的线表示“多”，则关系和实体集之间可以有这些： 一对一关系一个顾客通过借贷关系最多与一个贷款相关联，同时一个贷款也">
+<meta name="twitter:image" content="https://abowloflrf.github.io/images/E-R-diagram.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://abowloflrf.github.io/2018/01/01/db-system-concepts-notes-4/"/>
+
+
+
+
+
+  <title>数据库系统笔记4-Entity-Relationship Model E-R模型 | 笔记仓库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记仓库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2018/01/01/db-system-concepts-notes-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ruofeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记仓库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据库系统笔记4-Entity-Relationship Model E-R模型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-01T22:15:09+08:00">
+                2018-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库系统/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="E-R图"><a href="#E-R图" class="headerlink" title="E-R图"></a>E-R图</h2><p><img src="/images/E-R-diagram.png" alt=""></p>
+<ul>
+<li>矩形表示为<strong>实体集Entity Sets</strong></li>
+<li>菱形表示为<strong>关系集Relationship Sets</strong></li>
+<li>连接线将实体集连接到关系集</li>
+<li><strong>椭圆Ellipse</strong>表示<strong>属性Attributes</strong></li>
+</ul>
+<h3 id="关系集"><a href="#关系集" class="headerlink" title="关系集"></a>关系集</h3><h3 id="成员"><a href="#成员" class="headerlink" title="成员"></a>成员</h3><h2 id="基数约束-Cardinality-Constraints"><a href="#基数约束-Cardinality-Constraints" class="headerlink" title="基数约束 Cardinality Constraints"></a>基数约束 Cardinality Constraints</h2><p>使用有指向的箭头表示“一”，使用无指向的线表示“多”，则关系和实体集之间可以有这些：</p>
+<h3 id="一对一关系"><a href="#一对一关系" class="headerlink" title="一对一关系"></a>一对一关系</h3><p><img src="/images/ER-one-to-one.png" alt=""><br>一个顾客通过借贷关系最多与一个贷款相关联，同时一个贷款也至多与一个顾客相关联</p>
+<h3 id="一对多关系"><a href="#一对多关系" class="headerlink" title="一对多关系"></a>一对多关系</h3><p><img src="/images/ER-one-to-many.png" alt=""><br>这里一份贷款最多能与一个顾客相关联，但是一个顾客能够有多份贷款</p>
+<h3 id="多对多关系"><a href="#多对多关系" class="headerlink" title="多对多关系"></a>多对多关系</h3><p><img src="/images/ER-many-to-many.png" alt=""></p>
+<ul>
+<li>一份贷款与多个顾客相关联</li>
+<li>一个顾客有多份贷款</li>
+</ul>
+<h2 id="实体集与关系集中的参与度-Participation"><a href="#实体集与关系集中的参与度-Participation" class="headerlink" title="实体集与关系集中的参与度 Participation"></a>实体集与关系集中的参与度 Participation</h2><p><img src="/images/ER-participation.png" alt=""></p>
+<h3 id="全部参与-Total-Participation"><a href="#全部参与-Total-Participation" class="headerlink" title="全部参与 Total Participation"></a>全部参与 Total Participation</h3><p>实体集中的每一个实体都参与到关系集R的至少一个关系中，则实体集E在关系集R中的参与称为<strong>全部的Total</strong></p>
+<p>在上面的例子中贷款实体在借贷关系中的参与是全部的，因为每一个贷款都必定有一个顾客实体与之关联</p>
+<h3 id="部分参与-Partial-Participation"><a href="#部分参与-Partial-Participation" class="headerlink" title="部分参与 Partial Participation"></a>部分参与 Partial Participation</h3><p>实体集中只有部分实体参与到了R的联系中，则实体集E到关系集R的参与称为<strong>部分的Partial</strong></p>
+<p>上面的例子中，顾客实体在贷款关系中的参与是部分的，因为并不是所有顾客都有一份贷款</p>
+<h2 id="关系集的度-Degree"><a href="#关系集的度-Degree" class="headerlink" title="关系集的度 Degree"></a>关系集的度 Degree</h2><p>参与关系集的实体集的数目称为关系集的<strong>度</strong></p>
+<p>关系集的实体集的参与数目大于2的情况是很少的，绝大多数度都为2，即<strong>Binary</strong>，度为3时称为<strong>Ternary</strong></p>
+<h3 id="三元关系ER图举例"><a href="#三元关系ER图举例" class="headerlink" title="三元关系ER图举例"></a>三元关系ER图举例</h3><p><img src="/images/ER-degree-3.png" alt=""></p>
+<h3 id="三元关系中的约束"><a href="#三元关系中的约束" class="headerlink" title="三元关系中的约束"></a>三元关系中的约束</h3><ul>
+<li>在三元或度更高的关系集中，至多允许一个有指向的箭头来表示基数约束</li>
+</ul>
+<p>若需要有更多的单项箭头，则有两种办法，假设ABC三个实体间存在关系R，有指向B和C的箭头</p>
+<ol>
+<li>每个A在B和C之间与一个单独的实体相关联</li>
+<li>每对实体（A，B）都与一个独立的实体C相关联，（A，C）与单独的实体B相关联</li>
+</ol>
+<h3 id="非二元关系集转化为二元关系"><a href="#非二元关系集转化为二元关系" class="headerlink" title="非二元关系集转化为二元关系"></a>非二元关系集转化为二元关系</h3><p>一般，任何的非二元关系都可以表示成二元关系的形式，假设ABC三个实体以关系R连接：<br><img src="/images/ER-convert-to-binary.png" alt=""><br>使用新的实体E代替关系R的位置，并在E和ABC之间设置关系Ra，Rb，Rc。若实体R有属性，则将这些属性赋值给实体E；并为E创建一个<strong>特殊的标志属性special identifying</strong>，通过这些属性来区分实体集中的各个实体，针对关系集R中的每个联系ai，bi，ci，在实体集E中创建新的实体ei并在三个新的关系集中插入新的联系：Ra中插入(ei,ai)，在Rb中插入(ei,bi)，在Rc中插入(ei,ci)</p>
+<h2 id="弱实体集-Weak-Entity"><a href="#弱实体集-Weak-Entity" class="headerlink" title="弱实体集 Weak Entity"></a>弱实体集 Weak Entity</h2><p>没有主键的实体集称为弱实体集，其存在取决于<strong>标识实体集Identifying Entity Set</strong>的存在，必须通过一个<strong>全部参与</strong>，<strong>一对多</strong>，的关系来与弱实体集相关联，这个标识关系使用<strong>双线菱形</strong>在ER图中表示。</p>
+<ul>
+<li>弱实体集使用<strong>双线矩形</strong>来表示</li>
+<li>使用虚线dashed下划线underline来标识处弱实体中的<strong>标识键discriminator</strong> </li>
+</ul>
+<h2 id="ER设计决策"><a href="#ER设计决策" class="headerlink" title="ER设计决策"></a>ER设计决策</h2><ul>
+<li>实体集中的属性如何用来标识一个对象</li>
+<li>使用实体集还是关系集来标识真实世界中存在的概念</li>
+<li>三元关系与二元关系的使用</li>
+<li>强实体与弱实体的使用</li>
+</ul>
+<h2 id="转换为关系模式-Relational-Schema"><a href="#转换为关系模式-Relational-Schema" class="headerlink" title="转换为关系模式 Relational Schema"></a>转换为关系模式 Relational Schema</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库系统/" rel="tag"># 数据库系统</a>
+          
+            <a href="/tags/专业课笔记/" rel="tag"># 专业课笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/31/db-system-concepts-notes-3/" rel="next" title="数据库系统笔记3-Relational Algebra 关系代数">
+                <i class="fa fa-chevron-left"></i> 数据库系统笔记3-Relational Algebra 关系代数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/02/db-system-concepts-notes-5/" rel="prev" title="数据库系统笔记5-Relational Database Design 关系型数据库的设计">
+                数据库系统笔记5-Relational Database Design 关系型数据库的设计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ruofeng" />
+            
+              <p class="site-author-name" itemprop="name">ruofeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://ruofeng.me" target="_blank" title="MainSite">
+                    
+                      <i class="fa fa-fw fa-user"></i>MainSite</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/abowloflrf" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:i@ruofeng.me" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#E-R图"><span class="nav-number">1.</span> <span class="nav-text"><a href="#E-R&#x56FE;" class="headerlink" title="E-R&#x56FE;"></a>E-R&#x56FE;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关系集"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x5173;&#x7CFB;&#x96C6;" class="headerlink" title="&#x5173;&#x7CFB;&#x96C6;"></a>&#x5173;&#x7CFB;&#x96C6;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#成员"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x6210;&#x5458;" class="headerlink" title="&#x6210;&#x5458;"></a>&#x6210;&#x5458;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基数约束-Cardinality-Constraints"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x57FA;&#x6570;&#x7EA6;&#x675F;-Cardinality-Constraints" class="headerlink" title="&#x57FA;&#x6570;&#x7EA6;&#x675F; Cardinality Constraints"></a>&#x57FA;&#x6570;&#x7EA6;&#x675F; Cardinality Constraints</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一对一关系"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x4E00;&#x5BF9;&#x4E00;&#x5173;&#x7CFB;" class="headerlink" title="&#x4E00;&#x5BF9;&#x4E00;&#x5173;&#x7CFB;"></a>&#x4E00;&#x5BF9;&#x4E00;&#x5173;&#x7CFB;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一对多关系"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x4E00;&#x5BF9;&#x591A;&#x5173;&#x7CFB;" class="headerlink" title="&#x4E00;&#x5BF9;&#x591A;&#x5173;&#x7CFB;"></a>&#x4E00;&#x5BF9;&#x591A;&#x5173;&#x7CFB;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多对多关系"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x591A;&#x5BF9;&#x591A;&#x5173;&#x7CFB;" class="headerlink" title="&#x591A;&#x5BF9;&#x591A;&#x5173;&#x7CFB;"></a>&#x591A;&#x5BF9;&#x591A;&#x5173;&#x7CFB;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实体集与关系集中的参与度-Participation"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x5B9E;&#x4F53;&#x96C6;&#x4E0E;&#x5173;&#x7CFB;&#x96C6;&#x4E2D;&#x7684;&#x53C2;&#x4E0E;&#x5EA6;-Participation" class="headerlink" title="&#x5B9E;&#x4F53;&#x96C6;&#x4E0E;&#x5173;&#x7CFB;&#x96C6;&#x4E2D;&#x7684;&#x53C2;&#x4E0E;&#x5EA6; Participation"></a>&#x5B9E;&#x4F53;&#x96C6;&#x4E0E;&#x5173;&#x7CFB;&#x96C6;&#x4E2D;&#x7684;&#x53C2;&#x4E0E;&#x5EA6; Participation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全部参与-Total-Participation"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x5168;&#x90E8;&#x53C2;&#x4E0E;-Total-Participation" class="headerlink" title="&#x5168;&#x90E8;&#x53C2;&#x4E0E; Total Participation"></a>&#x5168;&#x90E8;&#x53C2;&#x4E0E; Total Participation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部分参与-Partial-Participation"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x90E8;&#x5206;&#x53C2;&#x4E0E;-Partial-Participation" class="headerlink" title="&#x90E8;&#x5206;&#x53C2;&#x4E0E; Partial Participation"></a>&#x90E8;&#x5206;&#x53C2;&#x4E0E; Partial Participation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关系集的度-Degree"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x5173;&#x7CFB;&#x96C6;&#x7684;&#x5EA6;-Degree" class="headerlink" title="&#x5173;&#x7CFB;&#x96C6;&#x7684;&#x5EA6; Degree"></a>&#x5173;&#x7CFB;&#x96C6;&#x7684;&#x5EA6; Degree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三元关系ER图举例"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x4E09;&#x5143;&#x5173;&#x7CFB;ER&#x56FE;&#x4E3E;&#x4F8B;" class="headerlink" title="&#x4E09;&#x5143;&#x5173;&#x7CFB;ER&#x56FE;&#x4E3E;&#x4F8B;"></a>&#x4E09;&#x5143;&#x5173;&#x7CFB;ER&#x56FE;&#x4E3E;&#x4F8B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三元关系中的约束"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x4E09;&#x5143;&#x5173;&#x7CFB;&#x4E2D;&#x7684;&#x7EA6;&#x675F;" class="headerlink" title="&#x4E09;&#x5143;&#x5173;&#x7CFB;&#x4E2D;&#x7684;&#x7EA6;&#x675F;"></a>&#x4E09;&#x5143;&#x5173;&#x7CFB;&#x4E2D;&#x7684;&#x7EA6;&#x675F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非二元关系集转化为二元关系"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#&#x975E;&#x4E8C;&#x5143;&#x5173;&#x7CFB;&#x96C6;&#x8F6C;&#x5316;&#x4E3A;&#x4E8C;&#x5143;&#x5173;&#x7CFB;" class="headerlink" title="&#x975E;&#x4E8C;&#x5143;&#x5173;&#x7CFB;&#x96C6;&#x8F6C;&#x5316;&#x4E3A;&#x4E8C;&#x5143;&#x5173;&#x7CFB;"></a>&#x975E;&#x4E8C;&#x5143;&#x5173;&#x7CFB;&#x96C6;&#x8F6C;&#x5316;&#x4E3A;&#x4E8C;&#x5143;&#x5173;&#x7CFB;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#弱实体集-Weak-Entity"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x5F31;&#x5B9E;&#x4F53;&#x96C6;-Weak-Entity" class="headerlink" title="&#x5F31;&#x5B9E;&#x4F53;&#x96C6; Weak Entity"></a>&#x5F31;&#x5B9E;&#x4F53;&#x96C6; Weak Entity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ER设计决策"><span class="nav-number">6.</span> <span class="nav-text"><a href="#ER&#x8BBE;&#x8BA1;&#x51B3;&#x7B56;" class="headerlink" title="ER&#x8BBE;&#x8BA1;&#x51B3;&#x7B56;"></a>ER&#x8BBE;&#x8BA1;&#x51B3;&#x7B56;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转换为关系模式-Relational-Schema"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x8F6C;&#x6362;&#x4E3A;&#x5173;&#x7CFB;&#x6A21;&#x5F0F;-Relational-Schema" class="headerlink" title="&#x8F6C;&#x6362;&#x4E3A;&#x5173;&#x7CFB;&#x6A21;&#x5F0F; Relational Schema"></a>&#x8F6C;&#x6362;&#x4E3A;&#x5173;&#x7CFB;&#x6A21;&#x5F0F; Relational Schema</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ruofeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.coding.me" style="font-weight:bold">Coding Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
