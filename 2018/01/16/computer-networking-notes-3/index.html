@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="计算机网络,专业课笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="设计数据链路层的主要目的为：在有差错的物理线路基础上采用差错检测，差错控制与流量控制等方法。将有差错的物理线路改进成无差错的数据链路，向网络层提供高质量的数据传输服务，物理层以上各层都有改善输出传输质量的责任，其中链路层为最重要的一层。 差错的产生与纠正差错产生的原因为：信号衰减，电磁噪声。 误码率二进制比特在数据传输系统中被传错的概率，近似等于Pe=Ne/N，N 为传输的二进制比特总数，Ne 为">
+<meta name="keywords" content="计算机网络,专业课笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络笔记3-数据链路层">
+<meta property="og:url" content="https://abowloflrf.github.io/2018/01/16/computer-networking-notes-3/index.html">
+<meta property="og:site_name" content="笔记仓库">
+<meta property="og:description" content="设计数据链路层的主要目的为：在有差错的物理线路基础上采用差错检测，差错控制与流量控制等方法。将有差错的物理线路改进成无差错的数据链路，向网络层提供高质量的数据传输服务，物理层以上各层都有改善输出传输质量的责任，其中链路层为最重要的一层。 差错的产生与纠正差错产生的原因为：信号衰减，电磁噪声。 误码率二进制比特在数据传输系统中被传错的概率，近似等于Pe=Ne/N，N 为传输的二进制比特总数，Ne 为">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-17T14:19:27.206Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机网络笔记3-数据链路层">
+<meta name="twitter:description" content="设计数据链路层的主要目的为：在有差错的物理线路基础上采用差错检测，差错控制与流量控制等方法。将有差错的物理线路改进成无差错的数据链路，向网络层提供高质量的数据传输服务，物理层以上各层都有改善输出传输质量的责任，其中链路层为最重要的一层。 差错的产生与纠正差错产生的原因为：信号衰减，电磁噪声。 误码率二进制比特在数据传输系统中被传错的概率，近似等于Pe=Ne/N，N 为传输的二进制比特总数，Ne 为">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://abowloflrf.github.io/2018/01/16/computer-networking-notes-3/"/>
+
+
+
+
+
+  <title>计算机网络笔记3-数据链路层 | 笔记仓库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记仓库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2018/01/16/computer-networking-notes-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ruofeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记仓库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络笔记3-数据链路层</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-16T19:58:05+08:00">
+                2018-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>设计数据链路层的主要目的为：<strong>在有差错的物理线路基础上采用差错检测，差错控制与流量控制等方法。将有差错的物理线路改进成无差错的数据链路，向网络层提供高质量的数据传输服务</strong>，物理层以上各层都有改善输出传输质量的责任，其中链路层为最重要的一层。</p>
+<h2 id="差错的产生与纠正"><a href="#差错的产生与纠正" class="headerlink" title="差错的产生与纠正"></a>差错的产生与纠正</h2><p>差错产生的原因为：<strong>信号衰减</strong>，<strong>电磁噪声</strong>。</p>
+<h3 id="误码率"><a href="#误码率" class="headerlink" title="误码率"></a>误码率</h3><p>二进制比特在数据传输系统中被传错的概率，近似等于<strong>Pe=Ne/N</strong>，N 为传输的二进制比特总数，Ne 为被传错的比特数</p>
+<p>误码率是衡量数据传输系统正常工作状态下传输可靠性的参数。传输错误正常且不可避免，只能控制在一个允许的范围内。</p>
+<h3 id="检错码与纠错码"><a href="#检错码与纠错码" class="headerlink" title="检错码与纠错码"></a>检错码与纠错码</h3><ul>
+<li>纠错码：为每个传输单元加上足够多的冗余信息，以便接收端能够发现并自动纠正传输差错</li>
+<li>检错码：为每个传输单元加上一定的冗余信息，接收端根据冗余信息发现传输差错，但是无法发现哪一位出错，不能纠正传输差错</li>
+</ul>
+<h3 id="奇偶校验"><a href="#奇偶校验" class="headerlink" title="奇偶校验"></a>奇偶校验</h3><p>发送方只附加一个比特。使得这 d+1 个比特中 1 的总数为偶数。</p>
+<h3 id="循环冗余编码-CRC"><a href="#循环冗余编码-CRC" class="headerlink" title="循环冗余编码 CRC"></a>循环冗余编码 CRC</h3><p>将一组数据 M 后附加上 n 位的<strong>冗余码</strong>一起发送，然后与<strong>生成多项式 G</strong>进行模二除法运算，得到的余数 R 即为冗余码，附加在原始数据后面一共 k+n 位数，接收方要检验数据师傅哦差错，将接收到的 k+n 位数据再与约定要的生成多项式进行除法运算，若计算得到余数为 0 则表示没有差错，接受。若余数不是 0，则丢弃数据。</p>
+<blockquote>
+<p>不能确定究竟是哪一位或是哪几位出现差错</p>
+</blockquote>
+<h2 id="数据链路基本概念"><a href="#数据链路基本概念" class="headerlink" title="数据链路基本概念"></a>数据链路基本概念</h2><ul>
+<li>物理线路：无源的点到点物理线段，中间没有任何其他交换节点</li>
+<li>数据链路：除了物理线路外，有通信协议控制数据的传输，把实现这些协议的硬件软件加到线路上构成了数据链路</li>
+</ul>
+<p>链路层传输的是<strong>帧</strong></p>
+<h3 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h3><ul>
+<li>链路管理</li>
+<li>帧同步</li>
+<li>流量控制</li>
+<li>差错控制</li>
+<li>透明传输</li>
+<li>寻址</li>
+</ul>
+<h2 id="数据链路协议"><a href="#数据链路协议" class="headerlink" title="数据链路协议"></a>数据链路协议</h2><p>可分为两类，面向字符型与面向比特型</p>
+<ul>
+<li>面向字符型协议三个明显<strong>缺点</strong>：1.不同类型计算机控制字符不同，2.不能实现透明传输，3.协议效率低</li>
+</ul>
+<p>典型的面向比特型协议有 HDLC 与 PPP</p>
+<h3 id="HDLC"><a href="#HDLC" class="headerlink" title="HDLC"></a>HDLC</h3><h4 id="透明传输"><a href="#透明传输" class="headerlink" title="透明传输"></a>透明传输</h4><p>透明传输指不管传输怎么样的比特组合，都应当在链路上发送。但是当所传输的比特恰好为某种控制信息的组合时，就应当采取相应的措施，使接收方不会错误地认为这时某种控制信息，才能保证数据链路层的传输是<strong>透明的</strong>。</p>
+<p>HDLC 协议规定采用<strong>0 比特插入删除方法</strong>，避免这种问题</p>
+<h3 id="PPP"><a href="#PPP" class="headerlink" title="PPP"></a>PPP</h3><p>在物理层支持<strong>点到点线路连接</strong>，<strong>全双工通信</strong>，支持<strong>异步通信</strong>或<strong>同步通信</strong>。</p>
+<p>在数据链路层实现<strong>PPP 数据帧的组帧</strong>，<strong>传输与拆帧</strong>，<strong>CRC 校验</strong>；不使用帧序号，不提供流量控制功能。</p>
+<p>通过<strong>链路控制协议 LCP</strong>来建立配置管理测试数据链路连接；通过<strong>网络控制协议 NCP</strong>建立配置不同的网络层协议。</p>
+<p>广泛用于<strong>主机-路由器</strong>，<strong>路由器-路由器</strong>的连接</p>
+<h4 id="透明传输-1"><a href="#透明传输-1" class="headerlink" title="透明传输"></a>透明传输</h4><p>在<strong>异步传输</strong>时，使用一种<strong>特殊的字符填充</strong>法，<code>0x7e</code>转变为 2 字节序列<code>0x7D,0x5E</code>，<code>0x7D</code>转变为 2 字节序列<code>0x7D,0x5D</code>，若出现 ASCII 码控制字符（小于<code>0x20</code>）则在字符前插入<code>0x7D</code>同时将该字符的编码加以改变，如<code>0x03</code>-&gt;<code>0x7D,0x23</code>。</p>
+<p>在<strong>同步传输</strong>时，使用<strong>0 比特填充</strong>法，只要发现五个连续的 1，则立即填入一个 0，在接收端每发现 5 个连续的 1，就将后面的一个 0 删除。</p>
+<h2 id="以太网"><a href="#以太网" class="headerlink" title="以太网"></a>以太网</h2><p><strong>介质访问控制</strong>要解决的三个基本问题：</p>
+<ol>
+<li>何时发送数据 </li>
+<li>如何发现冲突 </li>
+<li>出现冲突怎么办</li>
+</ol>
+<p>三种不同的介质访问控制方法对应三种不同类型局域网：</p>
+<ol>
+<li>采用带有冲突检测的载波侦听多路访问CSMA/CD形成Ethernet以太网</li>
+<li>采用令牌控制的令牌总线形局域网，称为令牌总线网</li>
+<li>采用令牌控制的令牌环形局域网，称为令牌环网</li>
+</ol>
+<h3 id="帧"><a href="#帧" class="headerlink" title="帧"></a>帧</h3><p>前同步码+目的地址+源地址+类型+数据+CRC校验字段</p>
+<ul>
+<li>数据字段（46-1500字节），承载了IP数据报，以太网的<strong>最大传输单元MTU</strong>为1500字节，因此若数据报大于1500字节必须将数据报分片，若小于46字节必须填充到46字节</li>
+<li>目的地址（6字节），包含目的适配器的MAC地址</li>
+<li>源地址（6字节），包含传输该帧到局域网上的适配器的MAC地址</li>
+<li>类型字段（2字节），允许以太网复用多种网络层协议</li>
+<li>CRC（4字节），检测帧是否出错</li>
+<li>前同步码（8字节），前七个字节都是<code>10101010</code>最后一个字节为<code>10101011</code></li>
+</ul>
+<h3 id="MAC-地址"><a href="#MAC-地址" class="headerlink" title="MAC 地址"></a>MAC 地址</h3><p>物理地址，链路层地址，称为MAC地址，长度为6个字节，共有2^48个可能的MAC地址，每一块适配器都有独一无二的MAC地址，这些地址有IEEE注册管理机构分发，向生产适配器的厂商分配前三个字节，后三个字节由厂家自行指派保证生产处的适配器没有重复地址。</p>
+<h3 id="Ethernet物理层标准命名方法"><a href="#Ethernet物理层标准命名方法" class="headerlink" title="Ethernet物理层标准命名方法"></a>Ethernet物理层标准命名方法</h3><p><strong>IEEE 802.3 X Type-Y Name</strong></p>
+<ul>
+<li>X表示数据传输速率，Mbps</li>
+<li>Y表示网段最大长度，单位100m</li>
+<li>Type传输方式是基带还是频带</li>
+<li>Name表示局域网名称</li>
+</ul>
+<h3 id="CSMA-CD"><a href="#CSMA-CD" class="headerlink" title="CSMA/CD"></a>CSMA/CD</h3><p>算法简单易于实现，一种<strong>随机访问控制方法</strong>，适用于对传输实时性要求不高的办公环境</p>
+<ul>
+<li><strong>多点接入</strong>多台计算机以多点介入的方式连接在一根总线上</li>
+<li><strong>载波侦听</strong>每一个站发送数据前检测以下总线上是否有其他计算机在发送数据，若有则暂时不要发送数据，以免发生碰撞</li>
+<li><strong>碰撞检测</strong>边发送数据边检测信道上的信号电压大小，几个站同时发送数据时，总线上的信号电压摆动值会增大，超过一定门限值时，认为总线上至少有两个站在同时发送数据，表明发生碰撞</li>
+</ul>
+<h4 id="冲突窗口"><a href="#冲突窗口" class="headerlink" title="冲突窗口"></a>冲突窗口</h4><p>经过以太网端到端往返实践还没有检测到碰撞则肯定这次发送不会发生碰撞，这段时间称为<strong>冲突窗口</strong>或<strong>争用期</strong>或<strong>碰撞窗口</strong>=2D/V，D为传输介质最大长度，V为电磁波在介质中传输速度</p>
+<p>以太网取51.2μs为争用期长度，对于10Mb/s的以太网，争用期可发送512bit即64字节，若前64字节没有发生冲突，则后续的数据都不会发生冲突</p>
+<p>若发生冲突，则一定是在前64字节内，由于检测到冲突则立即停止发送，这时发送的数据一定小于64字节，称这64字节为<strong>最短有效帧长度</strong>，凡是长度小于64字节的帧都是由于冲突而中断的<strong>无效帧</strong></p>
+<h2 id="链路层交换机"><a href="#链路层交换机" class="headerlink" title="链路层交换机"></a>链路层交换机</h2><p>交换的基本功能：</p>
+<ul>
+<li>建立维护一个表示MAC地址与交换机端口对应的关系映射表</li>
+<li>发送主机与接收主机端口之间建立连接</li>
+<li>完成帧的guolv与转发</li>
+<li>执行生成树协议，防止出现环路</li>
+</ul>
+<h3 id="交换带宽"><a href="#交换带宽" class="headerlink" title="交换带宽"></a>交换带宽</h3><p>端口数×相应端口速率（全双工×2）</p>
+<h3 id="VLAN虚拟局域网"><a href="#VLAN虚拟局域网" class="headerlink" title="VLAN虚拟局域网"></a>VLAN虚拟局域网</h3><ul>
+<li>可以通过软件设置方法灵活组织逻辑工作组，方便局域网管理</li>
+<li>限制了局域网中广播通信量，提高了局域网系统性能</li>
+<li>通过指定交换机转发规则，提高了局域网系统的安全性</li>
+</ul>
+<p>###网桥<br>实现两个或两个以上相同类型的同构语句王的互联也可以实现两个或两个以上的不同类型的异构局域网的互联设备。<br>主要功能：</p>
+<ol>
+<li>端口号与对应的MAC地址表的转发表生成与维护</li>
+<li>帧接受过滤与转发</li>
+</ol>
+<h4 id="源路由网桥"><a href="#源路由网桥" class="headerlink" title="源路由网桥"></a>源路由网桥</h4><p>源路由网桥由发送帧的源主机负责路由选择，每个主机在发送帧时将详细的路由信息写在帧头部，网桥根据源主机确定路由转发帧，为了发现合适的路由源主机以广播的方式向目的主机发送用于探测的发现帧，得到这些路由信息后从可能的路由中选择一个最佳路由。</p>
+<h4 id="透明网桥"><a href="#透明网桥" class="headerlink" title="透明网桥"></a>透明网桥</h4><p>透明网桥最开始转发表是空的采用<strong>自学习</strong>的方法在转发帧的过程建立和更新转发表，局域网的主机不负责帧的传输路径的选择，主机不需要知道网桥的存在，不需要了解网桥之间的连接关系，网桥对主机是<strong>透明的</strong></p>
+<h3 id="转发表"><a href="#转发表" class="headerlink" title="转发表"></a>转发表</h3><p>交换机的<strong>转发</strong>决定着一个帧应该被导向那个接口，并把帧移动到那些接口的交换机功能。交换机的过滤和转发必须借助于<strong>转发表</strong>完成，转发表包含局域网上某些主机和路由器但不必是全部的表项。其中一个表项包含1<strong>一个MAC地址</strong>，2<strong>通向该MAC地址的交换机接口</strong>，3<strong>表项放置在表中的时间</strong>。</p>
+<h3 id="自学习"><a href="#自学习" class="headerlink" title="自学习"></a>自学习</h3><p>交换机转发表初始为空，对于在每个接口接收到的每个帧交换机在表中存储进入网桥的接口和其源MAC地址还有当前时间最为表中的一项。最终会每个节点都发送了帧则每个节点在转发表中都有记录。</p>
+<h2 id="无线局域网-802-11X"><a href="#无线局域网-802-11X" class="headerlink" title="无线局域网 802.11X"></a>无线局域网 802.11X</h2><p>802.11无线局域网发展过程中有多个速率不同的标准，802.11b速率为11Mbps，802.11a速率为54Mbps等。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
+          
+            <a href="/tags/专业课笔记/" rel="tag"># 专业课笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/16/computer-networking-notes-2/" rel="next" title="计算机网络笔记2-物理层">
+                <i class="fa fa-chevron-left"></i> 计算机网络笔记2-物理层
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/17/computer-networking-notes-4/" rel="prev" title="计算机网络笔记4-网络层">
+                计算机网络笔记4-网络层 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ruofeng" />
+            
+              <p class="site-author-name" itemprop="name">ruofeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://ruofeng.me" target="_blank" title="MainSite">
+                    
+                      <i class="fa fa-fw fa-user"></i>MainSite</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/abowloflrf" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:i@ruofeng.me" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#差错的产生与纠正"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5DEE;&#x9519;&#x7684;&#x4EA7;&#x751F;&#x4E0E;&#x7EA0;&#x6B63;" class="headerlink" title="&#x5DEE;&#x9519;&#x7684;&#x4EA7;&#x751F;&#x4E0E;&#x7EA0;&#x6B63;"></a>&#x5DEE;&#x9519;&#x7684;&#x4EA7;&#x751F;&#x4E0E;&#x7EA0;&#x6B63;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#误码率"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x8BEF;&#x7801;&#x7387;" class="headerlink" title="&#x8BEF;&#x7801;&#x7387;"></a>&#x8BEF;&#x7801;&#x7387;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检错码与纠错码"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x68C0;&#x9519;&#x7801;&#x4E0E;&#x7EA0;&#x9519;&#x7801;" class="headerlink" title="&#x68C0;&#x9519;&#x7801;&#x4E0E;&#x7EA0;&#x9519;&#x7801;"></a>&#x68C0;&#x9519;&#x7801;&#x4E0E;&#x7EA0;&#x9519;&#x7801;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#奇偶校验"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x5947;&#x5076;&#x6821;&#x9A8C;" class="headerlink" title="&#x5947;&#x5076;&#x6821;&#x9A8C;"></a>&#x5947;&#x5076;&#x6821;&#x9A8C;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环冗余编码-CRC"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x5FAA;&#x73AF;&#x5197;&#x4F59;&#x7F16;&#x7801;-CRC" class="headerlink" title="&#x5FAA;&#x73AF;&#x5197;&#x4F59;&#x7F16;&#x7801; CRC"></a>&#x5FAA;&#x73AF;&#x5197;&#x4F59;&#x7F16;&#x7801; CRC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据链路基本概念"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x6570;&#x636E;&#x94FE;&#x8DEF;&#x57FA;&#x672C;&#x6982;&#x5FF5;" class="headerlink" title="&#x6570;&#x636E;&#x94FE;&#x8DEF;&#x57FA;&#x672C;&#x6982;&#x5FF5;"></a>&#x6570;&#x636E;&#x94FE;&#x8DEF;&#x57FA;&#x672C;&#x6982;&#x5FF5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要功能"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x4E3B;&#x8981;&#x529F;&#x80FD;" class="headerlink" title="&#x4E3B;&#x8981;&#x529F;&#x80FD;"></a>&#x4E3B;&#x8981;&#x529F;&#x80FD;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据链路协议"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x6570;&#x636E;&#x94FE;&#x8DEF;&#x534F;&#x8BAE;" class="headerlink" title="&#x6570;&#x636E;&#x94FE;&#x8DEF;&#x534F;&#x8BAE;"></a>&#x6570;&#x636E;&#x94FE;&#x8DEF;&#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HDLC"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#HDLC" class="headerlink" title="HDLC"></a>HDLC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#透明传输"><span class="nav-number">3.1.1.</span> <span class="nav-text"><a href="#&#x900F;&#x660E;&#x4F20;&#x8F93;" class="headerlink" title="&#x900F;&#x660E;&#x4F20;&#x8F93;"></a>&#x900F;&#x660E;&#x4F20;&#x8F93;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PPP"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#PPP" class="headerlink" title="PPP"></a>PPP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#透明传输-1"><span class="nav-number">3.2.1.</span> <span class="nav-text"><a href="#&#x900F;&#x660E;&#x4F20;&#x8F93;-1" class="headerlink" title="&#x900F;&#x660E;&#x4F20;&#x8F93;"></a>&#x900F;&#x660E;&#x4F20;&#x8F93;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以太网"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x4EE5;&#x592A;&#x7F51;" class="headerlink" title="&#x4EE5;&#x592A;&#x7F51;"></a>&#x4EE5;&#x592A;&#x7F51;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#帧"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x5E27;" class="headerlink" title="&#x5E27;"></a>&#x5E27;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MAC-地址"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#MAC-&#x5730;&#x5740;" class="headerlink" title="MAC &#x5730;&#x5740;"></a>MAC &#x5730;&#x5740;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ethernet物理层标准命名方法"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#Ethernet&#x7269;&#x7406;&#x5C42;&#x6807;&#x51C6;&#x547D;&#x540D;&#x65B9;&#x6CD5;" class="headerlink" title="Ethernet&#x7269;&#x7406;&#x5C42;&#x6807;&#x51C6;&#x547D;&#x540D;&#x65B9;&#x6CD5;"></a>Ethernet&#x7269;&#x7406;&#x5C42;&#x6807;&#x51C6;&#x547D;&#x540D;&#x65B9;&#x6CD5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSMA-CD"><span class="nav-number">4.4.</span> <span class="nav-text"><a href="#CSMA-CD" class="headerlink" title="CSMA/CD"></a>CSMA/CD</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#冲突窗口"><span class="nav-number">4.4.1.</span> <span class="nav-text"><a href="#&#x51B2;&#x7A81;&#x7A97;&#x53E3;" class="headerlink" title="&#x51B2;&#x7A81;&#x7A97;&#x53E3;"></a>&#x51B2;&#x7A81;&#x7A97;&#x53E3;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链路层交换机"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x94FE;&#x8DEF;&#x5C42;&#x4EA4;&#x6362;&#x673A;" class="headerlink" title="&#x94FE;&#x8DEF;&#x5C42;&#x4EA4;&#x6362;&#x673A;"></a>&#x94FE;&#x8DEF;&#x5C42;&#x4EA4;&#x6362;&#x673A;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#交换带宽"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#&#x4EA4;&#x6362;&#x5E26;&#x5BBD;" class="headerlink" title="&#x4EA4;&#x6362;&#x5E26;&#x5BBD;"></a>&#x4EA4;&#x6362;&#x5E26;&#x5BBD;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VLAN虚拟局域网"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#VLAN&#x865A;&#x62DF;&#x5C40;&#x57DF;&#x7F51;" class="headerlink" title="VLAN&#x865A;&#x62DF;&#x5C40;&#x57DF;&#x7F51;"></a>VLAN&#x865A;&#x62DF;&#x5C40;&#x57DF;&#x7F51;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#源路由网桥"><span class="nav-number">5.2.1.</span> <span class="nav-text"><a href="#&#x6E90;&#x8DEF;&#x7531;&#x7F51;&#x6865;" class="headerlink" title="&#x6E90;&#x8DEF;&#x7531;&#x7F51;&#x6865;"></a>&#x6E90;&#x8DEF;&#x7531;&#x7F51;&#x6865;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#透明网桥"><span class="nav-number">5.2.2.</span> <span class="nav-text"><a href="#&#x900F;&#x660E;&#x7F51;&#x6865;" class="headerlink" title="&#x900F;&#x660E;&#x7F51;&#x6865;"></a>&#x900F;&#x660E;&#x7F51;&#x6865;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转发表"><span class="nav-number">5.3.</span> <span class="nav-text"><a href="#&#x8F6C;&#x53D1;&#x8868;" class="headerlink" title="&#x8F6C;&#x53D1;&#x8868;"></a>&#x8F6C;&#x53D1;&#x8868;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自学习"><span class="nav-number">5.4.</span> <span class="nav-text"><a href="#&#x81EA;&#x5B66;&#x4E60;" class="headerlink" title="&#x81EA;&#x5B66;&#x4E60;"></a>&#x81EA;&#x5B66;&#x4E60;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无线局域网-802-11X"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x65E0;&#x7EBF;&#x5C40;&#x57DF;&#x7F51;-802-11X" class="headerlink" title="&#x65E0;&#x7EBF;&#x5C40;&#x57DF;&#x7F51; 802.11X"></a>&#x65E0;&#x7EBF;&#x5C40;&#x57DF;&#x7F51; 802.11X</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ruofeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.coding.me" style="font-weight:bold">Coding Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

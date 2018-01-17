@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="计算机网络,专业课笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="网络层通过路由选择算法，为 IP 分组从源主机到目的主机选择一条合适的传输路径，为传输层端-端数据传输提供服务。 IP 协议 IP 协议是一种无连接，不可靠的分组传送服务协议 IP 协议针对源主机-路由器，路由器-路由器，路由器-目的主机，之间的数据传输的点-点网络层通信协议  IP 协议提供一种尽力而为的服务 IP 协议屏蔽了互联的网络在数据链路层，物理层协议与实现技术上的差异。 分组格式  版">
+<meta name="keywords" content="计算机网络,专业课笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络笔记4-网络层">
+<meta property="og:url" content="https://abowloflrf.github.io/2018/01/17/computer-networking-notes-4/index.html">
+<meta property="og:site_name" content="笔记仓库">
+<meta property="og:description" content="网络层通过路由选择算法，为 IP 分组从源主机到目的主机选择一条合适的传输路径，为传输层端-端数据传输提供服务。 IP 协议 IP 协议是一种无连接，不可靠的分组传送服务协议 IP 协议针对源主机-路由器，路由器-路由器，路由器-目的主机，之间的数据传输的点-点网络层通信协议  IP 协议提供一种尽力而为的服务 IP 协议屏蔽了互联的网络在数据链路层，物理层协议与实现技术上的差异。 分组格式  版">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://abowloflrf.github.io/images/Internet-Protocal.png">
+<meta property="og:updated_time" content="2018-01-17T18:03:38.266Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机网络笔记4-网络层">
+<meta name="twitter:description" content="网络层通过路由选择算法，为 IP 分组从源主机到目的主机选择一条合适的传输路径，为传输层端-端数据传输提供服务。 IP 协议 IP 协议是一种无连接，不可靠的分组传送服务协议 IP 协议针对源主机-路由器，路由器-路由器，路由器-目的主机，之间的数据传输的点-点网络层通信协议  IP 协议提供一种尽力而为的服务 IP 协议屏蔽了互联的网络在数据链路层，物理层协议与实现技术上的差异。 分组格式  版">
+<meta name="twitter:image" content="https://abowloflrf.github.io/images/Internet-Protocal.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://abowloflrf.github.io/2018/01/17/computer-networking-notes-4/"/>
+
+
+
+
+
+  <title>计算机网络笔记4-网络层 | 笔记仓库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记仓库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2018/01/17/computer-networking-notes-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ruofeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记仓库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络笔记4-网络层</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T22:19:50+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>网络层通过<strong>路由选择算法</strong>，为 IP 分组从源主机到目的主机选择一条合适的传输路径，为传输层端-端数据传输提供服务。</p>
+<h2 id="IP-协议"><a href="#IP-协议" class="headerlink" title="IP 协议"></a>IP 协议</h2><ul>
+<li>IP 协议是一种无连接，不可靠的分组传送服务协议</li>
+<li>IP 协议针对源主机-路由器，路由器-路由器，路由器-目的主机，之间的数据传输的点-点网络层通信协议</li>
+</ul>
+<p>IP 协议提供一种<strong>尽力而为</strong>的服务</p>
+<p>IP 协议屏蔽了互联的网络在数据链路层，物理层协议与实现技术上的差异。</p>
+<h3 id="分组格式"><a href="#分组格式" class="headerlink" title="分组格式"></a>分组格式</h3><p><img src="/images/Internet-Protocal.png" alt=""></p>
+<ul>
+<li><strong>版本字段</strong>：4 表示 IPV4，6 表示 IPV6</li>
+<li><strong>协议字段</strong>：长度为 8 位，1-ICMP，2-IGMP，6-TCP，8-EGP，17-UDP，41-IPv6，89-OSPF</li>
+<li><strong>分组头长度字段</strong>：长度 4 位，定义了以 4 字节为一个单位的分组头长度，分组头中处了 IP 选项字段和填充字段之外，其他各项为定长。分组头长度字段最小为 5 最大为 15</li>
+<li><strong>总长度字段</strong>：16 位，定义以字节为单位的分组总长度，能表示的 IP 分组最大长度为 65535=2^16-1 字节，包括分组头长度</li>
+<li><strong>服务类型字段</strong>：8 位，用于指示路由器如何分组</li>
+<li><strong>生存时间 TTL</strong>：用来设定分组在 Internet 中的寿命通常是用转发分组最多的路由器跳数来度量，TTL 初始值由源主机设置，每经过一个路由器转发，TTL-1，当 TTL 为 0 时，丢弃分组并发送 ICMP 报文通知源主机</li>
+<li><strong>头部校验和字段</strong>：16 位，保证分组头部的完整性</li>
+<li><strong>地址字段</strong>：包括源地址与目的 IP 地址，长度都是 32 位</li>
+</ul>
+<h4 id="头部校验和计算方法"><a href="#头部校验和计算方法" class="headerlink" title="头部校验和计算方法"></a>头部校验和计算方法</h4><p>只对头部进行校验，不包括分组数据。每两个字节 16 位当作一个数，相加得到和，取末 2 个字节，再取反码得到头部校验和。</p>
+<h3 id="IP-分组的分片与组装"><a href="#IP-分组的分片与组装" class="headerlink" title="IP 分组的分片与组装"></a>IP 分组的分片与组装</h3><p>以太网能承载最大不超过 1500 字节的数据，这个数值称为<strong>最大传输单元 MTU</strong>，链路层协议的 MTU 严格限制着 IP 数据报的长度。</p>
+<p>问题是发送方与目的的路径上每段链路可能使用不同的链路层协议，也就是有不同的 MTU。</p>
+<ul>
+<li>分组：从某条链路接收到一个 IP 数据报，通过检查转发表确定出链路，且该链路的 MTU 比该 IP 报的长度小，则将这个过大的 IP 数据报<strong>分组</strong>，分成两个或更多个较小的 IP 数据报。这些较小的数据报称为<strong>片</strong></li>
+<li>组装：IP 报文的组装工作在端系统中，而不是路由器中</li>
+</ul>
+<p>IP 报文中有与分组相关的字段：</p>
+<ul>
+<li>标识</li>
+<li>标志</li>
+<li>片偏移：以字节为单位，即计算时 bit*8</li>
+</ul>
+<h2 id="IP-地址"><a href="#IP-地址" class="headerlink" title="IP 地址"></a>IP 地址</h2><ul>
+<li>连接到 Internet 的每一个主机，计算机或路由器至少有 1 个 IP 地址</li>
+<li>IP 地址是分配给网络接口的</li>
+<li>一个接口可以分配多个 IP 地址</li>
+<li>网桥，Ethernet 交换机，集线器，属于数据链路层设备，使用 MAC 地址，不分配 IP 地址</li>
+</ul>
+<h3 id="标准分类"><a href="#标准分类" class="headerlink" title="标准分类"></a>标准分类</h3><ul>
+<li>A 类地址：1.0.0.0-127.255.255.255 0+网络号 7+主机号 24</li>
+<li>B 类地址：128.0.0.0-191.255.255.255 10+网络号 14+主机号 16</li>
+<li>C 类地址：192.0.0.0-223.255.255.255 110+网络号 21+主机号 8</li>
+<li>D 类地址：224.0.0.0-239.255.255.255 多播地址 1110+28 位</li>
+<li>E 类地址：240.0.0.0-247.255.255.255 保留用于实验与将来使用 11110+27 位</li>
+</ul>
+<h3 id="特殊-IP-地址"><a href="#特殊-IP-地址" class="headerlink" title="特殊 IP 地址"></a>特殊 IP 地址</h3><ul>
+<li>直接广播地址：A 类，B 类，C 类 IP 地址中主机号全 1 的 IP 地址，如 191.1.255.255，路由器将这个分组以广播方式大送给特定网络 191.1.0.0 的所有主机</li>
+<li>受限广播地址：网络号主机号全为 1，255.255.255.255</li>
+<li>本网络的特定主机地址：网络号全 0，如 0.0.0.25</li>
+<li>回送地址：127.0.0.0</li>
+</ul>
+<h3 id="保留的专用地址"><a href="#保留的专用地址" class="headerlink" title="保留的专用地址"></a>保留的专用地址</h3><ul>
+<li>A 类：10.</li>
+<li>B 类：172.16-172.31</li>
+<li>C 类：192.168.0-192.168.255</li>
+</ul>
+<h3 id="子网"><a href="#子网" class="headerlink" title="子网"></a>子网</h3><p>借用主机号的一部分作为子网的子网号，划分出更多的子网IP地址，对外部路由器寻址没有影响，两级IP地址变为<strong>三级的IP地址</strong></p>
+<h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><p>IP地址 AND 子网掩码 = 网络地址</p>
+<ul>
+<li>子网掩码是一个网络或一个子网的重要属性</li>
+<li>路由器在和相邻的路由器交换路由信息时，必须把自己所在的网络的子网掩码告诉相邻路由器</li>
+<li>路由器的路由表的每一个项目除了给出目的网络地址外，还必须给出该网络的子网掩码</li>
+</ul>
+<h3 id="可变长度子网掩码VLSM"><a href="#可变长度子网掩码VLSM" class="headerlink" title="可变长度子网掩码VLSM"></a>可变长度子网掩码VLSM</h3><p>在一个划分子网的网络中可同时使用几个不同的子网掩码，使用边长子网掩码，可进一步提高IP地址的资源利用率</p>
+<h3 id="无类别域间路由CIDR"><a href="#无类别域间路由CIDR" class="headerlink" title="无类别域间路由CIDR"></a>无类别域间路由CIDR</h3><p>在VLSM上进一步研究出的无分类变址方法</p>
+<ul>
+<li>消除了传统的ABC类地址以及划分子网的概念</li>
+<li>使用各种长度的<strong>网络前缀</strong>代替分类地址中的网络号和子网号</li>
+<li>IP地址从三级地址又回到两级编址</li>
+</ul>
+<p>128.14.32.0/20，标识的地址块共有2^12个地址，其中的20为网络前缀的个数，因此主机号为32-20=12位，共有2^12个地址，128.14.32.0为起始地址，最小地址128.14.32.0，最大地址128.14.47.255，全0与全1的主机号地址一般不使用。</p>
+<h2 id="路由协议"><a href="#路由协议" class="headerlink" title="路由协议"></a>路由协议</h2><p>路由选择算法：</p>
+<ul>
+<li>算法必须正确稳定公平</li>
+<li>算法尽量简单</li>
+<li>算法必须能够适应网络拓扑与通信量的变化</li>
+<li>算法应该是最佳的，尽可能接近理想</li>
+</ul>
+<p>主要参数：</p>
+<ul>
+<li>跳数：一个分组从源主机到目的主机转发分组的路由器数量</li>
+<li>带宽：链路传输速率</li>
+<li>延时：从源主机到目的主机花费的时间</li>
+<li>负载：通过路由器或线路的单位时间通信量</li>
+<li>可靠性：丢失率</li>
+<li>开销：耗费，链路长度，数据速率，链路容量，安全，传播延时与费用等因素</li>
+</ul>
+<h3 id="静态路由表"><a href="#静态路由表" class="headerlink" title="静态路由表"></a>静态路由表</h3><p>人工建立，开销小，不能及时适应网络变化</p>
+<h3 id="动态路由表"><a href="#动态路由表" class="headerlink" title="动态路由表"></a>动态路由表</h3><p>通常采用动态路由表，系统自动运行动态路由选择协议建立路由表。当互联网结构变化时，动态路由选择协议会自动更新路由表</p>
+<h3 id="路由转发分组基本流程"><a href="#路由转发分组基本流程" class="headerlink" title="路由转发分组基本流程"></a>路由转发分组基本流程</h3><ol>
+<li>从收到的分组首部提取目的IP地址D</li>
+<li>用个网络的子网掩码与D逐位与运算，查看是否和相应的网络地址匹配，若匹配则直接交付。否则间接交付执行3</li>
+<li>若路由表中有目的地址为D的特定主机路由，则将分组传给指明的吓一跳路由器，否则执行4</li>
+<li>若路由表中每一行的子网掩码与D逐位与，若结果与该行的网络地址匹配则将分组转发给该行指明的下一跳路由器，否则执行5</li>
+<li>若路由表中有一个默认路由则将分组传送给路由表所指明的默认路由器，否则执行6</li>
+<li>报告转发分组出错</li>
+</ol>
+<h3 id="RIP路由信息协议"><a href="#RIP路由信息协议" class="headerlink" title="RIP路由信息协议"></a>RIP路由信息协议</h3><ul>
+<li>仅和相邻路由器交换信息</li>
+<li>交换信息是当前本路由器知道的全部信息，即自己的路由表</li>
+<li>固定时间间隔交换路由更新信息</li>
+<li>允许最多跳数15，为16时相当于不可达，RIP只适用于小型互联网</li>
+<li>不能在两个网络之间使用多条路由，RIP选择一个最短路由</li>
+</ul>
+<h4 id="当一个路由器收到相邻路由器X的RIP报文"><a href="#当一个路由器收到相邻路由器X的RIP报文" class="headerlink" title="当一个路由器收到相邻路由器X的RIP报文"></a>当一个路由器收到相邻路由器X的RIP报文</h4><ol>
+<li>修改RIP报文内容，下一跳地址改为X，距离字段+1</li>
+<li>若RIP内容项目中的目的网络不在路由表中则加入到路由表，否则若下一跳字段给出的路由地址同一则将收到的项目替换原路由表中的项目，否则若收到项目中的距离小于路由表中的距离，则进行更新，否则什么也不做</li>
+<li>若3分钟还未收到相邻路由器的更新路由表，则把次路由器记为不可达路由，距离设置为16</li>
+</ol>
+<h4 id="RIP的四个计时器"><a href="#RIP的四个计时器" class="headerlink" title="RIP的四个计时器"></a>RIP的四个计时器</h4><ol>
+<li>周期更新计时器：30s交换一次路由更新信息</li>
+<li>延时定时器：防止广播风暴，路由更新设置随机延迟1-5秒</li>
+<li>超时定时器：180秒威慑偶倒刷新信息记为无效路由</li>
+<li>清除定时器：已经被标记为无效的路由，120秒未收到更新，则删除该记录</li>
+</ol>
+<h4 id="距离向量算法DV"><a href="#距离向量算法DV" class="headerlink" title="距离向量算法DV"></a>距离向量算法DV</h4><p>Dx(y)=minv{c(x,v),dv(y)}</p>
+<p>dx(y):x到y的最小代价的路径值<br>c(x,v):端点为x，v的边的代价</p>
+<h4 id="RIP2数据报特点"><a href="#RIP2数据报特点" class="headerlink" title="RIP2数据报特点"></a>RIP2数据报特点</h4><ul>
+<li>采用UDP协议，端口号520</li>
+<li>目的地址为组播地址</li>
+<li>包含下一跳的地址和子网掩码</li>
+</ul>
+<h3 id="OSPF开放最短路径优先协议"><a href="#OSPF开放最短路径优先协议" class="headerlink" title="OSPF开放最短路径优先协议"></a>OSPF开放最短路径优先协议</h3><ul>
+<li>使用链路状态协议</li>
+<li>区域内一个路由器状态更新，传播到区域内所有路由器</li>
+<li>区域内所有路由器都能形成一个跟踪网络链路变化的链路状态数据库，<strong>全网拓扑结构图</strong>并都能以自己为根建立最短路径优先树</li>
+<li>OSPF使用IP数据报传送而不是UDP</li>
+</ul>
+<h4 id="链路状态算法"><a href="#链路状态算法" class="headerlink" title="链路状态算法"></a>链路状态算法</h4><p>Dijkstra最短路径优先算法</p>
+<ul>
+<li>网络中每个路由器都知道全网的拓扑结果和每条边的权值</li>
+<li>每个路由器计算自己和网络中其他节点的最短路径</li>
+<li>通过相互交换信息，路由器更新自己的路由表，多次迭代之后每个路由器得到其他所有节点的最佳路由信息</li>
+</ul>
+<h3 id="BGP外部网关协议"><a href="#BGP外部网关协议" class="headerlink" title="BGP外部网关协议"></a>BGP外部网关协议</h3><p>力求寻找一条能够到达目的地且<strong>比较好的路由</strong>，而<strong>非最佳路由</strong></p>
+<h2 id="ICMP控制报文协议"><a href="#ICMP控制报文协议" class="headerlink" title="ICMP控制报文协议"></a>ICMP控制报文协议</h2><p>ICMP本身是网络层的一个协议，但是它的报文封装称IP分组再传输给数据链路层</p>
+<h3 id="报文类型"><a href="#报文类型" class="headerlink" title="报文类型"></a>报文类型</h3><ul>
+<li>差错报告报文</li>
+<li>查询报文</li>
+</ul>
+<h3 id="差错报文类型值"><a href="#差错报文类型值" class="headerlink" title="差错报文类型值"></a>差错报文类型值</h3><ul>
+<li>3 目的节点不可达</li>
+<li>4 源节点抑制</li>
+<li>5 超时</li>
+<li>11 参数问题</li>
+<li>12 重定向</li>
+</ul>
+<h3 id="询问报文类型值"><a href="#询问报文类型值" class="headerlink" title="询问报文类型值"></a>询问报文类型值</h3><ul>
+<li>8/0 回显请求与应答</li>
+<li>13/14 时间戳请求与应答</li>
+<li>15/16 信息请求与应答</li>
+<li>17/18 地址掩码请求与应答</li>
+</ul>
+<h2 id="ARP-地址解析协议"><a href="#ARP-地址解析协议" class="headerlink" title="ARP 地址解析协议"></a>ARP 地址解析协议</h2><p>A要给B发送IP数据报，但是A中的ARP缓存中没有B的MAC地址，因此A要广播ARP分组，分组中包含B的IP地址，LAN中所有机器都能接收到广播的ARP分组，B收到ARP分组，发送给A自己的MAC地址</p>
+<h2 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h2><ul>
+<li>新的协议格式</li>
+<li>巨大地址空间128位</li>
+<li>有效的分级寻址和路由结构</li>
+<li>有状态和无状态的地址自动配置</li>
+<li>内置安全机制</li>
+<li>更好支持QoS服务</li>
+</ul>
+<h3 id="扩展首部"><a href="#扩展首部" class="headerlink" title="扩展首部"></a>扩展首部</h3><p>IPV6将原来的IPv4首部中选项的功能都放在<strong>扩展首部</strong>中，并将扩展首部留给路径两端的源站和目的站主机来处理。数据报在途中经过的路由不处理这些扩展首部。大大提高了路由器处理效率</p>
+<h2 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h2><ul>
+<li>缓解IP地址池短缺</li>
+<li>网络安全，隐藏内部网络地址</li>
+</ul>
+<h3 id="工作过程"><a href="#工作过程" class="headerlink" title="工作过程"></a>工作过程</h3><ol>
+<li>内部主机X用本地地址IPx和因特网上的主机Y通信发送的数据报必须经过NAT路由器</li>
+<li>NAT路由器将数据报的源地址IPx转化为全球地址IPG，目的地址IPy不变，发送到因特网</li>
+<li>NAT路由器接收到主机Y发回的数据报时，知道数据报中的源地址为IPx而不是IPg</li>
+<li>根据NAT转换表，NAT路由器将目的地址IPG转换为IPx，转发给内部主机X</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
+          
+            <a href="/tags/专业课笔记/" rel="tag"># 专业课笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/16/computer-networking-notes-3/" rel="next" title="计算机网络笔记3-数据链路层">
+                <i class="fa fa-chevron-left"></i> 计算机网络笔记3-数据链路层
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ruofeng" />
+            
+              <p class="site-author-name" itemprop="name">ruofeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://ruofeng.me" target="_blank" title="MainSite">
+                    
+                      <i class="fa fa-fw fa-user"></i>MainSite</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/abowloflrf" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:i@ruofeng.me" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP-协议"><span class="nav-number">1.</span> <span class="nav-text"><a href="#IP-&#x534F;&#x8BAE;" class="headerlink" title="IP &#x534F;&#x8BAE;"></a>IP &#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分组格式"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x5206;&#x7EC4;&#x683C;&#x5F0F;" class="headerlink" title="&#x5206;&#x7EC4;&#x683C;&#x5F0F;"></a>&#x5206;&#x7EC4;&#x683C;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#头部校验和计算方法"><span class="nav-number">1.1.1.</span> <span class="nav-text"><a href="#&#x5934;&#x90E8;&#x6821;&#x9A8C;&#x548C;&#x8BA1;&#x7B97;&#x65B9;&#x6CD5;" class="headerlink" title="&#x5934;&#x90E8;&#x6821;&#x9A8C;&#x548C;&#x8BA1;&#x7B97;&#x65B9;&#x6CD5;"></a>&#x5934;&#x90E8;&#x6821;&#x9A8C;&#x548C;&#x8BA1;&#x7B97;&#x65B9;&#x6CD5;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IP-分组的分片与组装"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#IP-&#x5206;&#x7EC4;&#x7684;&#x5206;&#x7247;&#x4E0E;&#x7EC4;&#x88C5;" class="headerlink" title="IP &#x5206;&#x7EC4;&#x7684;&#x5206;&#x7247;&#x4E0E;&#x7EC4;&#x88C5;"></a>IP &#x5206;&#x7EC4;&#x7684;&#x5206;&#x7247;&#x4E0E;&#x7EC4;&#x88C5;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP-地址"><span class="nav-number">2.</span> <span class="nav-text"><a href="#IP-&#x5730;&#x5740;" class="headerlink" title="IP &#x5730;&#x5740;"></a>IP &#x5730;&#x5740;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标准分类"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x6807;&#x51C6;&#x5206;&#x7C7B;" class="headerlink" title="&#x6807;&#x51C6;&#x5206;&#x7C7B;"></a>&#x6807;&#x51C6;&#x5206;&#x7C7B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊-IP-地址"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x7279;&#x6B8A;-IP-&#x5730;&#x5740;" class="headerlink" title="&#x7279;&#x6B8A; IP &#x5730;&#x5740;"></a>&#x7279;&#x6B8A; IP &#x5730;&#x5740;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保留的专用地址"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x4FDD;&#x7559;&#x7684;&#x4E13;&#x7528;&#x5730;&#x5740;" class="headerlink" title="&#x4FDD;&#x7559;&#x7684;&#x4E13;&#x7528;&#x5730;&#x5740;"></a>&#x4FDD;&#x7559;&#x7684;&#x4E13;&#x7528;&#x5730;&#x5740;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子网"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x5B50;&#x7F51;" class="headerlink" title="&#x5B50;&#x7F51;"></a>&#x5B50;&#x7F51;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#子网掩码"><span class="nav-number">2.4.1.</span> <span class="nav-text"><a href="#&#x5B50;&#x7F51;&#x63A9;&#x7801;" class="headerlink" title="&#x5B50;&#x7F51;&#x63A9;&#x7801;"></a>&#x5B50;&#x7F51;&#x63A9;&#x7801;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变长度子网掩码VLSM"><span class="nav-number">2.5.</span> <span class="nav-text"><a href="#&#x53EF;&#x53D8;&#x957F;&#x5EA6;&#x5B50;&#x7F51;&#x63A9;&#x7801;VLSM" class="headerlink" title="&#x53EF;&#x53D8;&#x957F;&#x5EA6;&#x5B50;&#x7F51;&#x63A9;&#x7801;VLSM"></a>&#x53EF;&#x53D8;&#x957F;&#x5EA6;&#x5B50;&#x7F51;&#x63A9;&#x7801;VLSM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无类别域间路由CIDR"><span class="nav-number">2.6.</span> <span class="nav-text"><a href="#&#x65E0;&#x7C7B;&#x522B;&#x57DF;&#x95F4;&#x8DEF;&#x7531;CIDR" class="headerlink" title="&#x65E0;&#x7C7B;&#x522B;&#x57DF;&#x95F4;&#x8DEF;&#x7531;CIDR"></a>&#x65E0;&#x7C7B;&#x522B;&#x57DF;&#x95F4;&#x8DEF;&#x7531;CIDR</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#路由协议"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x8DEF;&#x7531;&#x534F;&#x8BAE;" class="headerlink" title="&#x8DEF;&#x7531;&#x534F;&#x8BAE;"></a>&#x8DEF;&#x7531;&#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态路由表"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x9759;&#x6001;&#x8DEF;&#x7531;&#x8868;" class="headerlink" title="&#x9759;&#x6001;&#x8DEF;&#x7531;&#x8868;"></a>&#x9759;&#x6001;&#x8DEF;&#x7531;&#x8868;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态路由表"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x52A8;&#x6001;&#x8DEF;&#x7531;&#x8868;" class="headerlink" title="&#x52A8;&#x6001;&#x8DEF;&#x7531;&#x8868;"></a>&#x52A8;&#x6001;&#x8DEF;&#x7531;&#x8868;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由转发分组基本流程"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x8DEF;&#x7531;&#x8F6C;&#x53D1;&#x5206;&#x7EC4;&#x57FA;&#x672C;&#x6D41;&#x7A0B;" class="headerlink" title="&#x8DEF;&#x7531;&#x8F6C;&#x53D1;&#x5206;&#x7EC4;&#x57FA;&#x672C;&#x6D41;&#x7A0B;"></a>&#x8DEF;&#x7531;&#x8F6C;&#x53D1;&#x5206;&#x7EC4;&#x57FA;&#x672C;&#x6D41;&#x7A0B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RIP路由信息协议"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#RIP&#x8DEF;&#x7531;&#x4FE1;&#x606F;&#x534F;&#x8BAE;" class="headerlink" title="RIP&#x8DEF;&#x7531;&#x4FE1;&#x606F;&#x534F;&#x8BAE;"></a>RIP&#x8DEF;&#x7531;&#x4FE1;&#x606F;&#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#当一个路由器收到相邻路由器X的RIP报文"><span class="nav-number">3.4.1.</span> <span class="nav-text"><a href="#&#x5F53;&#x4E00;&#x4E2A;&#x8DEF;&#x7531;&#x5668;&#x6536;&#x5230;&#x76F8;&#x90BB;&#x8DEF;&#x7531;&#x5668;X&#x7684;RIP&#x62A5;&#x6587;" class="headerlink" title="&#x5F53;&#x4E00;&#x4E2A;&#x8DEF;&#x7531;&#x5668;&#x6536;&#x5230;&#x76F8;&#x90BB;&#x8DEF;&#x7531;&#x5668;X&#x7684;RIP&#x62A5;&#x6587;"></a>&#x5F53;&#x4E00;&#x4E2A;&#x8DEF;&#x7531;&#x5668;&#x6536;&#x5230;&#x76F8;&#x90BB;&#x8DEF;&#x7531;&#x5668;X&#x7684;RIP&#x62A5;&#x6587;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RIP的四个计时器"><span class="nav-number">3.4.2.</span> <span class="nav-text"><a href="#RIP&#x7684;&#x56DB;&#x4E2A;&#x8BA1;&#x65F6;&#x5668;" class="headerlink" title="RIP&#x7684;&#x56DB;&#x4E2A;&#x8BA1;&#x65F6;&#x5668;"></a>RIP&#x7684;&#x56DB;&#x4E2A;&#x8BA1;&#x65F6;&#x5668;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#距离向量算法DV"><span class="nav-number">3.4.3.</span> <span class="nav-text"><a href="#&#x8DDD;&#x79BB;&#x5411;&#x91CF;&#x7B97;&#x6CD5;DV" class="headerlink" title="&#x8DDD;&#x79BB;&#x5411;&#x91CF;&#x7B97;&#x6CD5;DV"></a>&#x8DDD;&#x79BB;&#x5411;&#x91CF;&#x7B97;&#x6CD5;DV</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RIP2数据报特点"><span class="nav-number">3.4.4.</span> <span class="nav-text"><a href="#RIP2&#x6570;&#x636E;&#x62A5;&#x7279;&#x70B9;" class="headerlink" title="RIP2&#x6570;&#x636E;&#x62A5;&#x7279;&#x70B9;"></a>RIP2&#x6570;&#x636E;&#x62A5;&#x7279;&#x70B9;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSPF开放最短路径优先协议"><span class="nav-number">3.5.</span> <span class="nav-text"><a href="#OSPF&#x5F00;&#x653E;&#x6700;&#x77ED;&#x8DEF;&#x5F84;&#x4F18;&#x5148;&#x534F;&#x8BAE;" class="headerlink" title="OSPF&#x5F00;&#x653E;&#x6700;&#x77ED;&#x8DEF;&#x5F84;&#x4F18;&#x5148;&#x534F;&#x8BAE;"></a>OSPF&#x5F00;&#x653E;&#x6700;&#x77ED;&#x8DEF;&#x5F84;&#x4F18;&#x5148;&#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#链路状态算法"><span class="nav-number">3.5.1.</span> <span class="nav-text"><a href="#&#x94FE;&#x8DEF;&#x72B6;&#x6001;&#x7B97;&#x6CD5;" class="headerlink" title="&#x94FE;&#x8DEF;&#x72B6;&#x6001;&#x7B97;&#x6CD5;"></a>&#x94FE;&#x8DEF;&#x72B6;&#x6001;&#x7B97;&#x6CD5;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BGP外部网关协议"><span class="nav-number">3.6.</span> <span class="nav-text"><a href="#BGP&#x5916;&#x90E8;&#x7F51;&#x5173;&#x534F;&#x8BAE;" class="headerlink" title="BGP&#x5916;&#x90E8;&#x7F51;&#x5173;&#x534F;&#x8BAE;"></a>BGP&#x5916;&#x90E8;&#x7F51;&#x5173;&#x534F;&#x8BAE;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ICMP控制报文协议"><span class="nav-number">4.</span> <span class="nav-text"><a href="#ICMP&#x63A7;&#x5236;&#x62A5;&#x6587;&#x534F;&#x8BAE;" class="headerlink" title="ICMP&#x63A7;&#x5236;&#x62A5;&#x6587;&#x534F;&#x8BAE;"></a>ICMP&#x63A7;&#x5236;&#x62A5;&#x6587;&#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#报文类型"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x62A5;&#x6587;&#x7C7B;&#x578B;" class="headerlink" title="&#x62A5;&#x6587;&#x7C7B;&#x578B;"></a>&#x62A5;&#x6587;&#x7C7B;&#x578B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#差错报文类型值"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#&#x5DEE;&#x9519;&#x62A5;&#x6587;&#x7C7B;&#x578B;&#x503C;" class="headerlink" title="&#x5DEE;&#x9519;&#x62A5;&#x6587;&#x7C7B;&#x578B;&#x503C;"></a>&#x5DEE;&#x9519;&#x62A5;&#x6587;&#x7C7B;&#x578B;&#x503C;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#询问报文类型值"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#&#x8BE2;&#x95EE;&#x62A5;&#x6587;&#x7C7B;&#x578B;&#x503C;" class="headerlink" title="&#x8BE2;&#x95EE;&#x62A5;&#x6587;&#x7C7B;&#x578B;&#x503C;"></a>&#x8BE2;&#x95EE;&#x62A5;&#x6587;&#x7C7B;&#x578B;&#x503C;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARP-地址解析协议"><span class="nav-number">5.</span> <span class="nav-text"><a href="#ARP-&#x5730;&#x5740;&#x89E3;&#x6790;&#x534F;&#x8BAE;" class="headerlink" title="ARP &#x5730;&#x5740;&#x89E3;&#x6790;&#x534F;&#x8BAE;"></a>ARP &#x5730;&#x5740;&#x89E3;&#x6790;&#x534F;&#x8BAE;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6"><span class="nav-number">6.</span> <span class="nav-text"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展首部"><span class="nav-number">6.1.</span> <span class="nav-text"><a href="#&#x6269;&#x5C55;&#x9996;&#x90E8;" class="headerlink" title="&#x6269;&#x5C55;&#x9996;&#x90E8;"></a>&#x6269;&#x5C55;&#x9996;&#x90E8;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NAT"><span class="nav-number">7.</span> <span class="nav-text"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#工作过程"><span class="nav-number">7.1.</span> <span class="nav-text"><a href="#&#x5DE5;&#x4F5C;&#x8FC7;&#x7A0B;" class="headerlink" title="&#x5DE5;&#x4F5C;&#x8FC7;&#x7A0B;"></a>&#x5DE5;&#x4F5C;&#x8FC7;&#x7A0B;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ruofeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.coding.me" style="font-weight:bold">Coding Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
