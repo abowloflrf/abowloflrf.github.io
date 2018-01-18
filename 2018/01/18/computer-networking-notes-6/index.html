@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="计算机网络,专业课笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="通信方式通常分为两大类 C/S 与 P2P 客户服务器模式 Client/Server描述进程之间服务与被服务的关系 对等模式 P2P两个主机通信时不区分服务方与被服务方，两个主机是平等的，对等连接通信 两种通信方式区别 CS 工作模式中信息资源的共享以服务器为中心 P2P 工作模式淡化服务提供者与服务使用者界限 CS 与 P2P 模式差别主要在应用层 P2P 网络是在 IP 网络上构建的一种逻辑">
+<meta name="keywords" content="计算机网络,专业课笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络笔记6-应用层">
+<meta property="og:url" content="https://abowloflrf.github.io/2018/01/18/computer-networking-notes-6/index.html">
+<meta property="og:site_name" content="笔记仓库">
+<meta property="og:description" content="通信方式通常分为两大类 C/S 与 P2P 客户服务器模式 Client/Server描述进程之间服务与被服务的关系 对等模式 P2P两个主机通信时不区分服务方与被服务方，两个主机是平等的，对等连接通信 两种通信方式区别 CS 工作模式中信息资源的共享以服务器为中心 P2P 工作模式淡化服务提供者与服务使用者界限 CS 与 P2P 模式差别主要在应用层 P2P 网络是在 IP 网络上构建的一种逻辑">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-18T03:04:37.989Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机网络笔记6-应用层">
+<meta name="twitter:description" content="通信方式通常分为两大类 C/S 与 P2P 客户服务器模式 Client/Server描述进程之间服务与被服务的关系 对等模式 P2P两个主机通信时不区分服务方与被服务方，两个主机是平等的，对等连接通信 两种通信方式区别 CS 工作模式中信息资源的共享以服务器为中心 P2P 工作模式淡化服务提供者与服务使用者界限 CS 与 P2P 模式差别主要在应用层 P2P 网络是在 IP 网络上构建的一种逻辑">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://abowloflrf.github.io/2018/01/18/computer-networking-notes-6/"/>
+
+
+
+
+
+  <title>计算机网络笔记6-应用层 | 笔记仓库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记仓库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2018/01/18/computer-networking-notes-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ruofeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记仓库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络笔记6-应用层</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T10:15:42+08:00">
+                2018-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="通信方式"><a href="#通信方式" class="headerlink" title="通信方式"></a>通信方式</h2><p>通常分为两大类 C/S 与 P2P</p>
+<h3 id="客户服务器模式-Client-Server"><a href="#客户服务器模式-Client-Server" class="headerlink" title="客户服务器模式 Client/Server"></a>客户服务器模式 Client/Server</h3><p>描述进程之间服务与被服务的关系</p>
+<h3 id="对等模式-P2P"><a href="#对等模式-P2P" class="headerlink" title="对等模式 P2P"></a>对等模式 P2P</h3><p>两个主机通信时不区分服务方与被服务方，两个主机是平等的，对等连接通信</p>
+<h3 id="两种通信方式区别"><a href="#两种通信方式区别" class="headerlink" title="两种通信方式区别"></a>两种通信方式区别</h3><ul>
+<li>CS 工作模式中信息资源的共享以服务器为中心</li>
+<li>P2P 工作模式淡化服务提供者与服务使用者界限</li>
+<li>CS 与 P2P 模式差别主要在应用层</li>
+<li>P2P 网络是在 IP 网络上构建的一种逻辑覆盖网</li>
+</ul>
+<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><p>域名与确定的 IP 地址对应，由域名到 IP 地址的节序是由若干个域名服务器程序完成的。</p>
+<p>DNS 包括三个组成部分：</p>
+<ul>
+<li>域名空间</li>
+<li>域名注册</li>
+<li>域名解析</li>
+</ul>
+<h3 id="域名服务器类型"><a href="#域名服务器类型" class="headerlink" title="域名服务器类型"></a>域名服务器类型</h3><ul>
+<li>根域名服务器：因特网共有 13 个不同的根 DNS 服务器从 a-m 前 13 个字母，都知道所有顶级域名服务器的域名与 IP 地址</li>
+<li>顶级域名服务器：负责管理该顶级域名服务器注册的所有二级域名</li>
+<li>权限域名服务器：负责一个区域的域名服务器</li>
+<li>本地域名服务器</li>
+</ul>
+<h3 id="DNS-缓存"><a href="#DNS-缓存" class="headerlink" title="DNS 缓存"></a>DNS 缓存</h3><p>每个域名服务器都有自己的高速缓存，存放最近使用过以及从何处获得的 DNS 记录，大大减轻了根域名服务器的负荷。为了保持缓存中内容正确，域名服务器应该为每项内容设置计时器，并处理超过时间的项目</p>
+<h2 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h2><p>动态主机配置协议可以为主机自动分配IP地址以及其他一些重要参数</p>
+<h3 id="DHCP服务器"><a href="#DHCP服务器" class="headerlink" title="DHCP服务器"></a>DHCP服务器</h3><ul>
+<li>地址存储管理</li>
+<li>配置参数的存储管理</li>
+<li>租用管理</li>
+<li>响应客户主机请求</li>
+<li>服务管理</li>
+</ul>
+<h3 id="DHCP客户端"><a href="#DHCP客户端" class="headerlink" title="DHCP客户端"></a>DHCP客户端</h3><ul>
+<li>发起配置</li>
+<li>配置参数管理</li>
+<li>租用管理</li>
+<li>报文重传</li>
+</ul>
+<h3 id="租用管理"><a href="#租用管理" class="headerlink" title="租用管理"></a>租用管理</h3><p>DHCP分配给主机的IP地址是临时的，因此DHCP只能在一段时间内使用这个分配到的IP地址，这段时间称为租用期T</p>
+<h2 id="SMTP、POP、IMAP"><a href="#SMTP、POP、IMAP" class="headerlink" title="SMTP、POP、IMAP"></a>SMTP、POP、IMAP</h2><p><strong>SMTP</strong>用于发送邮件，<strong>POP3</strong>与<strong>IMAP</strong>用于接受读取邮件，<strong>MIMP</strong>是辅助性协议用于对SMTP的补充，可以在邮件的首部中说明邮件的数据类型，使用MIME可以在邮件中同时传送多种类型的数据</p>
+<h3 id="SMTP通信三个阶段"><a href="#SMTP通信三个阶段" class="headerlink" title="SMTP通信三个阶段"></a>SMTP通信三个阶段</h3><ol>
+<li>连接建立：在发送主机的SMTP客户端与接收主机的SMTP服务器之间建立</li>
+<li>邮件发送</li>
+<li>连接释放：发送完毕后SMTP释放TCP连接</li>
+</ol>
+<h3 id="SMTP特点"><a href="#SMTP特点" class="headerlink" title="SMTP特点"></a>SMTP特点</h3><ul>
+<li>不能传送可执行文件或其他二进制对象</li>
+<li>限于传送7位的ASCII码</li>
+<li>SMTP服务器会拒接超过一定长度的邮件</li>
+</ul>
+<h3 id="MIME特点"><a href="#MIME特点" class="headerlink" title="MIME特点"></a>MIME特点</h3><ul>
+<li>并没有改动SMTP或取代</li>
+<li>增加了邮件主题结构，并定义了传送非ASCII码的编码规则</li>
+</ul>
+<h2 id="FTP"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</h2><p>因特网使用最广泛的文件传送协议，提供交互式访问，允许客户指定文件类型格式并允许文件具有存取权限，FTP屏蔽了各个计算机系统细节，消除不兼容。一个FTP服务器可以为多个客户进程提供服务</p>
+<h3 id="控制连接-21"><a href="#控制连接-21" class="headerlink" title="控制连接 21"></a>控制连接 21</h3><p>控制连接在会话期间一直保持打开，客户端通过控制连接发送给服务器的控制进程。不用于传输文件。</p>
+<h3 id="数据连接-20"><a href="#数据连接-20" class="headerlink" title="数据连接 20"></a>数据连接 20</h3><p>实际用于传输文件，收到文件请求时创建，传送完毕后关闭数据传送连接</p>
+<h2 id="TELNET"><a href="#TELNET" class="headerlink" title="TELNET"></a>TELNET</h2><p>解决异构计算机互联中存在的问题，使用 TELNET 协议，引入了虚拟终端 NVT，访问远程计算机</p>
+<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>点击一个链接所发生的：</p>
+<ol>
+<li>浏览器分析指向页面的URL</li>
+<li>浏览器向DNS请求解析此URL的ip地址</li>
+<li>DNS解析出IP地址</li>
+<li>浏览器与该IP地址建立TCP连接</li>
+<li>浏览器发出读取文件命令 GET /</li>
+<li>服务器响应将指定文件发送给浏览器</li>
+<li>TCP连接释放</li>
+<li>浏览器解析HTML显示出网页内容</li>
+</ol>
+<h3 id="HTTP特点"><a href="#HTTP特点" class="headerlink" title="HTTP特点"></a>HTTP特点</h3><ul>
+<li>面向事务的客户服务器协议</li>
+<li>无状态</li>
+<li>HTTP本身是无连接的，虽然使用的是面向连接的TCP服务</li>
+</ul>
+<h3 id="持续连接"><a href="#持续连接" class="headerlink" title="持续连接"></a>持续连接</h3><p>HTTP/1.1使用持续连接，服务器在发送响应后任然在一段时间内保持连接，使得同一个客户与服务器可以继续在这条连接上传送后续的HTTP请求</p>
+<h3 id="HTTP请求报文"><a href="#HTTP请求报文" class="headerlink" title="HTTP请求报文"></a>HTTP请求报文</h3><p>包括三个部分，开始行（请求方法 URL 版本），首部行（首部字段：值），实体主体</p>
+<ol>
+<li>OPTION 请求一些选项</li>
+<li>GET 请求读取</li>
+<li>HEAD 请求读取首部</li>
+<li>POST 给服务器添加信息</li>
+<li>PUT 存储一个文档</li>
+<li>DELETE 删除资源</li>
+<li>TRACE 用于进行环回测试的请求报文</li>
+<li>CONNECT 用于代理服务器</li>
+</ol>
+<h3 id="HTTP响应报文"><a href="#HTTP响应报文" class="headerlink" title="HTTP响应报文"></a>HTTP响应报文</h3><p>开始行即状态行：版本+状态码+短语</p>
+<p>首部行</p>
+<p>实体主体</p>
+<ul>
+<li><strong>1xx</strong> 通知信息，表示请求收到或正在处理</li>
+<li><strong>2xx</strong> 表示成功</li>
+<li><strong>3xx</strong> 表示重定向，要完成还需要进一步行动</li>
+<li><strong>4xx</strong> 客户端错误</li>
+<li><strong>5xx</strong> 服务器错误</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
+          
+            <a href="/tags/专业课笔记/" rel="tag"># 专业课笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/18/computer-networking-notes-5/" rel="next" title="计算机网络笔记5-传输层">
+                <i class="fa fa-chevron-left"></i> 计算机网络笔记5-传输层
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ruofeng" />
+            
+              <p class="site-author-name" itemprop="name">ruofeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://ruofeng.me" target="_blank" title="MainSite">
+                    
+                      <i class="fa fa-fw fa-user"></i>MainSite</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/abowloflrf" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:i@ruofeng.me" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#通信方式"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x901A;&#x4FE1;&#x65B9;&#x5F0F;" class="headerlink" title="&#x901A;&#x4FE1;&#x65B9;&#x5F0F;"></a>&#x901A;&#x4FE1;&#x65B9;&#x5F0F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户服务器模式-Client-Server"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x5BA2;&#x6237;&#x670D;&#x52A1;&#x5668;&#x6A21;&#x5F0F;-Client-Server" class="headerlink" title="&#x5BA2;&#x6237;&#x670D;&#x52A1;&#x5668;&#x6A21;&#x5F0F; Client/Server"></a>&#x5BA2;&#x6237;&#x670D;&#x52A1;&#x5668;&#x6A21;&#x5F0F; Client/Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对等模式-P2P"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x5BF9;&#x7B49;&#x6A21;&#x5F0F;-P2P" class="headerlink" title="&#x5BF9;&#x7B49;&#x6A21;&#x5F0F; P2P"></a>&#x5BF9;&#x7B49;&#x6A21;&#x5F0F; P2P</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种通信方式区别"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x4E24;&#x79CD;&#x901A;&#x4FE1;&#x65B9;&#x5F0F;&#x533A;&#x522B;" class="headerlink" title="&#x4E24;&#x79CD;&#x901A;&#x4FE1;&#x65B9;&#x5F0F;&#x533A;&#x522B;"></a>&#x4E24;&#x79CD;&#x901A;&#x4FE1;&#x65B9;&#x5F0F;&#x533A;&#x522B;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS"><span class="nav-number">2.</span> <span class="nav-text"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#域名服务器类型"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x57DF;&#x540D;&#x670D;&#x52A1;&#x5668;&#x7C7B;&#x578B;" class="headerlink" title="&#x57DF;&#x540D;&#x670D;&#x52A1;&#x5668;&#x7C7B;&#x578B;"></a>&#x57DF;&#x540D;&#x670D;&#x52A1;&#x5668;&#x7C7B;&#x578B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS-缓存"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#DNS-&#x7F13;&#x5B58;" class="headerlink" title="DNS &#x7F13;&#x5B58;"></a>DNS &#x7F13;&#x5B58;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DHCP"><span class="nav-number">3.</span> <span class="nav-text"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DHCP服务器"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#DHCP&#x670D;&#x52A1;&#x5668;" class="headerlink" title="DHCP&#x670D;&#x52A1;&#x5668;"></a>DHCP&#x670D;&#x52A1;&#x5668;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DHCP客户端"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#DHCP&#x5BA2;&#x6237;&#x7AEF;" class="headerlink" title="DHCP&#x5BA2;&#x6237;&#x7AEF;"></a>DHCP&#x5BA2;&#x6237;&#x7AEF;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#租用管理"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x79DF;&#x7528;&#x7BA1;&#x7406;" class="headerlink" title="&#x79DF;&#x7528;&#x7BA1;&#x7406;"></a>&#x79DF;&#x7528;&#x7BA1;&#x7406;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMTP、POP、IMAP"><span class="nav-number">4.</span> <span class="nav-text"><a href="#SMTP&#x3001;POP&#x3001;IMAP" class="headerlink" title="SMTP&#x3001;POP&#x3001;IMAP"></a>SMTP&#x3001;POP&#x3001;IMAP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SMTP通信三个阶段"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#SMTP&#x901A;&#x4FE1;&#x4E09;&#x4E2A;&#x9636;&#x6BB5;" class="headerlink" title="SMTP&#x901A;&#x4FE1;&#x4E09;&#x4E2A;&#x9636;&#x6BB5;"></a>SMTP&#x901A;&#x4FE1;&#x4E09;&#x4E2A;&#x9636;&#x6BB5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SMTP特点"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#SMTP&#x7279;&#x70B9;" class="headerlink" title="SMTP&#x7279;&#x70B9;"></a>SMTP&#x7279;&#x70B9;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MIME特点"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#MIME&#x7279;&#x70B9;" class="headerlink" title="MIME&#x7279;&#x70B9;"></a>MIME&#x7279;&#x70B9;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FTP"><span class="nav-number">5.</span> <span class="nav-text"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#控制连接-21"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#&#x63A7;&#x5236;&#x8FDE;&#x63A5;-21" class="headerlink" title="&#x63A7;&#x5236;&#x8FDE;&#x63A5; 21"></a>&#x63A7;&#x5236;&#x8FDE;&#x63A5; 21</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据连接-20"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#&#x6570;&#x636E;&#x8FDE;&#x63A5;-20" class="headerlink" title="&#x6570;&#x636E;&#x8FDE;&#x63A5; 20"></a>&#x6570;&#x636E;&#x8FDE;&#x63A5; 20</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TELNET"><span class="nav-number">6.</span> <span class="nav-text"><a href="#TELNET" class="headerlink" title="TELNET"></a>TELNET</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP"><span class="nav-number">7.</span> <span class="nav-text"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP特点"><span class="nav-number">7.1.</span> <span class="nav-text"><a href="#HTTP&#x7279;&#x70B9;" class="headerlink" title="HTTP&#x7279;&#x70B9;"></a>HTTP&#x7279;&#x70B9;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持续连接"><span class="nav-number">7.2.</span> <span class="nav-text"><a href="#&#x6301;&#x7EED;&#x8FDE;&#x63A5;" class="headerlink" title="&#x6301;&#x7EED;&#x8FDE;&#x63A5;"></a>&#x6301;&#x7EED;&#x8FDE;&#x63A5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP请求报文"><span class="nav-number">7.3.</span> <span class="nav-text"><a href="#HTTP&#x8BF7;&#x6C42;&#x62A5;&#x6587;" class="headerlink" title="HTTP&#x8BF7;&#x6C42;&#x62A5;&#x6587;"></a>HTTP&#x8BF7;&#x6C42;&#x62A5;&#x6587;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP响应报文"><span class="nav-number">7.4.</span> <span class="nav-text"><a href="#HTTP&#x54CD;&#x5E94;&#x62A5;&#x6587;" class="headerlink" title="HTTP&#x54CD;&#x5E94;&#x62A5;&#x6587;"></a>HTTP&#x54CD;&#x5E94;&#x62A5;&#x6587;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ruofeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.coding.me" style="font-weight:bold">Coding Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

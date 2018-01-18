@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="计算机网络,专业课笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="传输层主要功能是实现进程之间的端-端通信，实现传输层协议的软件称为传输实体，传输层之间传输的报文称为传输协议数据单元TPDU 分布式进程通信要解决的两个基本问题：进程标识和多重协议识别 端口号0-65535  0-1023 熟知端口号，给每种标准的Internet服务进程分配的一个确定的端口号 1024-49151 注册端口号，用户开发新的网络应用时使用这些网络端口号 49152-65535 临时">
+<meta name="keywords" content="计算机网络,专业课笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络笔记5-传输层">
+<meta property="og:url" content="https://abowloflrf.github.io/2018/01/18/computer-networking-notes-5/index.html">
+<meta property="og:site_name" content="笔记仓库">
+<meta property="og:description" content="传输层主要功能是实现进程之间的端-端通信，实现传输层协议的软件称为传输实体，传输层之间传输的报文称为传输协议数据单元TPDU 分布式进程通信要解决的两个基本问题：进程标识和多重协议识别 端口号0-65535  0-1023 熟知端口号，给每种标准的Internet服务进程分配的一个确定的端口号 1024-49151 注册端口号，用户开发新的网络应用时使用这些网络端口号 49152-65535 临时">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://abowloflrf.github.io/images/UDP.png">
+<meta property="og:image" content="https://abowloflrf.github.io/images/UDP-2.png">
+<meta property="og:image" content="https://abowloflrf.github.io/images/TCP.png">
+<meta property="og:updated_time" content="2018-01-18T02:15:33.379Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机网络笔记5-传输层">
+<meta name="twitter:description" content="传输层主要功能是实现进程之间的端-端通信，实现传输层协议的软件称为传输实体，传输层之间传输的报文称为传输协议数据单元TPDU 分布式进程通信要解决的两个基本问题：进程标识和多重协议识别 端口号0-65535  0-1023 熟知端口号，给每种标准的Internet服务进程分配的一个确定的端口号 1024-49151 注册端口号，用户开发新的网络应用时使用这些网络端口号 49152-65535 临时">
+<meta name="twitter:image" content="https://abowloflrf.github.io/images/UDP.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://abowloflrf.github.io/2018/01/18/computer-networking-notes-5/"/>
+
+
+
+
+
+  <title>计算机网络笔记5-传输层 | 笔记仓库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">笔记仓库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://abowloflrf.github.io/2018/01/18/computer-networking-notes-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ruofeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="笔记仓库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络笔记5-传输层</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T02:05:20+08:00">
+                2018-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>传输层主要功能是实现进程之间的端-端通信，实现传输层协议的软件称为<strong>传输实体</strong>，传输层之间传输的报文称为<strong>传输协议数据单元TPDU</strong></p>
+<h2 id="分布式进程通信"><a href="#分布式进程通信" class="headerlink" title="分布式进程通信"></a>分布式进程通信</h2><p>要解决的两个基本问题：<strong>进程标识</strong>和<strong>多重协议识别</strong></p>
+<h3 id="端口号"><a href="#端口号" class="headerlink" title="端口号"></a>端口号</h3><p>0-65535</p>
+<ul>
+<li>0-1023 熟知端口号，给每种标准的Internet服务进程分配的一个确定的端口号</li>
+<li>1024-49151 注册端口号，用户开发新的网络应用时使用这些网络端口号</li>
+<li>49152-65535 临时端口号，由运行在客户端上的TCP/UDP软件随机选取，只对一次性进程通信有效</li>
+</ul>
+<h4 id="UDP熟知端口号"><a href="#UDP熟知端口号" class="headerlink" title="UDP熟知端口号"></a>UDP熟知端口号</h4><table>
+<thead>
+<tr>
+<th>端口号</th>
+<th>服务进程</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> 53</td>
+<td>DNS</td>
+<td>域名服务</td>
+</tr>
+<tr>
+<td> 67/68</td>
+<td>DHCP</td>
+<td>动态主机配置协议</td>
+</tr>
+<tr>
+<td> 69</td>
+<td>TFTP</td>
+<td>简单文件传输协议</td>
+</tr>
+<tr>
+<td> 161/162</td>
+<td>SNMP</td>
+<td>简单网络管理协议</td>
+</tr>
+<tr>
+<td> 520</td>
+<td>RIP</td>
+<td>路由信息协议</td>
+</tr>
+</tbody>
+</table>
+<h4 id="TCP熟知端口号"><a href="#TCP熟知端口号" class="headerlink" title="TCP熟知端口号"></a>TCP熟知端口号</h4><table>
+<thead>
+<tr>
+<th>端口号</th>
+<th>服务进程</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> 20</td>
+<td>FTP</td>
+<td>文件传输协议（数据连接）</td>
+</tr>
+<tr>
+<td> 21</td>
+<td>FTP</td>
+<td>文件传输协议（控制连接）</td>
+</tr>
+<tr>
+<td> 23</td>
+<td>TELNET</td>
+<td>网络虚拟终端协议</td>
+</tr>
+<tr>
+<td> 25</td>
+<td>SMTP</td>
+<td>简单邮件传输协议</td>
+</tr>
+<tr>
+<td> 80</td>
+<td>HTTP</td>
+<td>超文本传输协议</td>
+</tr>
+<tr>
+<td> 179</td>
+<td>BGP</td>
+<td>边界路由协议</td>
+</tr>
+</tbody>
+</table>
+<h2 id="客户-服务器模式"><a href="#客户-服务器模式" class="headerlink" title="客户-服务器模式"></a>客户-服务器模式</h2><p><strong>客户或服务器</strong>进程-&gt;套接字-&gt;传输层软件-&gt;IP地址-&gt;网络层软件-&gt;..Internet..-&gt;网络层软件-&gt;…-&gt;进程<strong>客户或服务器</strong></p>
+<h2 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h2><p>一种无连接，不可靠的传输层协议，提供一种<strong>尽力而为</strong>的服务：</p>
+<ul>
+<li>UDP在传输报文前不需要在通信双方建立连接，减少了协议的开销与传输延迟</li>
+<li>UDP对报文除了一种可选的校验和之外，几乎没有其他的保证数据传输可靠性的措施</li>
+<li>UDP检测出收到的分组出错则丢弃，既不确认也不通知发送端重传</li>
+</ul>
+<h3 id="UDP报文头部"><a href="#UDP报文头部" class="headerlink" title="UDP报文头部"></a>UDP报文头部</h3><p><img src="/images/UDP.png" alt=""></p>
+<h3 id="UDP-伪头部"><a href="#UDP-伪头部" class="headerlink" title="UDP 伪头部"></a>UDP 伪头部</h3><p>当UDP运行于IP协议之上时，为了能够计算校验和，需要在UDP的数据报上添加一个<strong>伪头部</strong>，包括了IP协议的一些信息，但是它并不是发送IP数据报时使用的头部，而只是用来计算校验和而已。</p>
+<p><img src="/images/UDP-2.png" alt=""></p>
+<h3 id="UDP适用范围"><a href="#UDP适用范围" class="headerlink" title="UDP适用范围"></a>UDP适用范围</h3><ul>
+<li>视频播放</li>
+<li>简短的交互式应用</li>
+<li>多播与广播应用</li>
+<li>实时语音与视频传输</li>
+</ul>
+<h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><ul>
+<li>支持面向连接的传输服务</li>
+<li>支持字节流的传输</li>
+<li>支持全双工通信</li>
+<li>支持同时建立多个并发的TCP连接</li>
+<li>可靠的传输服务</li>
+</ul>
+<h3 id="可靠传输"><a href="#可靠传输" class="headerlink" title="可靠传输"></a>可靠传输</h3><ul>
+<li>理想信道：不会比特错误，不会丢包，接收方速度总是能匹配发送方速度</li>
+<li>发送方发送数据和接收方接收数据是相互隔离</li>
+</ul>
+<h3 id="TCP报文头部"><a href="#TCP报文头部" class="headerlink" title="TCP报文头部"></a>TCP报文头部</h3><p><img src="/images/TCP.png" alt=""></p>
+<ul>
+<li>源端口目的端口：各占2字节，端口是传输层与应用层的服务接口</li>
+<li>序号字段：占4字节，TCP连接中传输的数据流中每一个字节都编上一个序号。值指的是本报文发送数据的第一个字节的序号</li>
+<li>确认号字段：4字节，期望收到对方一个报文段的数据的第一个字节序号</li>
+<li>头部长度：4位，指出TCP报文的首部长度，最小值5，最大值15</li>
+<li>保留字段：6位，全0</li>
+<li>紧急URG：URG=1时表面紧急指针字段有效，告诉系统此报文有紧急数据应当尽快传送</li>
+<li>确认ACK：ACK=1时，确认字段才会有效，ACK=0时无效</li>
+<li>推送PSH：接受TCP收到PSH=1的报文段，就应当尽快交付接受应用进程</li>
+<li>复位RST：RST=1时，表面TCP连接中出现严重差错，必须释放连接再重新建立连接</li>
+<li>同步SYN：SYN=1时，标识这是一个连接请求或连接接受报文</li>
+<li>终止FIN：释放一个连接，FIN=1表明此报文的发送端数据已经发送完毕并要求释放连接</li>
+<li>窗口：2字节，用来让对方设置发送窗口的依据，单位字节</li>
+<li>校验和：2字节，检验和字段检验范围包括首部和数据两部分，检验时需要在TCP报文前段加上12字节的伪头部</li>
+<li>紧急指针：16位，指出紧急数据末尾在本报文段中的位置</li>
+<li>选项：长度可变，最初只规定了一种选项，MSS最大报文段长度</li>
+</ul>
+<h3 id="TCP连接与释放"><a href="#TCP连接与释放" class="headerlink" title="TCP连接与释放"></a>TCP连接与释放</h3><p>传输连接有三个阶段：<strong>连接建立</strong>，<strong>数据传送</strong>，<strong>连接释放</strong></p>
+<p>连接的建立过程要解决以下三个问题：</p>
+<ol>
+<li>使得每一方能够确认对方的存在</li>
+<li>允许双方协商一些参数</li>
+<li>能够对运输实体资源进行分配</li>
+</ol>
+<h4 id="TCP连接建立"><a href="#TCP连接建立" class="headerlink" title="TCP连接建立"></a>TCP连接建立</h4><p><strong>三次握手</strong>建立TCP连接</p>
+<ol>
+<li><strong>客户-&gt;服务器 SYN=1,seq=x</strong>，客户向服务器发送连接请求报文段，首部同部位SYN=1，选择序号seq=1，表面传送数据时的第一个数据字节序号为x</li>
+<li><strong>服务器-&gt;客户 SYN=1,ACK=1,seq=y,ack=x+1</strong>，服务器收到连接请求报文段后若同一，则发回确认，SYN=1，ACK=1，其中确认编号ack=x+1，自己选择的序号seq=y</li>
+<li><strong>客户-&gt;服务器 ACK=1，seq=x+1，ack=y+1</strong>，客户收到确认报文后向B给出确认，其中ACK=1，确认号ack=y+1，客户端再通知上层应用进程连接已经建立</li>
+</ol>
+<h4 id="TCP连接释放"><a href="#TCP连接释放" class="headerlink" title="TCP连接释放"></a>TCP连接释放</h4><p><strong>四次握手</strong>释放TCP连接</p>
+<ol>
+<li><strong>客户-&gt;服务器 FIN=1，seq=u</strong>，数据传输结束后，客户端应用进程先向TCP发出释放链接报文段并停止发送数据主动关闭TCP连接，客户端将报文段首部FIN=1,seq=u，等待服务器确认</li>
+<li><strong>服务器-&gt;客户 ACK=1，seq=v，ack=u+1</strong>，服务器发出确认，确认号ack=u+1，序号seq=v，TCP服务通知高层应用进程，TCP处于<strong>半关闭</strong>状态，<strong>若服务器发送数据客户仍然会接收</strong></li>
+<li><strong>服务器-&gt;客户 FIN=1，ACK=1，seq=w，ack=u+1</strong>，若服务器没有要发送的数据则通知TCP释放连接</li>
+<li><strong>客户-&gt;服务器 ACK=1，seq=u+1，ack=w+1</strong>，客户端收到连接释放报文段后也要发出确认</li>
+</ol>
+<h3 id="滑动窗口、确认、重传"><a href="#滑动窗口、确认、重传" class="headerlink" title="滑动窗口、确认、重传"></a>滑动窗口、确认、重传</h3><p>TCP连接每一端必须要有：</p>
+<ol>
+<li>两个缓存：发送缓存与接受缓存</li>
+<li>一个窗口：接受端的接受窗口</li>
+</ol>
+<h4 id="发送缓存"><a href="#发送缓存" class="headerlink" title="发送缓存"></a>发送缓存</h4><p>用于暂时存放：</p>
+<ul>
+<li>发送应用程序给发送方TCP准备发送的数据</li>
+<li>TCP已经发送但是尚未收到确认的数据</li>
+</ul>
+<h4 id="接受缓存"><a href="#接受缓存" class="headerlink" title="接受缓存"></a>接受缓存</h4><p>用于暂时存放：</p>
+<ul>
+<li>按序到达但是尚未被接受应用程序读取的数据</li>
+<li>不按序到达的数据</li>
+</ul>
+<h4 id="滑动窗口协议主要特点"><a href="#滑动窗口协议主要特点" class="headerlink" title="滑动窗口协议主要特点"></a>滑动窗口协议主要特点</h4><ul>
+<li>使用发送与接受缓冲区，以及滑动窗口机制控制TCP连接上的的字节流传输</li>
+<li>滑动窗口面向字节，起到差错控制的作用。</li>
+<li>接收端可以在任何时候发送确认，窗口大小可以由接收端根据需要增大或者减小</li>
+<li>发送窗口值可以小于接收窗口值，不能超过接收窗口值</li>
+</ul>
+<h3 id="TCP流量控制"><a href="#TCP流量控制" class="headerlink" title="TCP流量控制"></a>TCP流量控制</h3><p>让对方发送的速率不要太快，既要接收方来得及接受也不要使网络发生拥塞。利用<strong>滑动窗口</strong>机制可以方便地在TCP连接上实现流量控制</p>
+<h3 id="TCP拥塞控制"><a href="#TCP拥塞控制" class="headerlink" title="TCP拥塞控制"></a>TCP拥塞控制</h3><p>网络中对某资源的需求超过了该资源所能提供的可用部分，网络性能开始变差，产生<strong>拥塞</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
+          
+            <a href="/tags/专业课笔记/" rel="tag"># 专业课笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/17/computer-networking-notes-4/" rel="next" title="计算机网络笔记4-网络层">
+                <i class="fa fa-chevron-left"></i> 计算机网络笔记4-网络层
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/18/computer-networking-notes-6/" rel="prev" title="计算机网络笔记6-应用层">
+                计算机网络笔记6-应用层 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ruofeng" />
+            
+              <p class="site-author-name" itemprop="name">ruofeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://ruofeng.me" target="_blank" title="MainSite">
+                    
+                      <i class="fa fa-fw fa-user"></i>MainSite</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/abowloflrf" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:i@ruofeng.me" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式进程通信"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5206;&#x5E03;&#x5F0F;&#x8FDB;&#x7A0B;&#x901A;&#x4FE1;" class="headerlink" title="&#x5206;&#x5E03;&#x5F0F;&#x8FDB;&#x7A0B;&#x901A;&#x4FE1;"></a>&#x5206;&#x5E03;&#x5F0F;&#x8FDB;&#x7A0B;&#x901A;&#x4FE1;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#端口号"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x7AEF;&#x53E3;&#x53F7;" class="headerlink" title="&#x7AEF;&#x53E3;&#x53F7;"></a>&#x7AEF;&#x53E3;&#x53F7;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UDP熟知端口号"><span class="nav-number">1.1.1.</span> <span class="nav-text"><a href="#UDP&#x719F;&#x77E5;&#x7AEF;&#x53E3;&#x53F7;" class="headerlink" title="UDP&#x719F;&#x77E5;&#x7AEF;&#x53E3;&#x53F7;"></a>UDP&#x719F;&#x77E5;&#x7AEF;&#x53E3;&#x53F7;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP熟知端口号"><span class="nav-number">1.1.2.</span> <span class="nav-text"><a href="#TCP&#x719F;&#x77E5;&#x7AEF;&#x53E3;&#x53F7;" class="headerlink" title="TCP&#x719F;&#x77E5;&#x7AEF;&#x53E3;&#x53F7;"></a>TCP&#x719F;&#x77E5;&#x7AEF;&#x53E3;&#x53F7;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户-服务器模式"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5BA2;&#x6237;-&#x670D;&#x52A1;&#x5668;&#x6A21;&#x5F0F;" class="headerlink" title="&#x5BA2;&#x6237;-&#x670D;&#x52A1;&#x5668;&#x6A21;&#x5F0F;"></a>&#x5BA2;&#x6237;-&#x670D;&#x52A1;&#x5668;&#x6A21;&#x5F0F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UDP"><span class="nav-number">3.</span> <span class="nav-text"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP报文头部"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#UDP&#x62A5;&#x6587;&#x5934;&#x90E8;" class="headerlink" title="UDP&#x62A5;&#x6587;&#x5934;&#x90E8;"></a>UDP&#x62A5;&#x6587;&#x5934;&#x90E8;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP-伪头部"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#UDP-&#x4F2A;&#x5934;&#x90E8;" class="headerlink" title="UDP &#x4F2A;&#x5934;&#x90E8;"></a>UDP &#x4F2A;&#x5934;&#x90E8;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP适用范围"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#UDP&#x9002;&#x7528;&#x8303;&#x56F4;" class="headerlink" title="UDP&#x9002;&#x7528;&#x8303;&#x56F4;"></a>UDP&#x9002;&#x7528;&#x8303;&#x56F4;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP"><span class="nav-number">4.</span> <span class="nav-text"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可靠传输"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#&#x53EF;&#x9760;&#x4F20;&#x8F93;" class="headerlink" title="&#x53EF;&#x9760;&#x4F20;&#x8F93;"></a>&#x53EF;&#x9760;&#x4F20;&#x8F93;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP报文头部"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#TCP&#x62A5;&#x6587;&#x5934;&#x90E8;" class="headerlink" title="TCP&#x62A5;&#x6587;&#x5934;&#x90E8;"></a>TCP&#x62A5;&#x6587;&#x5934;&#x90E8;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP连接与释放"><span class="nav-number">4.3.</span> <span class="nav-text"><a href="#TCP&#x8FDE;&#x63A5;&#x4E0E;&#x91CA;&#x653E;" class="headerlink" title="TCP&#x8FDE;&#x63A5;&#x4E0E;&#x91CA;&#x653E;"></a>TCP&#x8FDE;&#x63A5;&#x4E0E;&#x91CA;&#x653E;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP连接建立"><span class="nav-number">4.3.1.</span> <span class="nav-text"><a href="#TCP&#x8FDE;&#x63A5;&#x5EFA;&#x7ACB;" class="headerlink" title="TCP&#x8FDE;&#x63A5;&#x5EFA;&#x7ACB;"></a>TCP&#x8FDE;&#x63A5;&#x5EFA;&#x7ACB;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP连接释放"><span class="nav-number">4.3.2.</span> <span class="nav-text"><a href="#TCP&#x8FDE;&#x63A5;&#x91CA;&#x653E;" class="headerlink" title="TCP&#x8FDE;&#x63A5;&#x91CA;&#x653E;"></a>TCP&#x8FDE;&#x63A5;&#x91CA;&#x653E;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#滑动窗口、确认、重传"><span class="nav-number">4.4.</span> <span class="nav-text"><a href="#&#x6ED1;&#x52A8;&#x7A97;&#x53E3;&#x3001;&#x786E;&#x8BA4;&#x3001;&#x91CD;&#x4F20;" class="headerlink" title="&#x6ED1;&#x52A8;&#x7A97;&#x53E3;&#x3001;&#x786E;&#x8BA4;&#x3001;&#x91CD;&#x4F20;"></a>&#x6ED1;&#x52A8;&#x7A97;&#x53E3;&#x3001;&#x786E;&#x8BA4;&#x3001;&#x91CD;&#x4F20;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#发送缓存"><span class="nav-number">4.4.1.</span> <span class="nav-text"><a href="#&#x53D1;&#x9001;&#x7F13;&#x5B58;" class="headerlink" title="&#x53D1;&#x9001;&#x7F13;&#x5B58;"></a>&#x53D1;&#x9001;&#x7F13;&#x5B58;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接受缓存"><span class="nav-number">4.4.2.</span> <span class="nav-text"><a href="#&#x63A5;&#x53D7;&#x7F13;&#x5B58;" class="headerlink" title="&#x63A5;&#x53D7;&#x7F13;&#x5B58;"></a>&#x63A5;&#x53D7;&#x7F13;&#x5B58;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#滑动窗口协议主要特点"><span class="nav-number">4.4.3.</span> <span class="nav-text"><a href="#&#x6ED1;&#x52A8;&#x7A97;&#x53E3;&#x534F;&#x8BAE;&#x4E3B;&#x8981;&#x7279;&#x70B9;" class="headerlink" title="&#x6ED1;&#x52A8;&#x7A97;&#x53E3;&#x534F;&#x8BAE;&#x4E3B;&#x8981;&#x7279;&#x70B9;"></a>&#x6ED1;&#x52A8;&#x7A97;&#x53E3;&#x534F;&#x8BAE;&#x4E3B;&#x8981;&#x7279;&#x70B9;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP流量控制"><span class="nav-number">4.5.</span> <span class="nav-text"><a href="#TCP&#x6D41;&#x91CF;&#x63A7;&#x5236;" class="headerlink" title="TCP&#x6D41;&#x91CF;&#x63A7;&#x5236;"></a>TCP&#x6D41;&#x91CF;&#x63A7;&#x5236;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP拥塞控制"><span class="nav-number">4.6.</span> <span class="nav-text"><a href="#TCP&#x62E5;&#x585E;&#x63A7;&#x5236;" class="headerlink" title="TCP&#x62E5;&#x585E;&#x63A7;&#x5236;"></a>TCP&#x62E5;&#x585E;&#x63A7;&#x5236;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ruofeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.coding.me" style="font-weight:bold">Coding Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
