@@ -80,14 +80,14 @@
 <meta name="description" content="使用 C 语言复习数据结构的时候，最常用到的 C 语言中的两个对于初学者容易弄不明白的概念一个是指针 Pointer，另一个就是结构体 Struct了，这里专门整理并系统复习了 C 语言中结构体相关概念与使用 定义结构C 中一个结构体定义如下 1struct tag &amp;#123; member-list &amp;#125; variable-list ; 其中struct为结构体关键字，tag为结构体的">
 <meta name="keywords" content="C,数据结构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Struct in C">
+<meta property="og:title" content="C中的结构体">
 <meta property="og:url" content="https://abowloflrf.github.io/2018/02/03/struct-in-c/index.html">
 <meta property="og:site_name" content="笔记仓库">
 <meta property="og:description" content="使用 C 语言复习数据结构的时候，最常用到的 C 语言中的两个对于初学者容易弄不明白的概念一个是指针 Pointer，另一个就是结构体 Struct了，这里专门整理并系统复习了 C 语言中结构体相关概念与使用 定义结构C 中一个结构体定义如下 1struct tag &amp;#123; member-list &amp;#125; variable-list ; 其中struct为结构体关键字，tag为结构体的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-03T14:26:20.420Z">
+<meta property="og:updated_time" content="2018-02-03T14:29:33.511Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Struct in C">
+<meta name="twitter:title" content="C中的结构体">
 <meta name="twitter:description" content="使用 C 语言复习数据结构的时候，最常用到的 C 语言中的两个对于初学者容易弄不明白的概念一个是指针 Pointer，另一个就是结构体 Struct了，这里专门整理并系统复习了 C 语言中结构体相关概念与使用 定义结构C 中一个结构体定义如下 1struct tag &amp;#123; member-list &amp;#125; variable-list ; 其中struct为结构体关键字，tag为结构体的">
 
 
@@ -124,7 +124,7 @@
 
 
 
-  <title>Struct in C | 笔记仓库</title>
+  <title>C中的结构体 | 笔记仓库</title>
   
 
 
@@ -278,7 +278,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Struct in C</h1>
+          <h1 class="post-title" itemprop="name headline">C中的结构体</h1>
         
 
         <div class="post-meta">
@@ -343,9 +343,6 @@
 <p>这里在使用<code>typedef</code>声明一个<code>Student</code>结构体后，还使用<code>stu</code>, <code>*pstu</code>, <code>stus[10]</code>以让我们在后面方便的使用<code>stu</code>, <code>pstu</code>, <code>stus</code>分别声明一个结构体变量，结构体指针，结构体数组</p>
 <h2 id="结构体的访问"><a href="#结构体的访问" class="headerlink" title="结构体的访问"></a>结构体的访问</h2><p>对于结构体变量类型的不同，有两种对结构体成员的访问方式，<strong>直接访问</strong>和<strong>间接访问</strong>，直接访问作用于普通变量，间接访问作用于结构体指针变量</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SIMPLE</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="keyword">char</span> b;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//声明结构体变量s1,和指向结构体变量的指针s2</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SIMPLE</span> <span class="title">s1</span>, *<span class="title">s2</span>;</span></span><br><span class="line"><span class="comment">//对于普通结构体变量使用点操作 . 来访问成员</span></span><br><span class="line">s1.a = <span class="number">5</span>;</span><br><span class="line">s1.b = <span class="number">6</span>;</span><br><span class="line"><span class="comment">//对于结构体指针使用箭头符号 -&gt; 来访问成员</span></span><br><span class="line">s2-&gt;a = <span class="number">3</span>;</span><br><span class="line">s2-&gt;b = <span class="number">4</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://zh.wikipedia.org/wiki/%E7%BB%93%E6%9E%84%E4%BD%93_(C%E8%AF%AD%E8%A8%80" target="_blank" rel="noopener">Wikipedia</a>&gt;)</li>
-</ul>
 
       
     </div>
@@ -546,7 +543,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义结构"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5B9A;&#x4E49;&#x7ED3;&#x6784;" class="headerlink" title="&#x5B9A;&#x4E49;&#x7ED3;&#x6784;"></a>&#x5B9A;&#x4E49;&#x7ED3;&#x6784;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义举例"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5B9A;&#x4E49;&#x4E3E;&#x4F8B;" class="headerlink" title="&#x5B9A;&#x4E49;&#x4E3E;&#x4F8B;"></a>&#x5B9A;&#x4E49;&#x4E3E;&#x4F8B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前无标志，后有声明"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x524D;&#x65E0;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x6709;&#x58F0;&#x660E;" class="headerlink" title="&#x524D;&#x65E0;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x6709;&#x58F0;&#x660E;"></a>&#x524D;&#x65E0;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x6709;&#x58F0;&#x660E;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前有标志，后无声明"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x524D;&#x6709;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x65E0;&#x58F0;&#x660E;" class="headerlink" title="&#x524D;&#x6709;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x65E0;&#x58F0;&#x660E;"></a>&#x524D;&#x6709;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x65E0;&#x58F0;&#x660E;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-typedef-定义"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;-typedef-&#x5B9A;&#x4E49;" class="headerlink" title="&#x4F7F;&#x7528; typedef &#x5B9A;&#x4E49;"></a>&#x4F7F;&#x7528; typedef &#x5B9A;&#x4E49;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更多-typedef-定义"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x66F4;&#x591A;-typedef-&#x5B9A;&#x4E49;" class="headerlink" title="&#x66F4;&#x591A; typedef &#x5B9A;&#x4E49;"></a>&#x66F4;&#x591A; typedef &#x5B9A;&#x4E49;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体的访问"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x7ED3;&#x6784;&#x4F53;&#x7684;&#x8BBF;&#x95EE;" class="headerlink" title="&#x7ED3;&#x6784;&#x4F53;&#x7684;&#x8BBF;&#x95EE;"></a>&#x7ED3;&#x6784;&#x4F53;&#x7684;&#x8BBF;&#x95EE;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x53C2;&#x8003;" class="headerlink" title="&#x53C2;&#x8003;"></a>&#x53C2;&#x8003;</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义结构"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5B9A;&#x4E49;&#x7ED3;&#x6784;" class="headerlink" title="&#x5B9A;&#x4E49;&#x7ED3;&#x6784;"></a>&#x5B9A;&#x4E49;&#x7ED3;&#x6784;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义举例"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5B9A;&#x4E49;&#x4E3E;&#x4F8B;" class="headerlink" title="&#x5B9A;&#x4E49;&#x4E3E;&#x4F8B;"></a>&#x5B9A;&#x4E49;&#x4E3E;&#x4F8B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前无标志，后有声明"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x524D;&#x65E0;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x6709;&#x58F0;&#x660E;" class="headerlink" title="&#x524D;&#x65E0;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x6709;&#x58F0;&#x660E;"></a>&#x524D;&#x65E0;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x6709;&#x58F0;&#x660E;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前有标志，后无声明"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x524D;&#x6709;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x65E0;&#x58F0;&#x660E;" class="headerlink" title="&#x524D;&#x6709;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x65E0;&#x58F0;&#x660E;"></a>&#x524D;&#x6709;&#x6807;&#x5FD7;&#xFF0C;&#x540E;&#x65E0;&#x58F0;&#x660E;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-typedef-定义"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;-typedef-&#x5B9A;&#x4E49;" class="headerlink" title="&#x4F7F;&#x7528; typedef &#x5B9A;&#x4E49;"></a>&#x4F7F;&#x7528; typedef &#x5B9A;&#x4E49;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更多-typedef-定义"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x66F4;&#x591A;-typedef-&#x5B9A;&#x4E49;" class="headerlink" title="&#x66F4;&#x591A; typedef &#x5B9A;&#x4E49;"></a>&#x66F4;&#x591A; typedef &#x5B9A;&#x4E49;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体的访问"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x7ED3;&#x6784;&#x4F53;&#x7684;&#x8BBF;&#x95EE;" class="headerlink" title="&#x7ED3;&#x6784;&#x4F53;&#x7684;&#x8BBF;&#x95EE;"></a>&#x7ED3;&#x6784;&#x4F53;&#x7684;&#x8BBF;&#x95EE;</span></a></li></ol></div>
             
 
           </div>
